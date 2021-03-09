@@ -23,7 +23,7 @@ export default function Header() {
 	return (
 		<Container className={classes.header}>
 			<h2>
-				<a className={classes.a} href="/">
+				<a className={classes.a} href="/musicFest/">
 					Megaport Festival
 				</a>
 			</h2>
