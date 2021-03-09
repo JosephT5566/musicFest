@@ -1,0 +1,27 @@
+{
+  "files": {
+    "MainPage.js": "/megaport/static/js/MainPage.0a5f28e7.chunk.js",
+    "MainPage.js.map": "/megaport/static/js/MainPage.0a5f28e7.chunk.js.map",
+    "main.css": "/megaport/static/css/main.1635e87c.chunk.css",
+    "main.js": "/megaport/static/js/main.28375614.chunk.js",
+    "main.js.map": "/megaport/static/js/main.28375614.chunk.js.map",
+    "runtime-main.js": "/megaport/static/js/runtime-main.72d2b900.js",
+    "runtime-main.js.map": "/megaport/static/js/runtime-main.72d2b900.js.map",
+    "static/js/3.4e0ca6fc.chunk.js": "/megaport/static/js/3.4e0ca6fc.chunk.js",
+    "static/js/3.4e0ca6fc.chunk.js.map": "/megaport/static/js/3.4e0ca6fc.chunk.js.map",
+    "static/js/4.c7f56e76.chunk.js": "/megaport/static/js/4.c7f56e76.chunk.js",
+    "static/js/4.c7f56e76.chunk.js.map": "/megaport/static/js/4.c7f56e76.chunk.js.map",
+    "static/js/5.78897795.chunk.js": "/megaport/static/js/5.78897795.chunk.js",
+    "static/js/5.78897795.chunk.js.map": "/megaport/static/js/5.78897795.chunk.js.map",
+    "index.html": "/megaport/index.html",
+    "static/css/main.1635e87c.chunk.css.map": "/megaport/static/css/main.1635e87c.chunk.css.map",
+    "static/js/3.4e0ca6fc.chunk.js.LICENSE.txt": "/megaport/static/js/3.4e0ca6fc.chunk.js.LICENSE.txt",
+    "static/js/4.c7f56e76.chunk.js.LICENSE.txt": "/megaport/static/js/4.c7f56e76.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.72d2b900.js",
+    "static/js/3.4e0ca6fc.chunk.js",
+    "static/css/main.1635e87c.chunk.css",
+    "static/js/main.28375614.chunk.js"
+  ]
+}
