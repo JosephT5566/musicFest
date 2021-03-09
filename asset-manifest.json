@@ -3,8 +3,8 @@
     "MainPage.js": "/musicFest/static/js/MainPage.0a5f28e7.chunk.js",
     "MainPage.js.map": "/musicFest/static/js/MainPage.0a5f28e7.chunk.js.map",
     "main.css": "/musicFest/static/css/main.1635e87c.chunk.css",
-    "main.js": "/musicFest/static/js/main.29a5fc9a.chunk.js",
-    "main.js.map": "/musicFest/static/js/main.29a5fc9a.chunk.js.map",
+    "main.js": "/musicFest/static/js/main.26b69327.chunk.js",
+    "main.js.map": "/musicFest/static/js/main.26b69327.chunk.js.map",
     "runtime-main.js": "/musicFest/static/js/runtime-main.52e1f533.js",
     "runtime-main.js.map": "/musicFest/static/js/runtime-main.52e1f533.js.map",
     "static/js/3.4e0ca6fc.chunk.js": "/musicFest/static/js/3.4e0ca6fc.chunk.js",
@@ -22,6 +22,6 @@
     "static/js/runtime-main.52e1f533.js",
     "static/js/3.4e0ca6fc.chunk.js",
     "static/css/main.1635e87c.chunk.css",
-    "static/js/main.29a5fc9a.chunk.js"
+    "static/js/main.26b69327.chunk.js"
   ]
 }
