@@ -3,11 +3,14 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyle = makeStyles((theme) => ({
-	timescale: {
+	timeScale: {
+		paddingTop: theme.tableHeadHeight,
+	},
+	scale: {
 		position: 'relative',
 		borderTop: 'solid 1px',
-		// height: 'calc(1em - 1px)',
-		height: '1em',
+		height: 'calc(1rem - 1px)',
+		// height: '1rem',
 		minWidth: '3.5em',
 	},
 	text: {
@@ -31,12 +34,12 @@ export default function TimeScale() {
 		const hh = time.getHours();
 		const mm = time.getMinutes() === 0 ? '00' : time.getMinutes();
 		scale.push(
-			<div className={classes.timescale} key={i}>
+			<div className={classes.scale} key={i}>
 				<div className={classes.text}>
 					{hh}:{mm}
 				</div>
 			</div>
 		);
 	}
-	return <div>{scale}</div>;
+	return <div className={classes.timeScale}>{scale}</div>;
 }
