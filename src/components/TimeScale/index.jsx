@@ -28,7 +28,7 @@ const useStyle = makeStyles((theme) => ({
 
 export default function TimeScale() {
 	const classes = useStyle();
-	const start = new Date(MEGA_START_TIME);
+	const start = new Date(MEGA_START_TIME.day1);
 
 	let scale = [];
 	for (let i = 0; i < 62; i++) {

@@ -7,7 +7,8 @@ import { MEGA_START_TIME, MIN } from '../../utils/static';
 const useStyle = makeStyles((theme) => ({
 	column: {
 		textAlign: 'center',
-		maxWidth: '7em',
+		maxWidth: '8em',
+		minWidth: '6em',
 	},
 	head: {
 		height: theme.tableHeadHeight,
@@ -22,7 +23,7 @@ const MovingTime = ({ prevEndTime, startTime }) => {
 	const height = time / MIN / 10;
 
 	if (time === 0) return null;
-	return <div style={{ height: `${height}rem` }}>Moving...</div>;
+	return <div style={{ height: `${height}rem` }}></div>;
 };
 
 const ShowButton = ({ name, startTime, endTime }) => {
@@ -35,9 +36,9 @@ const ShowButton = ({ name, startTime, endTime }) => {
 	);
 };
 
-export default function StageColumn({ stage, shows }) {
+export default function StageColumn({ stage, shows, day }) {
 	const classes = useStyle();
-	let prevEndTime = new Date(MEGA_START_TIME);
+	let prevEndTime = new Date(MEGA_START_TIME[day]);
 	let prevShowTime = 0; // moving time + performance time
 
 	if (shows) {

@@ -6,15 +6,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Button from './Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import AssistantIcon from '@material-ui/icons/Assistant';
-import DataUsageIcon from '@material-ui/icons/DataUsage';
-import HomeIcon from '@material-ui/icons/Home';
-import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
 import { debounce } from '../../utils/helpers';
-import { MenuItem } from '@material-ui/core';
 
 const useStyle = makeStyles((theme) => ({
 	navigation_lg: {
