@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import TimeScale from '../../components/TimeScale';
-import StageColumn from '../../components/StageColumn';
+import TableOfDay from '../../components/TableOfDay';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { stages } from '../../data/shows.json';
+import { shows } from '../../data/shows.json';
 
 const useStyle = makeStyles((theme) => ({
 	timeTableContainer: {
@@ -43,9 +43,8 @@ export default function TimeTable() {
 			</Select>
 			<div className={classes.timeTable}>
 				<TimeScale />
-				{stages.map((stage, index) => {
-					const name = stage.name;
-					return <StageColumn key={stage.name} stage={{ name, index }} shows={stage[day]} day={day} />;
+				{shows.map((showsOfDay, index) => {
+					return <TableOfDay key={index} showsOfDay={showsOfDay.day} day={index} />;
 				})}
 			</div>
 		</div>

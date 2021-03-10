@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import ShowsContext from '../../contexts/ShowsContext';
+import React, { useState } from 'react';
+// import ShowsContext from '../../contexts/ShowsContext';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -30,7 +30,7 @@ const MovingTime = ({ prevEndTime, startTime }) => {
 const ShowButton = ({ show, day, stage, showIndex }) => {
 	const classes = useStyle();
 	const [active, setActive] = useState(false);
-	const { handleSelectShow } = useContext(ShowsContext);
+	// const { handleSelectShow } = useContext(ShowsContext);
 	const id = `${day}:${stage}:${showIndex}`;
 
 	const startTime = new Date(show.start);
