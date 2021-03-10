@@ -60,7 +60,7 @@ export default function StageColumn({ stage, shows, day }) {
 	if (shows) {
 		return (
 			<div className={classes.column}>
-				<div className={classes.head}>{stage.name}</div>
+				<div className={classes.head}>{stage.stageName}</div>
 				{shows.map((show, index) => {
 					const start = new Date(show.start);
 					const end = new Date(show.end);
