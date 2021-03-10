@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { useCurrentRoute } from 'react-navi';
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+
+import Header from './components/Header';
+import Main from './components/Main';
+
+import { theme } from './styles/theme';
+import { size } from './styles/size';
+
+const useStyle = makeStyles({
+	app: {
+		fontFamily: 'Open Sans, serif',
+		display: 'flex',
+		position: 'relative',
+		flexDirection: 'column',
+		// paddingBottom: size.navHeight,
+	},
+});
+
+const muiTheme = createMuiTheme(theme.common, size);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const classes = useStyle();
+	const route = useCurrentRoute();
+	console.log(route);
+	return (
+		<ThemeProvider theme={muiTheme}>
+			<div className={('App', classes.app)}>
+				<Header />
+				<Main />
+			</div>
+		</ThemeProvider>
+	);
 }
 
 export default App;
