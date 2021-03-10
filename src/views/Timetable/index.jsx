@@ -13,12 +13,17 @@ const useStyle = makeStyles((theme) => ({
 		position: 'relative',
 		width: 'fit-content',
 	},
-	select: {},
+	select: {
+		position: 'sticky',
+		left: '50%',
+		transform: 'translateX(-50%)',
+		marginBottom: '1em',
+	},
 	timeTable: {
 		position: 'relative',
 		display: 'flex',
 		flexDirection: 'row',
-		margin: '1em 0',
+		marginBottom: '1em',
 	},
 }));
 
