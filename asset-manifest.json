@@ -1,27 +1,27 @@
 {
   "files": {
-    "MainPage.js": "/musicFest/static/js/MainPage.0a5f28e7.chunk.js",
-    "MainPage.js.map": "/musicFest/static/js/MainPage.0a5f28e7.chunk.js.map",
-    "main.css": "/musicFest/static/css/main.1635e87c.chunk.css",
-    "main.js": "/musicFest/static/js/main.26b69327.chunk.js",
-    "main.js.map": "/musicFest/static/js/main.26b69327.chunk.js.map",
-    "runtime-main.js": "/musicFest/static/js/runtime-main.52e1f533.js",
-    "runtime-main.js.map": "/musicFest/static/js/runtime-main.52e1f533.js.map",
+    "MainPage.js": "/musicFest/static/js/MainPage.4b2d3f3c.chunk.js",
+    "MainPage.js.map": "/musicFest/static/js/MainPage.4b2d3f3c.chunk.js.map",
+    "main.css": "/musicFest/static/css/main.9d5b29c0.chunk.css",
+    "main.js": "/musicFest/static/js/main.a7b134fa.chunk.js",
+    "main.js.map": "/musicFest/static/js/main.a7b134fa.chunk.js.map",
+    "runtime-main.js": "/musicFest/static/js/runtime-main.7fe31072.js",
+    "runtime-main.js.map": "/musicFest/static/js/runtime-main.7fe31072.js.map",
     "static/js/3.4e0ca6fc.chunk.js": "/musicFest/static/js/3.4e0ca6fc.chunk.js",
     "static/js/3.4e0ca6fc.chunk.js.map": "/musicFest/static/js/3.4e0ca6fc.chunk.js.map",
-    "static/js/4.c7f56e76.chunk.js": "/musicFest/static/js/4.c7f56e76.chunk.js",
-    "static/js/4.c7f56e76.chunk.js.map": "/musicFest/static/js/4.c7f56e76.chunk.js.map",
+    "static/js/4.0dce0be4.chunk.js": "/musicFest/static/js/4.0dce0be4.chunk.js",
+    "static/js/4.0dce0be4.chunk.js.map": "/musicFest/static/js/4.0dce0be4.chunk.js.map",
     "static/js/5.78897795.chunk.js": "/musicFest/static/js/5.78897795.chunk.js",
     "static/js/5.78897795.chunk.js.map": "/musicFest/static/js/5.78897795.chunk.js.map",
     "index.html": "/musicFest/index.html",
-    "static/css/main.1635e87c.chunk.css.map": "/musicFest/static/css/main.1635e87c.chunk.css.map",
+    "static/css/main.9d5b29c0.chunk.css.map": "/musicFest/static/css/main.9d5b29c0.chunk.css.map",
     "static/js/3.4e0ca6fc.chunk.js.LICENSE.txt": "/musicFest/static/js/3.4e0ca6fc.chunk.js.LICENSE.txt",
-    "static/js/4.c7f56e76.chunk.js.LICENSE.txt": "/musicFest/static/js/4.c7f56e76.chunk.js.LICENSE.txt"
+    "static/js/4.0dce0be4.chunk.js.LICENSE.txt": "/musicFest/static/js/4.0dce0be4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.52e1f533.js",
+    "static/js/runtime-main.7fe31072.js",
     "static/js/3.4e0ca6fc.chunk.js",
-    "static/css/main.1635e87c.chunk.css",
-    "static/js/main.26b69327.chunk.js"
+    "static/css/main.9d5b29c0.chunk.css",
+    "static/js/main.a7b134fa.chunk.js"
   ]
 }
