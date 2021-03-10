@@ -7,12 +7,17 @@ import { MEGA_START_TIME } from '../../utils/static';
 const useStyle = makeStyles((theme) => ({
 	timeScale: {
 		paddingTop: theme.tableHeadHeight,
+		paddingRight: '0.5em',
+		[theme.breakpoints.down('md')]: {
+			position: 'sticky',
+			left: '0',
+		},
 	},
 	scale: {
 		backgroundColor: 'transparent',
 		position: 'relative',
 		height: '1rem',
-		minWidth: '3em',
+		minWidth: '2.5em',
 		'&::after': {
 			content: `''`,
 			position: 'absolute',

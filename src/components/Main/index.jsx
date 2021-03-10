@@ -11,6 +11,8 @@ const useStyle = makeStyles((theme) => ({
 	main: {
 		backgroundColor: theme.palette.bg.main,
 		position: 'relative',
+		overflowX: 'scroll',
+		overflowY: 'hidden',
 	},
 }));
 
