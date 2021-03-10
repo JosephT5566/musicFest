@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { useCurrentRoute } from 'react-navi';
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { ShowsStore } from './contexts/ShowsContext';
 
 import Header from './components/Header';
 import Main from './components/Main';
@@ -26,12 +27,14 @@ function App() {
 	const route = useCurrentRoute();
 	console.log(route);
 	return (
-		<ThemeProvider theme={muiTheme}>
-			<div className={('App', classes.app)}>
-				<Header />
-				<Main />
-			</div>
-		</ThemeProvider>
+		<ShowsStore>
+			<ThemeProvider theme={muiTheme}>
+				<div className={('App', classes.app)}>
+					<Header />
+					<Main />
+				</div>
+			</ThemeProvider>
+		</ShowsStore>
 	);
 }
 

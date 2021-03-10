@@ -43,9 +43,10 @@ export default function TimeTable() {
 			</Select>
 			<div className={classes.timeTable}>
 				<TimeScale />
-				{stages.map((stage) => (
-					<StageColumn key={stage.name} stage={stage.name} shows={stage[day]} day={day} />
-				))}
+				{stages.map((stage, index) => {
+					const name = stage.name;
+					return <StageColumn key={stage.name} stage={{ name, index }} shows={stage[day]} day={day} />;
+				})}
 			</div>
 		</div>
 	);
