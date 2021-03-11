@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Map } from 'immutable';
+import React, { useRef } from 'react';
 const Context = React.createContext(''); // default value
 
 export function ShowsStore(props) {
-	const [selectedShow, setSelectedShow] = useState(Map({}));
+	const selectedShow = useRef({
+		map: new Map(),
+	});
 
 	const handleSelectShow = (state, active) => {
 		if (active) {
-			setSelectedShow((prev) => prev.set(state, state));
+			selectedShow.current.map.set(state, state);
 		} else {
-			setSelectedShow((prev) => prev.delete(state));
+			selectedShow.current.map.delete(state, state);
 		}
 	};
 
-	useEffect(() => {
-		console.log('selected show:', selectedShow);
-	}, [selectedShow]);
+	const viewSelectedItems = () => {
+		console.log('ref show:', selectedShow.current.map);
+	};
 
-	return <Context.Provider value={{ handleSelectShow }}>{props.children}</Context.Provider>;
+	return <Context.Provider value={{ handleSelectShow, viewSelectedItems }}>{props.children}</Context.Provider>;
 }
 
 export default Context;
