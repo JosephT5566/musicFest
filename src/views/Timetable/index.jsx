@@ -29,22 +29,22 @@ const useStyle = makeStyles((theme) => ({
 
 export default function TimeTable() {
 	const classes = useStyle();
-	const [day, setDay] = useState('day1');
+	const [selectedDay, setSelectedDay] = useState(0);
 
 	const handleChange = (event) => {
-		setDay(event.target.value);
+		setSelectedDay(event.target.value);
 	};
 
 	return (
 		<div className={classes.timeTableContainer}>
-			<Select value={day} onChange={handleChange} className={classes.select}>
-				<MenuItem value={'day1'}>day1</MenuItem>
-				<MenuItem value={'day2'}>day2</MenuItem>
+			<Select value={selectedDay} onChange={handleChange} className={classes.select}>
+				<MenuItem value={0}>day1</MenuItem>
+				<MenuItem value={1}>day2</MenuItem>
 			</Select>
 			<div className={classes.timeTable}>
 				<TimeScale />
 				{shows.map((showsOfDay, index) => {
-					return <TableOfDay key={index} showsOfDay={showsOfDay.day} day={index} />;
+					return <TableOfDay key={index} showsOfDay={showsOfDay.day} day={index} selected={selectedDay} />;
 				})}
 			</div>
 		</div>
