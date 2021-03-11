@@ -32,6 +32,10 @@ export function ShowsStore(props) {
 		arr.forEach((item) => selectedShow.current.map.set(item, item));
 	};
 
+	const isIDExist = (id) => {
+		return selectedShow.current.map.has(id);
+	};
+
 	useEffect(() => {
 		const hash = navigation.getCurrentValue().url.hash;
 
@@ -41,7 +45,7 @@ export function ShowsStore(props) {
 	}, [navigation]);
 
 	return (
-		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, loadEncodeData }}>
+		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, loadEncodeData, isIDExist }}>
 			{props.children}
 		</Context.Provider>
 	);

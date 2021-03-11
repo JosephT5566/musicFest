@@ -33,7 +33,7 @@ const MovingTime = ({ prevEndTime, startTime }) => {
 const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	const classes = useStyle();
 	const [active, setActive] = useState(false);
-	const { handleSelectShow } = useContext(ShowsContext);
+	const { handleSelectShow, isIDExist } = useContext(ShowsContext);
 	const id = `${day}:${stageIndex}:${showIndex}`;
 
 	const startTime = new Date(show.start);
@@ -43,6 +43,12 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	const handleClick = () => {
 		setActive((prev) => !prev);
 	};
+
+	// chack active first
+	useEffect(() => {
+		const isActive = isIDExist(id);
+		setActive(isActive)
+	}, [isIDExist, id]);
 
 	useEffect(() => {
 		handleSelectShow(id, active);
