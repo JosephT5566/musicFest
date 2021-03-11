@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useNavigation } from 'react-navi';
 
 const Context = React.createContext(''); // default value
 
 export function ShowsStore(props) {
+	const navigation = useNavigation();
 	const selectedShow = useRef({
 		map: new Map(),
 	});
@@ -19,11 +21,30 @@ export function ShowsStore(props) {
 		console.log('ref show:', selectedShow.current.map);
 	};
 
-	const saveItemsForHashUrl = () => {
-		return '123456'
+	const getEncodeData = () => {
+		const keys = Array.from(selectedShow.current.map.keys()).toString();
+		return btoa(keys);
 	};
 
-	return <Context.Provider value={{ handleSelectShow, viewSelectedItems, saveItemsForHashUrl }}>{props.children}</Context.Provider>;
+	const loadEncodeData = (encode) => {
+		const dec = atob(encode);
+		const arr = dec.split(',');
+		arr.forEach((item) => selectedShow.current.map.set(item, item));
+	};
+
+	useEffect(() => {
+		const hash = navigation.getCurrentValue().url.hash;
+
+		if (hash !== '') {
+			loadEncodeData(hash.substring(1));
+		}
+	}, [navigation]);
+
+	return (
+		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, loadEncodeData }}>
+			{props.children}
+		</Context.Provider>
+	);
 }
 
 export default Context;

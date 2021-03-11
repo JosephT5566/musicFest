@@ -37,21 +37,23 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 const SaveButton = () => {
-	const { saveItemsForHashUrl } = useContext(ShowsContext);
+	const { getEncodeData } = useContext(ShowsContext);
 	const navigation = useNavigation();
 
 	const url = navigation.getCurrentValue().url;
-	const hash = saveItemsForHashUrl();
 
 	const handleClick = () => {
-		navigation.navigate(`${url.pathname}#${hash}`);
+		const hash = getEncodeData();
+		if (hash !== '') {
+			navigation.navigate(`${url.pathname}#${hash}`);
+		}
 	};
 
 	return <button onClick={handleClick}>Save</button>;
 };
 
 const LoadButton = () => {
-	const {} = useContext(ShowsContext);
+	// const {} = useContext(ShowsContext);
 	return <button>Load</button>;
 };
 
