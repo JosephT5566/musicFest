@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigation } from 'react-navi';
 import { makeStyles } from '@material-ui/core/styles';
+import ShowsContext from '../../contexts/ShowsContext';
 
 import TimeScale from '../../components/TimeScale';
 import TableOfDay from '../../components/TableOfDay';
@@ -25,7 +27,33 @@ const useStyle = makeStyles((theme) => ({
 		flexDirection: 'row',
 		marginBottom: '1em',
 	},
+	btnContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+		position: 'fixed',
+		bottom: '1em',
+		right: '1em',
+	},
 }));
+
+const SaveButton = () => {
+	const { saveItemsForHashUrl } = useContext(ShowsContext);
+	const navigation = useNavigation();
+
+	const url = navigation.getCurrentValue().url;
+	const hash = saveItemsForHashUrl();
+
+	const handleClick = () => {
+		navigation.navigate(`${url.pathname}#${hash}`);
+	};
+
+	return <button onClick={handleClick}>Save</button>;
+};
+
+const LoadButton = () => {
+	const {} = useContext(ShowsContext);
+	return <button>Load</button>;
+};
 
 export default function TimeTable() {
 	const classes = useStyle();
@@ -46,6 +74,10 @@ export default function TimeTable() {
 				{shows.map((showsOfDay, index) => {
 					return <TableOfDay key={index} showsOfDay={showsOfDay.day} day={index} selected={selectedDay} />;
 				})}
+			</div>
+			<div className={classes.btnContainer}>
+				<SaveButton />
+				<LoadButton />
 			</div>
 		</div>
 	);

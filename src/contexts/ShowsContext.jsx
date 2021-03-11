@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+
 const Context = React.createContext(''); // default value
 
 export function ShowsStore(props) {
@@ -18,7 +19,11 @@ export function ShowsStore(props) {
 		console.log('ref show:', selectedShow.current.map);
 	};
 
-	return <Context.Provider value={{ handleSelectShow, viewSelectedItems }}>{props.children}</Context.Provider>;
+	const saveItemsForHashUrl = () => {
+		return '123456'
+	};
+
+	return <Context.Provider value={{ handleSelectShow, viewSelectedItems, saveItemsForHashUrl }}>{props.children}</Context.Provider>;
 }
 
 export default Context;

@@ -67,18 +67,27 @@ const useStyle = makeStyles((theme) => ({
 
 const Items = ({ btnClicked }) => {
 	const navigation = useNavigation();
+	const url = navigation.getCurrentValue().url;
 
 	return (
 		<CurrentIndexStore>
 			<Button
 				index={1}
 				onClick={() => {
-					navigation.navigate(`/${APP_NAME}/`);
+					navigation.navigate(`/${APP_NAME}/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
 				{/* <HomeIcon className="icon" /> */}
 				Time Table
+			</Button>
+			<Button
+				index={4}
+				onClick={() => {
+					console.log(url.hash);
+				}}
+			>
+				Hash
 			</Button>
 			<Button
 				index={2}
@@ -92,7 +101,7 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={3}
 				onClick={() => {
-					navigation.navigate(`/${APP_NAME}/links`);
+					navigation.navigate(`/${APP_NAME}/links/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
