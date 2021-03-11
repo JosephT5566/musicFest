@@ -48,10 +48,6 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 		handleSelectShow(id, active);
 	}, [handleSelectShow, id, active]);
 
-	useEffect(() => {
-		// console.log('handleSelectShow');
-	}, [handleSelectShow]);
-
 	return (
 		<button
 			className={`${classes.showButton} ${id} ${active}`}

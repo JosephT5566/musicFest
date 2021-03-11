@@ -10,6 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
 import { debounce } from '../../utils/helpers';
+import { APP_NAME } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	navigation_lg: {
@@ -64,7 +65,7 @@ const useStyle = makeStyles((theme) => ({
 	},
 }));
 
-const Items = () => {
+const Items = ({ btnClicked }) => {
 	const navigation = useNavigation();
 
 	return (
@@ -72,7 +73,8 @@ const Items = () => {
 			<Button
 				index={1}
 				onClick={() => {
-					navigation.navigate(`/`);
+					navigation.navigate(`/${APP_NAME}/`);
+					if (btnClicked) btnClicked();
 				}}
 			>
 				{/* <HomeIcon className="icon" /> */}
@@ -90,7 +92,8 @@ const Items = () => {
 			<Button
 				index={3}
 				onClick={() => {
-					// navigation.navigate(`/profile`);
+					navigation.navigate(`/${APP_NAME}/links`);
+					if (btnClicked) btnClicked();
 				}}
 			>
 				{/* <AssistantIcon className="icon" /> */}
@@ -147,6 +150,11 @@ const NavigatorMd = () => {
 			setVisible(false);
 		}
 	};
+
+	const handleButtonClicked = () => {
+		setVisible(false);
+	};
+
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<nav className={`${classes.navigation_md} ${visible}`}>
@@ -154,7 +162,7 @@ const NavigatorMd = () => {
 					<IconButton className={classes.navButton} onClick={handleClick}>
 						<MenuIcon />
 					</IconButton>
-					<Items />
+					<Items btnClicked={handleButtonClicked} />
 				</div>
 			</nav>
 		</ClickAwayListener>

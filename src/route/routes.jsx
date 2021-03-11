@@ -20,14 +20,14 @@ const routes = mount({
 		// 			),
 		// 	}),
 		// }),
-		// '/profile': route({
-		// 	title: `Profile`,
-		// 	getView: () =>
-		// 		import(
-		// 			/*webpackChunkName: "ProfilePage"*/
-		// 			'../views/Profile'
-		// 		),
-		// }),
+		'/links': route({
+			title: `Profile`,
+			getView: () =>
+				import(
+					/*webpackChunkName: "ProfilePage"*/
+					'../views/Links'
+				),
+		}),
 	}),
 });
 
