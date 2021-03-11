@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-// import ShowsContext from '../../contexts/ShowsContext';
+import React, { useState, useContext, useEffect } from 'react';
+import ShowsContext from '../../contexts/ShowsContext';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -16,6 +16,9 @@ const useStyle = makeStyles((theme) => ({
 	},
 	showButton: {
 		width: '100%',
+		'&.true': {
+			backgroundColor: theme.palette.bg.dark,
+		},
 	},
 }));
 
@@ -27,11 +30,11 @@ const MovingTime = ({ prevEndTime, startTime }) => {
 	return <div style={{ height: `${height}rem` }}></div>;
 };
 
-const ShowButton = ({ show, day, stage, showIndex }) => {
+const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	const classes = useStyle();
 	const [active, setActive] = useState(false);
-	// const { handleSelectShow } = useContext(ShowsContext);
-	const id = `${day}:${stage}:${showIndex}`;
+	const { handleSelectShow } = useContext(ShowsContext);
+	const id = `${day}:${stageIndex}:${showIndex}`;
 
 	const startTime = new Date(show.start);
 	const endTime = new Date(show.end);
@@ -41,10 +44,18 @@ const ShowButton = ({ show, day, stage, showIndex }) => {
 		setActive((prev) => !prev);
 	};
 
+	useEffect(() => {
+		handleSelectShow(id, active);
+	}, [handleSelectShow, id, active]);
+
+	useEffect(() => {
+		// console.log('handleSelectShow');
+	}, [handleSelectShow]);
+
 	return (
 		<button
 			className={`${classes.showButton} ${id} ${active}`}
-			style={{ height: `${height}rem`, backgroundColor: active ? 'gray' : 'white' }}
+			style={{ height: `${height}rem` }}
 			onClick={handleClick}
 		>
 			{show.name}
@@ -72,7 +83,7 @@ export default function StageColumn({ stage, shows, day }) {
 					return (
 						<div key={index}>
 							<MovingTime prevEndTime={prevEndTime} startTime={start} />
-							<ShowButton show={show} day={day} stage={stage.index} showIndex={index} />
+							<ShowButton show={show} day={day} stageIndex={stage.index} showIndex={index} />
 						</div>
 					);
 				})}
