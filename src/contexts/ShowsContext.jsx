@@ -27,9 +27,15 @@ export function ShowsStore(props) {
 	};
 
 	const loadEncodeData = (encode) => {
-		const dec = atob(encode);
-		const arr = dec.split(',');
-		arr.forEach((item) => selectedShow.current.map.set(item, item));
+		try {
+			const dec = atob(encode);
+			const arr = dec.split(',');
+			arr.forEach((item) => selectedShow.current.map.set(item, item));
+		} catch (error) {
+			console.log('hash url decode err: ',error);
+			
+			navigation.navigate(navigation.getCurrentValue().url.pathname)
+		}
 	};
 
 	const isIDExist = (id) => {
