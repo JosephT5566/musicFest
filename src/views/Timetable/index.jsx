@@ -7,6 +7,8 @@ import TimeScale from '../../components/TimeScale';
 import TableOfDay from '../../components/TableOfDay';
 import IconButton from '@material-ui/core/IconButton';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import { shows } from '../../data/shows.json';
 
@@ -80,9 +82,12 @@ const useStyle = makeStyles((theme) => ({
 			backgroundColor: theme.palette.secondary.main,
 		},
 	},
+	alertBar: {
+		fontFamily: theme.fontFamily,
+	},
 }));
 
-const SaveButton = () => {
+const SaveButton = ({ onOpenSnack }) => {
 	const { getEncodeData } = useContext(ShowsContext);
 	const classes = useStyle();
 	const navigation = useNavigation();
@@ -90,9 +95,10 @@ const SaveButton = () => {
 	const url = navigation.getCurrentValue().url;
 
 	const handleClick = () => {
-		const hash = getEncodeData();
-		if (hash !== '') {
-			navigation.navigate(`${url.pathname}#${hash}`);
+		const data = getEncodeData();
+		if (data !== '' || url.hash !== '') {
+			navigation.navigate(`${url.pathname}#${data}`);
+			onOpenSnack();
 		}
 	};
 
@@ -118,11 +124,16 @@ const DayButton = ({ day, selectedDay, onClick, ...props }) => {
 
 export default function TimeTable() {
 	const classes = useStyle();
+	const [openSnack, setOpenSnack] = useState(false);
 	const [selectedDay, setSelectedDay] = useState(0);
 
 	const handleClick = (value) => {
 		setSelectedDay(value);
 	};
+
+	const handleOpenSnack = () => setOpenSnack(true);
+
+	const handleCloseSnack = () => setOpenSnack(false);
 
 	return (
 		<div className={classes.timeTableContainer}>
@@ -141,8 +152,18 @@ export default function TimeTable() {
 				})}
 			</div>
 			<div className={classes.btnContainer}>
-				<SaveButton />
+				<SaveButton onOpenSnack={handleOpenSnack} />
 			</div>
+			<Snackbar
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+				open={openSnack}
+				autoHideDuration={3000}
+				onClose={handleCloseSnack}
+			>
+				<MuiAlert className={classes.alertBar} variant="filled" severity="success">
+					已儲存至網址，可直接加到書籤，或是分享網址。
+				</MuiAlert>
+			</Snackbar>
 		</div>
 	);
 }
