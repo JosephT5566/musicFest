@@ -11,7 +11,7 @@ import { value } from './styles/value';
 
 const useStyle = makeStyles({
 	app: {
-		fontFamily: 'Roboto, Noto Sans TC, Open Sans, serif',
+		fontFamily: value.fontFamily,
 		display: 'flex',
 		position: 'relative',
 		flexDirection: 'column',

@@ -81,26 +81,16 @@ const Items = ({ btnClicked }) => {
 					if (btnClicked) btnClicked();
 				}}
 			>
-				{/* <HomeIcon className="icon" /> */}
 				Time Table
 			</Button>
-			<Button
-				index={4}
-				onClick={() => {
-					console.log(url.hash);
-				}}
-			>
-				Hash
-			</Button>
-			<Button
+			{/* <Button
 				index={2}
 				onClick={() => {
 					// navigation.navigate(`/otc`);
 				}}
 			>
-				{/* <DataUsageIcon className="icon" /> */}
 				Time Line
-			</Button>
+			</Button> */}
 			<Button
 				index={3}
 				onClick={() => {
@@ -108,7 +98,6 @@ const Items = ({ btnClicked }) => {
 					if (btnClicked) btnClicked();
 				}}
 			>
-				{/* <AssistantIcon className="icon" /> */}
 				Links
 			</Button>
 		</CurrentIndexStore>

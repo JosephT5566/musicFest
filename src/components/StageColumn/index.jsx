@@ -21,11 +21,17 @@ const useStyle = makeStyles((theme) => ({
 		letterSpacing: theme.letterSpacing,
 	},
 	showButton: {
+		fontFamily: theme.fontFamily,
 		width: '100%',
 		borderRadius: '0.5em',
 		border: 'none',
 		letterSpacing: theme.letterSpacing,
-		fontWeight: 'bold',
+		'&:hover': {
+			cursor: 'pointer',
+		},
+		'&:focus': {
+			outline: '0',
+		},
 	},
 	freeTimeScale: {
 		position: 'relative',

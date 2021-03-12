@@ -5,8 +5,6 @@ import ShowsContext from '../../contexts/ShowsContext';
 
 import TimeScale from '../../components/TimeScale';
 import TableOfDay from '../../components/TableOfDay';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
@@ -17,11 +15,49 @@ const useStyle = makeStyles((theme) => ({
 		position: 'relative',
 		width: 'fit-content',
 	},
-	select: {
+	dayBtnContainer: {
 		position: 'sticky',
+		display: 'flex',
+		width: 'fit-content',
 		left: '50%',
 		transform: 'translateX(-50%)',
-		marginBottom: '1em',
+		margin: '0.5em 0 1em',
+		'&::after': {
+			content: `''`,
+			position: 'absolute',
+			backgroundColor: theme.palette.primary.main,
+			borderRadius: '1em',
+			width: '1em',
+			height: '4px',
+			bottom: '0',
+			transition: '500ms',
+		},
+		'&.day0::after': {
+			left: '0%',
+		},
+		'&.day1::after': {
+			left: '50%',
+		},
+	},
+	dayBtn: {
+		fontFamily: theme.fontFamily,
+		position: 'relative',
+		border: 'none',
+		fontSize: '1em',
+		backgroundColor: theme.palette.bg.main,
+		borderRadius: '0.6em',
+		padding: '0.5em 0',
+		marginRight: '1.5em',
+		'&:hover': {
+			cursor: 'pointer',
+			color: theme.palette.primary.main,
+		},
+		'&:focus': {
+			outline: '0',
+		},
+		'&.true': {
+			color: theme.palette.primary.main,
+		},
 	},
 	timeTable: {
 		position: 'relative',
@@ -67,25 +103,37 @@ const SaveButton = () => {
 	);
 };
 
-// const LoadButton = () => {
-// 	const {} = useContext(ShowsContext);
-// 	return <button>Load</button>;
-// };
+const DayButton = ({ day, selectedDay, onClick, ...props }) => {
+	const classes = useStyle();
+	const active = day === selectedDay ? true : false;
+
+	const handleClick = () => onClick(day);
+
+	return (
+		<button className={`${classes.dayBtn} ${active}`} onClick={handleClick}>
+			{props.children}
+		</button>
+	);
+};
 
 export default function TimeTable() {
 	const classes = useStyle();
 	const [selectedDay, setSelectedDay] = useState(0);
 
-	const handleChange = (event) => {
-		setSelectedDay(event.target.value);
+	const handleClick = (value) => {
+		setSelectedDay(value);
 	};
 
 	return (
 		<div className={classes.timeTableContainer}>
-			<Select value={selectedDay} onChange={handleChange} className={classes.select}>
-				<MenuItem value={0}>day1</MenuItem>
-				<MenuItem value={1}>day2</MenuItem>
-			</Select>
+			<div className={`${classes.dayBtnContainer} ${'day' + selectedDay}`}>
+				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
+					3/27
+				</DayButton>
+				<DayButton day={1} selectedDay={selectedDay} onClick={handleClick}>
+					3/28
+				</DayButton>
+			</div>
 			<div className={classes.timeTable}>
 				<TimeScale />
 				{shows.map((showsOfDay, index) => {
