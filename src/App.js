@@ -7,11 +7,11 @@ import Header from './components/Header';
 import Main from './components/Main';
 
 import { theme } from './styles/theme';
-import { size } from './styles/size';
+import { value } from './styles/value';
 
 const useStyle = makeStyles({
 	app: {
-		fontFamily: 'Open Sans, serif',
+		fontFamily: 'Roboto, Noto Sans TC, Open Sans, serif',
 		display: 'flex',
 		position: 'relative',
 		flexDirection: 'column',
@@ -19,7 +19,7 @@ const useStyle = makeStyles({
 	},
 });
 
-const muiTheme = createMuiTheme(theme.common, size);
+const muiTheme = createMuiTheme(theme.common, value);
 
 function App() {
 	const classes = useStyle();

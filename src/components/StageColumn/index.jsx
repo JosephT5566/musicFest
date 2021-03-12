@@ -3,7 +3,8 @@ import ShowsContext from '../../contexts/ShowsContext';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import { MEGA_START_TIME, MIN } from '../../utils/static';
+import { theme } from '../../styles/theme';
+import { MEGA_START_TIME, MIN, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	column: {
@@ -13,12 +14,17 @@ const useStyle = makeStyles((theme) => ({
 	},
 	head: {
 		height: theme.tableHeadHeight,
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: theme.tableHeadMarginBottom,
+		letterSpacing: theme.letterSpacing,
 	},
 	showButton: {
 		width: '100%',
-		'&.true': {
-			backgroundColor: theme.palette.bg.dark,
-		},
+		borderRadius: '0.5em',
+		border: 'none',
+		letterSpacing: theme.letterSpacing,
 	},
 }));
 
@@ -27,7 +33,7 @@ const MovingTime = ({ prevEndTime, startTime }) => {
 	const height = time / MIN / 10;
 
 	if (time === 0) return null;
-	return <div style={{ height: `${height}rem` }}></div>;
+	return <div style={{ height: `${height * SCALE_UNIT}rem` }}></div>;
 };
 
 const ShowButton = ({ show, day, stageIndex, showIndex }) => {
@@ -35,6 +41,7 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	const [active, setActive] = useState(false);
 	const { handleSelectShow, isIDExist } = useContext(ShowsContext);
 	const id = `${day}:${stageIndex}:${showIndex}`;
+	const { stage: stageColors, text: textColor } = theme.common.palette;
 
 	const startTime = new Date(show.start);
 	const endTime = new Date(show.end);
@@ -47,7 +54,7 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	// chack active first
 	useEffect(() => {
 		const isActive = isIDExist(id);
-		setActive(isActive)
+		setActive(isActive);
 	}, [isIDExist, id]);
 
 	useEffect(() => {
@@ -56,8 +63,12 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 
 	return (
 		<button
-			className={`${classes.showButton} ${id} ${active}`}
-			style={{ height: `${height}rem` }}
+			className={`${classes.showButton} ${id}`}
+			style={{
+				height: `${height * SCALE_UNIT}rem`,
+				backgroundColor: active ? stageColors[stageIndex].main : stageColors[stageIndex].light,
+				color: active ? textColor.light : textColor.dark,
+			}}
 			onClick={handleClick}
 		>
 			{show.name}
@@ -69,11 +80,14 @@ export default function StageColumn({ stage, shows, day }) {
 	const classes = useStyle();
 	let prevEndTime = new Date(MEGA_START_TIME[day]);
 	let prevShowTime = 0; // moving time + performance time
+	const stageColors = theme.common.palette.stage;
 
 	if (shows) {
 		return (
 			<div className={classes.column}>
-				<div className={classes.head}>{stage.stageName}</div>
+				<div className={classes.head} style={{ backgroundColor: `${stageColors[stage.index].main}` }}>
+					<h4>{stage.stageName}</h4>
+				</div>
 				{shows.map((show, index) => {
 					const start = new Date(show.start);
 					const end = new Date(show.end);

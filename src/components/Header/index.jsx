@@ -8,10 +8,11 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		height: theme.headerHeight,
+		backgroundColor: theme.palette.secondary.main,
 	},
 	a: {
 		textDecoration: 'none',
-		color: theme.palette.primary.main,
+		color: theme.palette.text.light,
 		'&:hover': {
 			borderBottom: 'solid 1px',
 		},

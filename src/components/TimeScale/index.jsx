@@ -2,11 +2,11 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import { MEGA_START_TIME } from '../../utils/static';
+import { MEGA_START_TIME, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeScale: {
-		paddingTop: theme.tableHeadHeight,
+		paddingTop: `calc(${theme.tableHeadHeight} + ${theme.tableHeadMarginBottom})`,
 		paddingRight: '0.5em',
 		[theme.breakpoints.down('md')]: {
 			position: 'sticky',
@@ -16,7 +16,7 @@ const useStyle = makeStyles((theme) => ({
 	scale: {
 		backgroundColor: 'transparent',
 		position: 'relative',
-		height: '1rem',
+		height: `${SCALE_UNIT}rem`,
 		minWidth: '2.5em',
 		'&::after': {
 			content: `''`,
@@ -32,8 +32,9 @@ const useStyle = makeStyles((theme) => ({
 		backgroundColor: 'transparent',
 		fontSize: '8px',
 		position: 'absolute',
-		bottom: '50%',
+		top: '0',
 		left: '0',
+		transform: 'translate(0, -50%)',
 	},
 }));
 

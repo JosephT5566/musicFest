@@ -18,13 +18,15 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		zIndex: '100',
 
-		top: '0em',
+		top: '0.5em',
 		left: '50%',
 		transform: 'translate(-50%, 0)',
 		padding: '1em 0',
+		backgroundColor: theme.palette.secondary.main,
+		borderRadius: '0.5em',
 		transition: '0.6s',
 		'&.false': {
-			top: '-4em',
+			top: '-4.5em',
 		},
 	},
 	navigation_md: {
@@ -35,7 +37,7 @@ const useStyle = makeStyles((theme) => ({
 		right: `-${theme.navWidth}`,
 		height: '100vh',
 		width: theme.navWidth,
-		backgroundColor: theme.palette.bg.light,
+		backgroundColor: theme.palette.secondary.dark,
 		transition: '0.6s',
 		'&.true': {
 			right: '0',
@@ -59,6 +61,7 @@ const useStyle = makeStyles((theme) => ({
 		top: '0',
 		right: '0',
 		padding: '1em',
+		color: theme.palette.primary.main,
 		[theme.breakpoints.up('lg')]: {
 			display: 'none',
 		},
