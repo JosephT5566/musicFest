@@ -4,7 +4,7 @@ import ShowsContext from '../../contexts/ShowsContext';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { theme } from '../../styles/theme';
-import { MEGA_START_TIME, MIN, SCALE_UNIT } from '../../utils/static';
+import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	column: {
@@ -27,14 +27,33 @@ const useStyle = makeStyles((theme) => ({
 		letterSpacing: theme.letterSpacing,
 		fontWeight: 'bold',
 	},
+	freeTimeScale: {
+		position: 'relative',
+		height: `${SCALE_UNIT}rem`,
+		'&::after': {
+			content: `''`,
+			position: 'absolute',
+			background: theme.palette.bg.dark,
+			height: '1px',
+			width: '90%',
+			bottom: '-0.5px',
+			left: '50%',
+			transform: 'translate(-50%, 0)',
+		},
+	},
 }));
 
 const MovingTime = ({ prevEndTime, startTime }) => {
+	const classes = useStyle();
 	const time = startTime.getTime() - prevEndTime.getTime();
 	const height = time / MIN / 10;
 
 	if (time === 0) return null;
-	return <div style={{ height: `${height * SCALE_UNIT}rem` }}></div>;
+	let scale = [];
+	for (let i = 0; i < height; i++) {
+		scale.push(<div className={classes.freeTimeScale} key={i}></div>);
+	}
+	return scale;
 };
 
 const ShowButton = ({ show, day, stageIndex, showIndex }) => {
@@ -80,6 +99,7 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 export default function StageColumn({ stage, shows, day }) {
 	const classes = useStyle();
 	let prevEndTime = new Date(MEGA_START_TIME[day]);
+	let finalEndTime = new Date(MEGA_END_TIME[day]);
 	let prevShowTime = 0; // moving time + performance time
 	const stageColors = theme.common.palette.stage;
 
@@ -104,6 +124,7 @@ export default function StageColumn({ stage, shows, day }) {
 						</div>
 					);
 				})}
+				<MovingTime prevEndTime={new Date(prevEndTime.getTime() + prevShowTime)} startTime={finalEndTime} />
 			</div>
 		);
 	}

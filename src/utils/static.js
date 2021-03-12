@@ -1,5 +1,7 @@
 export const MEGA_START_TIME = { 0: '2021-03-27T11:40', 1: '2021-03-28T11:40' };
 
+export const MEGA_END_TIME = { 0: '2021-03-27T21:50', 1: '2021-03-28T21:50' };
+
 export const MIN = 60000; // 60 sec * 1000 milliseconds
 
 export const APP_NAME = 'musicFest';

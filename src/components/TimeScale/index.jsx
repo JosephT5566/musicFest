@@ -8,6 +8,7 @@ const useStyle = makeStyles((theme) => ({
 	timeScale: {
 		paddingTop: `calc(${theme.tableHeadHeight} + ${theme.tableHeadMarginBottom})`,
 		paddingRight: '0.5em',
+		zIndex: '10',
 		[theme.breakpoints.down('md')]: {
 			position: 'sticky',
 			left: '-1em',
