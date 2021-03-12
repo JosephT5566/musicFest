@@ -26,32 +26,31 @@ export function ShowsStore(props) {
 		return btoa(keys);
 	};
 
-	const loadEncodeData = (encode) => {
-		try {
-			const dec = atob(encode);
-			const arr = dec.split(',');
-			arr.forEach((item) => selectedShow.current.map.set(item, item));
-		} catch (error) {
-			console.log('hash url decode err: ',error);
-			
-			navigation.navigate(navigation.getCurrentValue().url.pathname)
-		}
-	};
-
 	const isIDExist = (id) => {
 		return selectedShow.current.map.has(id);
 	};
 
 	useEffect(() => {
-		const hash = navigation.getCurrentValue().url.hash;
+		const url = navigation.getCurrentValue().url;
+		const loadEncodeData = (encode) => {
+			try {
+				const dec = atob(encode);
+				const arr = dec.split(',');
+				arr.forEach((item) => selectedShow.current.map.set(item, item));
+			} catch (error) {
+				console.log('hash url decode err: ', error);
 
-		if (hash !== '') {
-			loadEncodeData(hash.substring(1));
+				navigation.navigate(url.pathname);
+			}
+		};
+
+		if (url.hash !== '') {
+			loadEncodeData(url.hash.substring(1));
 		}
 	}, [navigation]);
 
 	return (
-		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, loadEncodeData, isIDExist }}>
+		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, isIDExist }}>
 			{props.children}
 		</Context.Provider>
 	);
