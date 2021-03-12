@@ -7,6 +7,8 @@ import TimeScale from '../../components/TimeScale';
 import TableOfDay from '../../components/TableOfDay';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 import { shows } from '../../data/shows.json';
 
@@ -32,12 +34,21 @@ const useStyle = makeStyles((theme) => ({
 		flexDirection: 'column',
 		position: 'fixed',
 		bottom: '1em',
-		right: '1em',
+		right: '2em',
+	},
+	saveBtn: {
+		backgroundColor: theme.palette.secondary.main,
+		color: theme.palette.primary.main,
+		boxShadow: '-5px 5px 10px',
+		'&:focus': {
+			backgroundColor: theme.palette.secondary.main,
+		},
 	},
 }));
 
 const SaveButton = () => {
 	const { getEncodeData } = useContext(ShowsContext);
+	const classes = useStyle();
 	const navigation = useNavigation();
 
 	const url = navigation.getCurrentValue().url;
@@ -49,13 +60,17 @@ const SaveButton = () => {
 		}
 	};
 
-	return <button onClick={handleClick}>Save</button>;
+	return (
+		<IconButton className={classes.saveBtn} onClick={handleClick}>
+			<SaveAltIcon />
+		</IconButton>
+	);
 };
 
-const LoadButton = () => {
-	// const {} = useContext(ShowsContext);
-	return <button>Load</button>;
-};
+// const LoadButton = () => {
+// 	const {} = useContext(ShowsContext);
+// 	return <button>Load</button>;
+// };
 
 export default function TimeTable() {
 	const classes = useStyle();
@@ -79,7 +94,6 @@ export default function TimeTable() {
 			</div>
 			<div className={classes.btnContainer}>
 				<SaveButton />
-				<LoadButton />
 			</div>
 		</div>
 	);

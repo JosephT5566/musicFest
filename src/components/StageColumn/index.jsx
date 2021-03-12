@@ -10,7 +10,7 @@ const useStyle = makeStyles((theme) => ({
 	column: {
 		textAlign: 'center',
 		maxWidth: '8em',
-		minWidth: '6em',
+		minWidth: '7em',
 	},
 	head: {
 		height: theme.tableHeadHeight,
@@ -25,6 +25,7 @@ const useStyle = makeStyles((theme) => ({
 		borderRadius: '0.5em',
 		border: 'none',
 		letterSpacing: theme.letterSpacing,
+		fontWeight: 'bold',
 	},
 }));
 
@@ -41,7 +42,7 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	const [active, setActive] = useState(false);
 	const { handleSelectShow, isIDExist } = useContext(ShowsContext);
 	const id = `${day}:${stageIndex}:${showIndex}`;
-	const { stage: stageColors, text: textColor } = theme.common.palette;
+	const { stage: stageColors, text: textColor, bg: bgColor } = theme.common.palette;
 
 	const startTime = new Date(show.start);
 	const endTime = new Date(show.end);
@@ -66,7 +67,7 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 			className={`${classes.showButton} ${id}`}
 			style={{
 				height: `${height * SCALE_UNIT}rem`,
-				backgroundColor: active ? stageColors[stageIndex].main : stageColors[stageIndex].light,
+				backgroundColor: active ? stageColors[stageIndex].main : bgColor.dark,
 				color: active ? textColor.light : textColor.dark,
 			}}
 			onClick={handleClick}

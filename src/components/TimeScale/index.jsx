@@ -10,14 +10,14 @@ const useStyle = makeStyles((theme) => ({
 		paddingRight: '0.5em',
 		[theme.breakpoints.down('md')]: {
 			position: 'sticky',
-			left: '0',
+			left: '-1em',
 		},
 	},
 	scale: {
-		backgroundColor: 'transparent',
+		backgroundColor: theme.palette.bg.main,
 		position: 'relative',
 		height: `${SCALE_UNIT}rem`,
-		minWidth: '2.5em',
+		minWidth: '35px',
 		'&::after': {
 			content: `''`,
 			position: 'absolute',
@@ -25,7 +25,7 @@ const useStyle = makeStyles((theme) => ({
 			height: '1px',
 			width: '30%',
 			top: '-0.5px',
-			right: '0',
+			right: '-0.5em',
 		},
 	},
 	text: {
