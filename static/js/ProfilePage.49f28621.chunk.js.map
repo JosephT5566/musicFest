@@ -1,1 +1,0 @@
-{"version":3,"sources":["views/Links/index.jsx"],"names":["Links"],"mappings":"gHAAA,+DAEe,SAASA,IACvB,OAAO","file":"static/js/ProfilePage.49f28621.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nexport default function Links() {\r\n\treturn <div>links</div>;\r\n}\r\n"],"sourceRoot":""}
