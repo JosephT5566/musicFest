@@ -83,14 +83,15 @@ const Items = ({ btnClicked }) => {
 			>
 				Time Table
 			</Button>
-			{/* <Button
+			<Button
 				index={2}
 				onClick={() => {
-					// navigation.navigate(`/otc`);
+					navigation.navigate(`/${APP_NAME}/timeline/${url.hash}`);
+					if (btnClicked) btnClicked();
 				}}
 			>
 				Time Line
-			</Button> */}
+			</Button>
 			<Button
 				index={3}
 				onClick={() => {

@@ -3,25 +3,23 @@ import { mount, route } from 'navi';
 const routes = mount({
 	'/musicFest': mount({
 		'/': route({
-			title: `Forex`,
+			title: `Time Table`,
 			getView: () =>
 				import(
 					/*webpackChunkName: "MainPage"*/
 					'../views/Timetable'
 				),
 		}),
-		// '/otc': mount({
-		// 	'/': route({
-		// 		title: `OTC`,
-		// 		getView: () =>
-		// 			import(
-		// 				/*webpackChunkName: "OtcPage"*/
-		// 				'../views/Otc'
-		// 			),
-		// 	}),
-		// }),
+		'/timeline': route({
+			title: `Time Line`,
+			getView: () =>
+				import(
+					/*webpackChunkName: "OtcPage"*/
+					'../views/Timeline'
+				),
+		}),
 		'/links': route({
-			title: `Profile`,
+			title: `Links`,
 			getView: () =>
 				import(
 					/*webpackChunkName: "ProfilePage"*/
