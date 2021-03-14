@@ -1,7 +1,7 @@
 {
 	"shows": [
 		{
-			"day": [
+			"stages": [
 				{
 					"stage": "南霸天",
 					"artists": [
@@ -310,7 +310,7 @@
 			]
 		},
 		{
-			"day": [
+			"stages": [
 				{
 					"stage": "南霸天",
 					"artists": [

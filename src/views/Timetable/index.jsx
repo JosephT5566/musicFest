@@ -148,7 +148,7 @@ export default function TimeTable() {
 			<div className={classes.timeTable}>
 				<TimeScale />
 				{shows.map((showsOfDay, index) => {
-					return <TableOfDay key={index} showsOfDay={showsOfDay.day} day={index} selected={selectedDay} />;
+					return <TableOfDay key={index} showsOfDay={showsOfDay.stages} day={index} selected={selectedDay} />;
 				})}
 			</div>
 			<div className={classes.btnContainer}>
