@@ -26,6 +26,11 @@ export function ShowsStore(props) {
 		return btoa(keys);
 	};
 
+	const getData = () => {
+		const keys = Array.from(selectedShow.current.map.keys()).toString();
+		return keys;
+	};
+
 	const isIDExist = (id) => {
 		return selectedShow.current.map.has(id);
 	};
@@ -50,7 +55,7 @@ export function ShowsStore(props) {
 	}, [navigation]);
 
 	return (
-		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, isIDExist }}>
+		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, getData, isIDExist }}>
 			{props.children}
 		</Context.Provider>
 	);
