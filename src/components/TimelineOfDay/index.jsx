@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { shows } from '../../data/shows.json';
 import { theme } from '../../styles/theme';
 import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from '../../utils/static';
@@ -49,20 +50,28 @@ const TimeLineButton = ({ showInfo, day }) => {
 		setActive((prev) => !prev);
 	};
 
+	const handleClickAway = () => {
+		if (active) {
+			setActive(false);
+		}
+	};
+
 	return (
-		<button
-			className={`${classes.timeLineBtn} ${active}`}
-			onClick={handleClick}
-			style={{
-				top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
-				left: `${left + left * 1}em`,
-				height: `${height * SCALE_UNIT}rem`,
-				backgroundColor: stageColors[stageIndex].main,
-				color: active ? textColor.light : textColor.dark,
-			}}
-		>
-			<div className={classes.btnText}>{name}</div>
-		</button>
+		<ClickAwayListener onClickAway={handleClickAway}>
+			<button
+				className={`${classes.timeLineBtn} ${active}`}
+				onClick={handleClick}
+				style={{
+					top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
+					left: `${left + left * 1}em`,
+					height: `${height * SCALE_UNIT}rem`,
+					backgroundColor: stageColors[stageIndex].main,
+					color: active ? textColor.light : textColor.dark,
+				}}
+			>
+				<div className={`${classes.btnText} ${active}`}>{name}</div>
+			</button>
+		</ClickAwayListener>
 	);
 };
 
