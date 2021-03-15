@@ -5,7 +5,7 @@ import ShowsContext from '../../contexts/ShowsContext';
 
 import AdjustIcon from '@material-ui/icons/Adjust';
 import TimeLineOfDay from '../../components/TimelineOfDay';
-import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from '../../utils/static';
+import { MEGA_START_TIME, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeLineContainer: {},

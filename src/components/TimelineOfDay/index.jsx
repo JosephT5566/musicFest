@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { shows } from '../../data/shows.json';
@@ -33,28 +33,21 @@ const useStyle = makeStyles(() => ({
 	},
 }));
 
-const TimeLineButton = ({ index, showInfo, day, stageIndex, checkBias }) => {
+const TimeLineButton = ({ showInfo, day }) => {
 	const classes = useStyle();
 	const [active, setActive] = useState(false);
 
-	const { stage: stageColors, text: textColor, bg: bgColor } = theme.common.palette;
-	const { name, start, end } = showInfo;
+	const { stage: stageColors, text: textColor } = theme.common.palette;
+	const { name, startTime, endTime, layer, stageIndex } = showInfo;
 	const megaStartTime = new Date(MEGA_START_TIME[day]);
-	const startTime = new Date(start);
-	const endTime = new Date(end);
 
 	const top = (startTime.getTime() - megaStartTime.getTime()) / MIN / 10;
 	const height = (endTime.getTime() - startTime.getTime()) / MIN / 10;
-	const left = checkBias(startTime.getTime(), endTime.getTime(), index);
+	const left = layer;
 
 	const handleClick = () => {
 		setActive((prev) => !prev);
 	};
-
-	useEffect(() => {
-		// console.log(index);
-		console.log(name, checkBias(startTime.getTime(), endTime.getTime(), index));
-	}, []);
 
 	return (
 		<button
@@ -75,49 +68,61 @@ const TimeLineButton = ({ index, showInfo, day, stageIndex, checkBias }) => {
 
 export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
 	const classes = useStyle();
+	const [, rerender] = useState(null);
+	const itemsRef = useRef([]);
 
 	const megaStartTime = new Date(MEGA_START_TIME[day]);
 	const megaEndTime = new Date(MEGA_END_TIME[day]);
 	const height = (megaEndTime.getTime() - megaStartTime.getTime()) / MIN / 10;
 
-	const checkOverlapNumber = (startTime, endTime, currIndex) => {
-		let num = 0;
-		for (let i = 0; i < currIndex; i++) {
-			const stageIndex = selectedShowsOfDay[i].stageIndex;
-			const showIndex = selectedShowsOfDay[i].showIndex;
-			const { start, end } = shows[day].stages[stageIndex].artists[showIndex];
-			const st = new Date(start).getTime();
-			const et = new Date(end).getTime();
-
-			if ((startTime >= st && startTime <= et) || (endTime >= st && endTime <= et)) {
-				num++;
-			}
-		}
-		return num;
-	};
-
 	useEffect(() => {
-		console.log(selectedShowsOfDay);
-	}, []);
+		const checkLayer = (currentItem, currentLayer) => {
+			if (itemsRef.current.length === 0) {
+				return currentLayer;
+			}
+
+			itemsRef.current.forEach((item) => {
+				if (item.layer !== currentLayer) {
+					// no matter if layer is different
+					return;
+				}
+				if (
+					(currentItem.startTime.getTime() >= item.startTime.getTime() &&
+						currentItem.startTime.getTime() <= item.endTime.getTime()) ||
+					(currentItem.endTime.getTime() >= item.startTime.getTime() &&
+						currentItem.endTime.getTime() <= item.endTime.getTime())
+				) {
+					currentLayer = checkLayer(currentItem, currentLayer + 1);
+				}
+			});
+			return currentLayer;
+		};
+
+		const setItemsInfo = () => {
+			selectedShowsOfDay.forEach((show) => {
+				const showInfo = shows[day].stages[show.stageIndex].artists[show.showIndex];
+				const { name, start, end } = showInfo;
+				const startTime = new Date(start);
+				const endTime = new Date(end);
+				const stageIndex = show.stageIndex;
+				const currentItem = { name, startTime, endTime, stageIndex };
+				let layer = checkLayer(currentItem, 0);
+
+				itemsRef.current.push({ ...currentItem, layer });
+			});
+		};
+
+		setItemsInfo();
+		rerender({});
+	}, [day, selectedShowsOfDay]);
 
 	return (
 		<div
 			className={classes.tableOfDay}
 			style={{ display: day === selected ? '' : 'none', height: `${height * SCALE_UNIT}rem` }}
 		>
-			{selectedShowsOfDay.map((show, index) => {
-				const showInfo = shows[day].stages[show.stageIndex].artists[show.showIndex];
-
-				return (
-					<TimeLineButton
-						key={index}
-						index={index}
-						showInfo={showInfo}
-						day={day}
-						stageIndex={show.stageIndex}
-						checkBias={checkOverlapNumber}
-					/>
-				);
+			{itemsRef.current.map((item, index) => {
+				return <TimeLineButton key={index} showInfo={item} day={day} />;
 			})}
 		</div>
 	);
