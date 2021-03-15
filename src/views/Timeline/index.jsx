@@ -3,11 +3,17 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import ShowsContext from '../../contexts/ShowsContext';
 
+import AdjustIcon from '@material-ui/icons/Adjust';
 import TimeLineOfDay from '../../components/TimelineOfDay';
+import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeLineContainer: {},
-	timeline: {},
+	timeline: {
+		position: 'relative',
+		display: 'flex',
+		marginBottom: '1em',
+	},
 	dayBtnContainer: {
 		position: 'sticky',
 		display: 'flex',
@@ -52,6 +58,32 @@ const useStyle = makeStyles((theme) => ({
 			color: theme.palette.primary.main,
 		},
 	},
+	baseLine: {
+		width: '3.8em',
+		paddingRight: '1em',
+	},
+	scale: {
+		position: 'relative',
+		borderRight: `solid 2px ${theme.palette.secondary.main}`,
+		'&::after': {
+			content: `''`,
+			position: 'absolute',
+			top: '50%',
+			right: '0',
+			transform: 'translate(50%, 0)',
+			height: '1px',
+			width: '1em',
+			backgroundColor: theme.palette.secondary.main,
+		},
+	},
+	scaleWithTime: {
+		display: 'flex',
+		alignItems: 'center',
+	},
+	text: {
+		color: theme.palette.secondary.main,
+		paddingRight: '0.5em',
+	},
 }));
 
 const DayButton = ({ day, selectedDay, onClick, ...props }) => {
@@ -65,6 +97,29 @@ const DayButton = ({ day, selectedDay, onClick, ...props }) => {
 			{props.children}
 		</button>
 	);
+};
+
+const BaseLine = () => {
+	const classes = useStyle();
+	const start = new Date(MEGA_START_TIME[0]);
+
+	let scale = [];
+	for (let i = 0; i < 63; i++) {
+		const time = new Date(start.getTime() + 10 * i * 60000);
+		const hh = time.getHours();
+		const mm = time.getMinutes();
+		if (mm === 0) {
+			scale.push(
+				<div key={i} className={classes.scaleWithTime} style={{ height: `${SCALE_UNIT}rem` }}>
+					<div className={classes.text}>{hh}:00</div>
+					<AdjustIcon />
+				</div>
+			);
+		} else {
+			scale.push(<div key={i} className={classes.scale} style={{ height: `${SCALE_UNIT}rem` }}></div>);
+		}
+	}
+	return <div className={classes.baseLine}>{scale}</div>;
 };
 
 export default function TimeLine() {
@@ -112,6 +167,7 @@ export default function TimeLine() {
 				</DayButton>
 			</div>
 			<div className={classes.timeline}>
+				<BaseLine />
 				{selectedShows.map((selectedShowsOfDay, index) => {
 					return (
 						<TimeLineOfDay
