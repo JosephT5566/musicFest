@@ -6,14 +6,20 @@ import { shows } from '../../data/shows.json';
 import { theme } from '../../styles/theme';
 import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from '../../utils/static';
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme) => ({
 	tableOfDay: {
 		width: `calc(100vw - 1em - 3.8em)`,
 		display: 'flex',
 		position: 'relative',
 		flexDirection: 'column',
 	},
-	timeLineBtn: {
+	timelineBtnContainer: {
+		position: 'absolute',
+		display: 'flex',
+		flexDirection: 'row',
+		width: '100%',
+	},
+	timelineBtn: {
 		position: 'absolute',
 		border: 'none',
 		borderRadius: '0.5em',
@@ -26,11 +32,26 @@ const useStyle = makeStyles(() => ({
 			outline: '0',
 		},
 		'&.true': {
-			width: 'fit-content',
+			width: '10em',
+			zIndex: '10',
 		},
 	},
 	btnText: {
-		width: 'fit-content',
+		marginLeft: '30%',
+		transition: '500ms',
+		display: 'flex',
+		flexDirection: 'column',
+		'&.true': {
+			marginLeft: '0',
+			opacity: 0,
+		},
+		'&::after': {
+			content: `''`,
+			marginTop: '0.3em',
+			height: '3px',
+			width: '80%',
+			backgroundColor: theme.palette.primary.main,
+		},
 	},
 }));
 
@@ -58,19 +79,24 @@ const TimeLineButton = ({ showInfo, day }) => {
 
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
-			<button
-				className={`${classes.timeLineBtn} ${active}`}
-				onClick={handleClick}
+			<div
+				className={classes.timelineBtnContainer}
 				style={{
 					top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
-					left: `${left + left * 1}em`,
-					height: `${height * SCALE_UNIT}rem`,
-					backgroundColor: stageColors[stageIndex].main,
-					color: active ? textColor.light : textColor.dark,
 				}}
 			>
 				<div className={`${classes.btnText} ${active}`}>{name}</div>
-			</button>
+				<button
+					className={`${classes.timelineBtn} ${active}`}
+					onClick={handleClick}
+					style={{
+						left: `${left + left * 1}em`,
+						height: `${height * SCALE_UNIT}rem`,
+						backgroundColor: stageColors[stageIndex].main,
+						color: active ? textColor.light : textColor.dark,
+					}}
+				></button>
+			</div>
 		</ClickAwayListener>
 	);
 };
