@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigation } from 'react-navi';
 
+import { STORAGE_KEY } from '../utils/static';
+
 const Context = React.createContext(''); // default value
 
 export function ShowsStore(props) {
@@ -10,10 +12,16 @@ export function ShowsStore(props) {
 	});
 
 	const handleSelectShow = (state, active) => {
+		let storageValue = localStorage.getItem(STORAGE_KEY) ? localStorage.getItem(STORAGE_KEY).split(',') : [];
 		if (active) {
 			selectedShow.current.map.set(state, state);
+
+			localStorage.setItem(STORAGE_KEY, [...storageValue, state]);
 		} else {
 			selectedShow.current.map.delete(state, state);
+
+			const newValue = storageValue.filter((value) => value !== state);
+			localStorage.setItem(STORAGE_KEY, newValue);
 		}
 	};
 
@@ -37,7 +45,7 @@ export function ShowsStore(props) {
 
 	useEffect(() => {
 		const url = navigation.getCurrentValue().url;
-		const loadEncodeData = (encode) => {
+		const loadFromUrl = (encode) => {
 			try {
 				const dec = atob(encode);
 				const arr = dec.split(',');
@@ -49,8 +57,17 @@ export function ShowsStore(props) {
 			}
 		};
 
+		const loadFromStorage = () => {
+			const value = localStorage.getItem(STORAGE_KEY);
+			if (!value) return;
+
+			value.split(',').forEach((item) => selectedShow.current.map.set(item, item));
+		};
+
 		if (url.hash !== '') {
-			loadEncodeData(url.hash.substring(1));
+			loadFromUrl(url.hash.substring(1));
+		} else {
+			loadFromStorage();
 		}
 	}, [navigation]);
 

@@ -147,13 +147,14 @@ export default function TimeLine() {
 
 			orderedData[day].shows.push({ stageIndex, showIndex });
 		});
-		// console.log(orderedData);
 		return orderedData;
 	};
 
 	useEffect(() => {
-		console.log(getData());
-		setSelectedShows(splitDataByDay(getData()));
+		const data = getData()
+		if (data){
+			setSelectedShows(splitDataByDay(getData()));
+		}
 	}, [getData]);
 
 	return (
