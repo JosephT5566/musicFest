@@ -24,7 +24,8 @@ const useStyle = makeStyles((theme) => ({
 		border: 'none',
 		borderRadius: '0.5em',
 		transition: '500ms',
-		width: '1em',
+		width: '1.2em',
+		zIndex: '1',
 		'&:hover': {
 			cursor: 'pointer',
 		},
@@ -32,15 +33,18 @@ const useStyle = makeStyles((theme) => ({
 			outline: '0',
 		},
 		'&.true': {
-			width: '10em',
+			width: '20em',
 			zIndex: '10',
 		},
 	},
-	btnText: {
-		marginLeft: '30%',
+	showText: {
+		marginLeft: '50%',
 		transition: '500ms',
 		display: 'flex',
 		flexDirection: 'column',
+		padding: '0 0.5em',
+		backgroundColor: theme.palette.bg.main,
+		zIndex: '0',
 		'&.true': {
 			marginLeft: '0',
 			opacity: 0,
@@ -52,6 +56,21 @@ const useStyle = makeStyles((theme) => ({
 			width: '80%',
 			backgroundColor: theme.palette.primary.main,
 		},
+	},
+	btnTextContainer: {
+		display: 'none',
+		flexDirection: 'column',
+		alignItems: 'flex-start',
+		width: 'auto',
+		'&.true': {
+			display: 'flex',
+			padding: '0.5em 0',
+		},
+	},
+	btnTitle: {
+		fontWeight: 'bold',
+		fontSize: '16px',
+		width: '100%',
 	},
 }));
 
@@ -66,6 +85,8 @@ const TimeLineButton = ({ showInfo, day }) => {
 	const top = (startTime.getTime() - megaStartTime.getTime()) / MIN / 10;
 	const height = (endTime.getTime() - startTime.getTime()) / MIN / 10;
 	const left = layer;
+	const startTimeString = `${startTime.getHours()}:${startTime.getMinutes() === 0 ? '00' : startTime.getMinutes()}`;
+	const endTimeString = `${endTime.getHours()}:${endTime.getMinutes() === 0 ? '00' : endTime.getMinutes()}`;
 
 	const handleClick = () => {
 		setActive((prev) => !prev);
@@ -85,17 +106,24 @@ const TimeLineButton = ({ showInfo, day }) => {
 					top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
 				}}
 			>
-				<div className={`${classes.btnText} ${active}`}>{name}</div>
+				<div className={`${classes.showText} ${active}`}>{name}</div>
 				<button
 					className={`${classes.timelineBtn} ${active}`}
 					onClick={handleClick}
 					style={{
 						left: `${left + left * 1}em`,
-						height: `${height * SCALE_UNIT}rem`,
+						minHeight: `${height * SCALE_UNIT}rem`,
+						height: active ? 'auto' : `${height * SCALE_UNIT}rem`,
 						backgroundColor: stageColors[stageIndex].main,
 						color: active ? textColor.light : textColor.dark,
 					}}
-				></button>
+				>
+					<div className={`${classes.btnTextContainer} ${active}`}>
+						<div className={classes.btnTitle}>{name}</div>
+						<div>{shows[day].stages[stageIndex].stage}</div>
+						<div>{startTimeString + ' - ' + endTimeString}</div>
+					</div>
+				</button>
 			</div>
 		</ClickAwayListener>
 	);
