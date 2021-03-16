@@ -153,10 +153,10 @@ export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
 					return;
 				}
 				if (
-					(currentItem.startTime.getTime() > item.startTime.getTime() &&
+					(currentItem.startTime.getTime() >= item.startTime.getTime() &&
 						currentItem.startTime.getTime() < item.endTime.getTime()) ||
 					(currentItem.endTime.getTime() > item.startTime.getTime() &&
-						currentItem.endTime.getTime() < item.endTime.getTime())
+						currentItem.endTime.getTime() <= item.endTime.getTime())
 				) {
 					currentLayer = checkLayer(currentItem, currentLayer + 1);
 				}
