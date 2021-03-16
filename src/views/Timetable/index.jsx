@@ -73,8 +73,12 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		position: 'fixed',
-		bottom: '1em',
+		bottom: '4em',
 		right: '2em',
+		[theme.breakpoints.up('lg')]:{
+			bottom: '3em',
+			right: '10em',
+		}
 	},
 	saveBtn: {
 		backgroundColor: theme.palette.secondary.main,

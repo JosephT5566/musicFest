@@ -23,7 +23,7 @@ const useStyle = makeStyles((theme) => ({
 		position: 'absolute',
 		border: 'none',
 		borderRadius: '0.5em',
-		transition: '500ms',
+		transition: '500ms ease-out',
 		width: '1.2em',
 		zIndex: '1',
 		'&:hover': {
@@ -58,13 +58,16 @@ const useStyle = makeStyles((theme) => ({
 		},
 	},
 	btnTextContainer: {
+		color: theme.palette.text.light,
 		display: 'none',
+		position: 'absolute',
+		top: '0.5em',
+		left: '0.5em',
 		flexDirection: 'column',
 		alignItems: 'flex-start',
-		width: 'auto',
+		width: '19em',
 		'&.true': {
 			display: 'flex',
-			padding: '0.5em 0',
 		},
 	},
 	btnTitle: {
@@ -113,7 +116,7 @@ const TimeLineButton = ({ showInfo, day }) => {
 					style={{
 						left: `${left + left * 1}em`,
 						minHeight: `${height * SCALE_UNIT}rem`,
-						height: active ? 'auto' : `${height * SCALE_UNIT}rem`,
+						height: `${height * SCALE_UNIT}rem`,
 						backgroundColor: stageColors[stageIndex].main,
 						color: active ? textColor.light : textColor.dark,
 					}}

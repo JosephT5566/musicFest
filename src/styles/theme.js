@@ -3,6 +3,7 @@ export const theme = {
 		palette: {
 			bg: {
 				main: '#eaeaea',
+				light: '#FEFEFE',
 				dark: '#BFBFBF',
 			},
 			text: { light: '#ffffff', dark: '#2a2a2a' },
