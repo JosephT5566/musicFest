@@ -29,11 +29,6 @@ export function ShowsStore(props) {
 		console.log('ref show:', selectedShow.current.map);
 	};
 
-	const getEncodeData = () => {
-		const keys = Array.from(selectedShow.current.map.keys()).toString();
-		return btoa(keys);
-	};
-
 	const getData = () => {
 		const keys = Array.from(selectedShow.current.map.keys()).toString();
 		return keys;
@@ -41,6 +36,10 @@ export function ShowsStore(props) {
 
 	const isIDExist = (id) => {
 		return selectedShow.current.map.has(id);
+	};
+
+	const resetData = () => {
+		selectedShow.current.map.clear();
 	};
 
 	useEffect(() => {
@@ -72,7 +71,7 @@ export function ShowsStore(props) {
 	}, [navigation]);
 
 	return (
-		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getEncodeData, getData, isIDExist }}>
+		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getData, resetData, isIDExist }}>
 			{props.children}
 		</Context.Provider>
 	);

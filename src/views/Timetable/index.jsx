@@ -6,11 +6,13 @@ import ShowsContext from '../../contexts/ShowsContext';
 import TimeScale from '../../components/TimeScale';
 import TableOfDay from '../../components/TableOfDay';
 import IconButton from '@material-ui/core/IconButton';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import ShareIcon from '@material-ui/icons/Share';
+import ReplayIcon from '@material-ui/icons/Replay';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import { shows } from '../../data/shows.json';
+import { APP_NAME, STORAGE_KEY } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeTableContainer: {
@@ -88,14 +90,14 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 const SaveButton = ({ onOpenSnack }) => {
-	const { getEncodeData } = useContext(ShowsContext);
+	const { getData } = useContext(ShowsContext);
 	const classes = useStyle();
 	const navigation = useNavigation();
 
 	const url = navigation.getCurrentValue().url;
 
 	const handleClick = () => {
-		const data = getEncodeData();
+		const data = btoa(getData());
 		if (data !== '' || url.hash !== '') {
 			navigation.navigate(`${url.pathname}#${data}`);
 			onOpenSnack();
@@ -104,7 +106,27 @@ const SaveButton = ({ onOpenSnack }) => {
 
 	return (
 		<IconButton className={classes.saveBtn} onClick={handleClick}>
-			<SaveAltIcon />
+			<ShareIcon />
+		</IconButton>
+	);
+};
+
+const ResetButton = () => {
+	const { resetData } = useContext(ShowsContext);
+	const classes = useStyle();
+	const navigation = useNavigation();
+
+	const handleClick = () => {
+		resetData();
+		localStorage.removeItem(STORAGE_KEY);
+
+		navigation.navigate(`${APP_NAME}/`);
+		window.location.reload();
+	};
+
+	return (
+		<IconButton className={classes.saveBtn} onClick={handleClick}>
+			<ReplayIcon />
 		</IconButton>
 	);
 };
@@ -153,6 +175,7 @@ export default function TimeTable() {
 			</div>
 			<div className={classes.btnContainer}>
 				<SaveButton onOpenSnack={handleOpenSnack} />
+				<ResetButton />
 			</div>
 			<Snackbar
 				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
