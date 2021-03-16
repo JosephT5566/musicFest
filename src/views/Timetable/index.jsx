@@ -75,10 +75,10 @@ const useStyle = makeStyles((theme) => ({
 		position: 'fixed',
 		bottom: '4em',
 		right: '2em',
-		[theme.breakpoints.up('lg')]:{
+		[theme.breakpoints.up('lg')]: {
 			bottom: '3em',
 			right: '10em',
-		}
+		},
 	},
 	saveBtn: {
 		backgroundColor: theme.palette.secondary.main,
@@ -106,6 +106,7 @@ const SaveButton = ({ onOpenSnack }) => {
 			navigation.navigate(`${url.pathname}#${data}`);
 			onOpenSnack();
 		}
+		localStorage.setItem(STORAGE_KEY.defaultHash, data);
 	};
 
 	return (
@@ -122,7 +123,7 @@ const ResetButton = () => {
 
 	const handleClick = () => {
 		resetData();
-		localStorage.removeItem(STORAGE_KEY);
+		localStorage.removeItem(STORAGE_KEY.shows);
 
 		navigation.navigate(`${APP_NAME}/`);
 		window.location.reload();

@@ -8,4 +8,4 @@ export const APP_NAME = 'musicFest';
 
 export const SCALE_UNIT = 1.3;
 
-export const STORAGE_KEY = 'shows';
+export const STORAGE_KEY = { shows: 'shows', defaultHash: 'defaultHash' };

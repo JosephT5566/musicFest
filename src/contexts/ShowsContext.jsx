@@ -12,16 +12,18 @@ export function ShowsStore(props) {
 	});
 
 	const handleSelectShow = (state, active) => {
-		let storageValue = localStorage.getItem(STORAGE_KEY) ? localStorage.getItem(STORAGE_KEY).split(',') : [];
+		let storageValue = localStorage.getItem(STORAGE_KEY.shows)
+			? localStorage.getItem(STORAGE_KEY.shows).split(',')
+			: [];
 		if (active) {
 			selectedShow.current.map.set(state, state);
 
-			localStorage.setItem(STORAGE_KEY, [...storageValue, state]);
+			localStorage.setItem(STORAGE_KEY.shows, [...storageValue, state]);
 		} else {
 			selectedShow.current.map.delete(state, state);
 
 			const newValue = storageValue.filter((value) => value !== state);
-			localStorage.setItem(STORAGE_KEY, newValue);
+			localStorage.setItem(STORAGE_KEY.shows, newValue);
 		}
 	};
 
@@ -44,11 +46,15 @@ export function ShowsStore(props) {
 
 	useEffect(() => {
 		const url = navigation.getCurrentValue().url;
+		const defauleHash = localStorage.getItem(STORAGE_KEY.defaultHash);
+		const storageValue = localStorage.getItem(STORAGE_KEY.shows);
+
 		const loadFromUrl = (encode) => {
 			try {
 				const dec = atob(encode);
 				const arr = dec.split(',');
 				arr.forEach((item) => selectedShow.current.map.set(item, item));
+				localStorage.setItem(STORAGE_KEY.defaultHash, encode);
 			} catch (error) {
 				console.log('hash url decode err: ', error);
 
@@ -57,13 +63,14 @@ export function ShowsStore(props) {
 		};
 
 		const loadFromStorage = () => {
-			const value = localStorage.getItem(STORAGE_KEY);
-			if (!value) return;
+			if (!storageValue) return;
 
-			value.split(',').forEach((item) => selectedShow.current.map.set(item, item));
+			storageValue.split(',').forEach((item) => selectedShow.current.map.set(item, item));
 		};
 
-		if (url.hash !== '') {
+		if (url.hash !== '' && url.hash.substring(1) !== defauleHash) {
+			console.log('hash', url.hash)
+			console.log('defauleHash', defauleHash)
 			loadFromUrl(url.hash.substring(1));
 		} else {
 			loadFromStorage();
