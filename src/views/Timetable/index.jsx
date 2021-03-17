@@ -12,7 +12,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import { shows } from '../../data/shows.json';
-import { APP_NAME, STORAGE_KEY } from '../../utils/static';
+import { STORAGE_KEY } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeTableContainer: {
