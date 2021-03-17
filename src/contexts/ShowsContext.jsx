@@ -69,8 +69,6 @@ export function ShowsStore(props) {
 		};
 
 		if (url.hash !== '' && url.hash.substring(1) !== defaultHash) {
-			console.log('hash', url.hash);
-			console.log('defauleHash', defaultHash);
 			loadFromUrl(url.hash.substring(1));
 		} else {
 			loadFromStorage();
