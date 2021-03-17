@@ -103,7 +103,7 @@ const SaveButton = ({ onOpenSnack }) => {
 	const handleClick = async () => {
 		const data = btoa(getData());
 		try {
-			await navigator.clipboard.writeText(`${url.pathname}#${data}`); // copy to clipboard
+			await navigator.clipboard.writeText(`${url.hostname}/${url.pathname}#${data}`); // copy to clipboard
 			if (data !== '' || url.hash.substring(1) !== '') {
 				navigation.navigate(`${url.pathname}#${data}`);
 				localStorage.setItem(STORAGE_KEY.defaultHash, data);
