@@ -46,18 +46,23 @@ const useStyle = makeStyles((theme) => ({
 			left: '50%',
 			transform: 'translate(-50%, 0)',
 		},
+		'&.theHour::after': {
+			background: theme.palette.secondary.main,
+		},
 	},
 }));
 
 const MovingTime = ({ prevEndTime, startTime }) => {
 	const classes = useStyle();
 	const time = startTime.getTime() - prevEndTime.getTime();
+	const prevEndTimeMin = prevEndTime.getMinutes();
 	const height = time / MIN / 10;
 
 	if (time === 0) return null;
 	let scale = [];
 	for (let i = 0; i < height; i++) {
-		scale.push(<div className={classes.freeTimeScale} key={i}></div>);
+		const theHour = (prevEndTimeMin + 10 + i * 10) % 60 === 0 ? 'theHour' : '';
+		scale.push(<div className={`${classes.freeTimeScale} ${theHour}`} key={i}></div>);
 	}
 	return scale;
 };
