@@ -38,7 +38,7 @@ const useStyle = makeStyles((theme) => ({
 		},
 	},
 	showText: {
-		marginLeft: '50%',
+		marginLeft: '40%',
 		transition: '500ms',
 		display: 'flex',
 		flexDirection: 'column',
@@ -55,6 +55,9 @@ const useStyle = makeStyles((theme) => ({
 			height: '3px',
 			width: '80%',
 			backgroundColor: theme.palette.primary.main,
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize:'12px'
 		},
 	},
 	btnTextContainer: {

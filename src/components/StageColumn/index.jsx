@@ -9,8 +9,13 @@ import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from '../../utils/sta
 const useStyle = makeStyles((theme) => ({
 	column: {
 		textAlign: 'center',
-		maxWidth: '8em',
-		minWidth: '7em',
+		width: '7.4em',
+		[theme.breakpoints.down('md')]: {
+			width: '5.8em',
+		},
+		[theme.breakpoints.down('sm')]: {
+			width: '4.8em',
+		},
 	},
 	head: {
 		height: theme.tableHeadHeight,
@@ -31,6 +36,12 @@ const useStyle = makeStyles((theme) => ({
 		},
 		'&:focus': {
 			outline: '0',
+		},
+		[theme.breakpoints.down('md')]: {
+			letterSpacing: '0',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '12px',
 		},
 	},
 	freeTimeScale: {
