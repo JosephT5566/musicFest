@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
 
 		color: theme.palette.bg.main,
 
-		[theme.breakpoints.down('md')]: {
+		[theme.breakpoints.down('sm')]: {
 			flex: '0 1 0px',
 			alignItems: 'flex-start',
 			padding: '0.8em 0',
@@ -51,10 +51,10 @@ const useStyle = makeStyles((theme) => ({
 			background: theme.palette.primary.main,
 
 			transition: '200ms',
-			[theme.breakpoints.up('lg')]: {
+			[theme.breakpoints.up('md')]: {
 				bottom: '-1em',
 			},
-			[theme.breakpoints.down('md')]: {
+			[theme.breakpoints.down('sm')]: {
 				bottom: '0',
 			},
 		},

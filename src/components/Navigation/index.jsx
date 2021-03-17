@@ -48,10 +48,10 @@ const useStyle = makeStyles((theme) => ({
 		width: '100%',
 		padding: '0 0.5em',
 
-		[theme.breakpoints.up('lg')]: {
+		[theme.breakpoints.up('md')]: {
 			justifyContent: 'center',
 		},
-		[theme.breakpoints.down('md')]: {
+		[theme.breakpoints.down('sm')]: {
 			paddingTop: theme.headerHeight,
 			flexDirection: 'column',
 		},
@@ -62,7 +62,7 @@ const useStyle = makeStyles((theme) => ({
 		right: '0',
 		padding: '1em',
 		color: theme.palette.primary.main,
-		[theme.breakpoints.up('lg')]: {
+		[theme.breakpoints.up('md')]: {
 			display: 'none',
 		},
 	},
@@ -173,7 +173,7 @@ const NavigatorMd = () => {
 
 export default function Navigator() {
 	const theme = useTheme();
-	if (useMediaQuery(theme.breakpoints.up('lg'))) {
+	if (useMediaQuery(theme.breakpoints.up('md'))) {
 		return <NavigatorLg />;
 	}
 	return <NavigatorMd />;

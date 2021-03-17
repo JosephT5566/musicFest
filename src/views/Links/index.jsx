@@ -14,7 +14,7 @@ const useStyle = makeStyles((theme) => ({
 		paddingBottom: '1em',
 		borderBottom: `solid 1px ${theme.palette.bg.dark}`,
 		marginBottom: '1em',
-		[theme.breakpoints.up('lg')]: {
+		[theme.breakpoints.up('md')]: {
 			padding: '0 10em 1em',
 		},
 	},
