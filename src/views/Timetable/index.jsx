@@ -100,13 +100,18 @@ const SaveButton = ({ onOpenSnack }) => {
 
 	const url = navigation.getCurrentValue().url;
 
-	const handleClick = () => {
+	const handleClick = async () => {
 		const data = btoa(getData());
-		if (data !== '' || url.hash !== '') {
-			navigation.navigate(`${url.pathname}#${data}`);
+		try {
+			await navigator.clipboard.writeText(`${url.pathname}#${data}`); // copy to clipboard
+			if (data !== '' || url.hash.substring(1) !== '') {
+				navigation.navigate(`${url.pathname}#${data}`);
+				localStorage.setItem(STORAGE_KEY.defaultHash, data);
+			}
 			onOpenSnack();
+		} catch (error) {
+			console.error('Could not copy text: ', error);
 		}
-		localStorage.setItem(STORAGE_KEY.defaultHash, data);
 	};
 
 	return (
@@ -185,11 +190,11 @@ export default function TimeTable() {
 			<Snackbar
 				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 				open={openSnack}
-				autoHideDuration={3000}
+				autoHideDuration={1500}
 				onClose={handleCloseSnack}
 			>
 				<MuiAlert className={classes.alertBar} variant="filled" severity="success">
-					已儲存至網址，可直接加到書籤，或是分享網址。
+					已複製網址，可加到書籤儲存。
 				</MuiAlert>
 			</Snackbar>
 		</div>
