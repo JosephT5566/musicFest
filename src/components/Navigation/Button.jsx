@@ -15,10 +15,11 @@ const useStyle = makeStyles((theme) => ({
 		letterSpacing: '1px',
 		flexDirection: 'column',
 		minWidth: '6em',
+		fontWeight: 'bold',
 
-		color: theme.palette.primary.light,
+		color: theme.palette.bg.main,
 
-		[theme.breakpoints.down('md')]: {
+		[theme.breakpoints.down('sm')]: {
 			flex: '0 1 0px',
 			alignItems: 'flex-start',
 			padding: '0.8em 0',
@@ -28,7 +29,7 @@ const useStyle = makeStyles((theme) => ({
 				position: 'absolute',
 				height: '1px',
 				width: '90%',
-				background: theme.palette.primary.light,
+				background: theme.palette.bg.main,
 				bottom: '0',
 			},
 		},
@@ -38,7 +39,7 @@ const useStyle = makeStyles((theme) => ({
 		},
 
 		'&.active': {
-			color: theme.palette.primary.dark,
+			color: theme.palette.primary.main,
 		},
 
 		// add underline
@@ -47,25 +48,25 @@ const useStyle = makeStyles((theme) => ({
 			position: 'absolute',
 			height: '2px',
 			width: '0%',
-			background: theme.palette.primary.dark,
+			background: theme.palette.primary.main,
 
 			transition: '200ms',
-			[theme.breakpoints.up('lg')]: {
+			[theme.breakpoints.up('md')]: {
 				bottom: '-1em',
 			},
-			[theme.breakpoints.down('md')]: {
+			[theme.breakpoints.down('sm')]: {
 				bottom: '0',
 			},
 		},
 		'&:hover::after': {
 			width: '90%',
-			background: theme.palette.primary.light,
+			background: theme.palette.primary.main,
 		},
 		'&.active::after': {
 			width: '90%',
 		},
 		'&.active:hover::after': {
-			background: theme.palette.primary.dark,
+			background: theme.palette.primary.main,
 		},
 	},
 }));

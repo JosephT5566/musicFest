@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Router, View } from 'react-navi';
 import { makeStyles } from '@material-ui/core/styles';
+import { ShowsStore } from '../../contexts/ShowsContext';
 
 import routes from '../../route/routes';
 import Container from '@material-ui/core/Container';
@@ -21,12 +22,14 @@ export default function Main() {
 	return (
 		<>
 			<Router routes={routes}>
-				<Container className={classes.main}>
-					<Suspense fallback={null}>
-						<View />
-					</Suspense>
-				</Container>
-				<Navigation />
+				<ShowsStore>
+					<Container className={classes.main}>
+						<Suspense fallback={null}>
+							<View />
+						</Suspense>
+					</Container>
+					<Navigation />
+				</ShowsStore>
 			</Router>
 		</>
 	);

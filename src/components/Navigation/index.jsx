@@ -10,6 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
 import { debounce } from '../../utils/helpers';
+import { APP_NAME } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	navigation_lg: {
@@ -17,13 +18,15 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		zIndex: '100',
 
-		top: '0em',
+		top: '0.5em',
 		left: '50%',
 		transform: 'translate(-50%, 0)',
 		padding: '1em 0',
+		backgroundColor: theme.palette.secondary.main,
+		borderRadius: '0.5em',
 		transition: '0.6s',
 		'&.false': {
-			top: '-4em',
+			top: '-4.5em',
 		},
 	},
 	navigation_md: {
@@ -34,7 +37,7 @@ const useStyle = makeStyles((theme) => ({
 		right: `-${theme.navWidth}`,
 		height: '100vh',
 		width: theme.navWidth,
-		backgroundColor: theme.palette.bg.light,
+		backgroundColor: theme.palette.secondary.dark,
 		transition: '0.6s',
 		'&.true': {
 			right: '0',
@@ -45,10 +48,10 @@ const useStyle = makeStyles((theme) => ({
 		width: '100%',
 		padding: '0 0.5em',
 
-		[theme.breakpoints.up('lg')]: {
+		[theme.breakpoints.up('md')]: {
 			justifyContent: 'center',
 		},
-		[theme.breakpoints.down('md')]: {
+		[theme.breakpoints.down('sm')]: {
 			paddingTop: theme.headerHeight,
 			flexDirection: 'column',
 		},
@@ -58,42 +61,44 @@ const useStyle = makeStyles((theme) => ({
 		top: '0',
 		right: '0',
 		padding: '1em',
-		[theme.breakpoints.up('lg')]: {
+		color: theme.palette.primary.main,
+		[theme.breakpoints.up('md')]: {
 			display: 'none',
 		},
 	},
 }));
 
-const Items = () => {
+const Items = ({ btnClicked }) => {
 	const navigation = useNavigation();
+	const url = navigation.getCurrentValue().url;
 
 	return (
 		<CurrentIndexStore>
 			<Button
 				index={1}
 				onClick={() => {
-					navigation.navigate(`/`);
+					navigation.navigate(`/${APP_NAME}/${url.hash}`);
+					if (btnClicked) btnClicked();
 				}}
 			>
-				{/* <HomeIcon className="icon" /> */}
 				Time Table
 			</Button>
 			<Button
 				index={2}
 				onClick={() => {
-					// navigation.navigate(`/otc`);
+					navigation.navigate(`/${APP_NAME}/timeline/${url.hash}`);
+					if (btnClicked) btnClicked();
 				}}
 			>
-				{/* <DataUsageIcon className="icon" /> */}
 				Time Line
 			</Button>
 			<Button
 				index={3}
 				onClick={() => {
-					// navigation.navigate(`/profile`);
+					navigation.navigate(`/${APP_NAME}/links/${url.hash}`);
+					if (btnClicked) btnClicked();
 				}}
 			>
-				{/* <AssistantIcon className="icon" /> */}
 				Links
 			</Button>
 		</CurrentIndexStore>
@@ -147,6 +152,11 @@ const NavigatorMd = () => {
 			setVisible(false);
 		}
 	};
+
+	const handleButtonClicked = () => {
+		setVisible(false);
+	};
+
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<nav className={`${classes.navigation_md} ${visible}`}>
@@ -154,7 +164,7 @@ const NavigatorMd = () => {
 					<IconButton className={classes.navButton} onClick={handleClick}>
 						<MenuIcon />
 					</IconButton>
-					<Items />
+					<Items btnClicked={handleButtonClicked} />
 				</div>
 			</nav>
 		</ClickAwayListener>
@@ -163,7 +173,7 @@ const NavigatorMd = () => {
 
 export default function Navigator() {
 	const theme = useTheme();
-	if (useMediaQuery(theme.breakpoints.up('lg'))) {
+	if (useMediaQuery(theme.breakpoints.up('md'))) {
 		return <NavigatorLg />;
 	}
 	return <NavigatorMd />;

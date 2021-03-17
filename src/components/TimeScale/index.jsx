@@ -2,22 +2,21 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import { MEGA_START_TIME } from '../../utils/static';
+import { MEGA_START_TIME, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeScale: {
-		paddingTop: theme.tableHeadHeight,
+		paddingTop: `calc(${theme.tableHeadHeight} + ${theme.tableHeadMarginBottom})`,
 		paddingRight: '0.5em',
-		[theme.breakpoints.down('md')]: {
-			position: 'sticky',
-			left: '0',
-		},
+		zIndex: '10',
+		position: 'sticky',
+		left: '-1em',
 	},
 	scale: {
-		backgroundColor: 'transparent',
+		backgroundColor: theme.palette.bg.main,
 		position: 'relative',
-		height: '1rem',
-		minWidth: '2.5em',
+		height: `${SCALE_UNIT}rem`,
+		minWidth: '35px',
 		'&::after': {
 			content: `''`,
 			position: 'absolute',
@@ -25,21 +24,22 @@ const useStyle = makeStyles((theme) => ({
 			height: '1px',
 			width: '30%',
 			top: '-0.5px',
-			right: '0',
+			right: '-0.5em',
 		},
 	},
 	text: {
 		backgroundColor: 'transparent',
 		fontSize: '8px',
 		position: 'absolute',
-		bottom: '50%',
+		top: '0',
 		left: '0',
+		transform: 'translate(0, -50%)',
 	},
 }));
 
 export default function TimeScale() {
 	const classes = useStyle();
-	const start = new Date(MEGA_START_TIME.day1);
+	const start = new Date(MEGA_START_TIME[0]);
 
 	let scale = [];
 	for (let i = 0; i < 62; i++) {
