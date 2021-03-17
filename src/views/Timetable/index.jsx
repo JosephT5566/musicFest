@@ -130,8 +130,9 @@ const ResetButton = () => {
 		resetData();
 		localStorage.removeItem(STORAGE_KEY.shows);
 
-		navigation.navigate(`${APP_NAME}/`);
+		window.history.pushState(null, '', `${APP_NAME}#`);
 		window.location.reload();
+		localStorage.removeItem(STORAGE_KEY.defaultHash);
 	};
 
 	return (

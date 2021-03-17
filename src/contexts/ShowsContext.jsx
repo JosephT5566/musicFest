@@ -46,7 +46,7 @@ export function ShowsStore(props) {
 
 	useEffect(() => {
 		const url = navigation.getCurrentValue().url;
-		const defauleHash = localStorage.getItem(STORAGE_KEY.defaultHash);
+		const defaultHash = localStorage.getItem(STORAGE_KEY.defaultHash);
 		const storageValue = localStorage.getItem(STORAGE_KEY.shows);
 
 		const loadFromUrl = (encode) => {
@@ -68,9 +68,9 @@ export function ShowsStore(props) {
 			storageValue.split(',').forEach((item) => selectedShow.current.map.set(item, item));
 		};
 
-		if (url.hash !== '' && url.hash.substring(1) !== defauleHash) {
-			console.log('hash', url.hash)
-			console.log('defauleHash', defauleHash)
+		if (url.hash !== '' && url.hash.substring(1) !== defaultHash) {
+			console.log('hash', url.hash);
+			console.log('defauleHash', defaultHash);
 			loadFromUrl(url.hash.substring(1));
 		} else {
 			loadFromStorage();

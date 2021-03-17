@@ -179,6 +179,7 @@ export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
 		};
 
 		if (itemsRef.current.length > 0) {
+			// avoid add itemRef repeatedly
 			return;
 		}
 		setItemsInfo();
