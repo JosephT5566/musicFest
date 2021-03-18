@@ -1,30 +1,30 @@
 {
   "files": {
-    "MainPage.js": "/musicFest/static/js/MainPage.2abb9b8b.chunk.js",
-    "MainPage.js.map": "/musicFest/static/js/MainPage.2abb9b8b.chunk.js.map",
-    "OtcPage.js": "/musicFest/static/js/OtcPage.979598bb.chunk.js",
-    "OtcPage.js.map": "/musicFest/static/js/OtcPage.979598bb.chunk.js.map",
-    "ProfilePage.js": "/musicFest/static/js/ProfilePage.6c91a80b.chunk.js",
-    "ProfilePage.js.map": "/musicFest/static/js/ProfilePage.6c91a80b.chunk.js.map",
+    "MainPage.js": "/musicFest/static/js/MainPage.319fea2f.chunk.js",
+    "MainPage.js.map": "/musicFest/static/js/MainPage.319fea2f.chunk.js.map",
+    "OtcPage.js": "/musicFest/static/js/OtcPage.0d0590a3.chunk.js",
+    "OtcPage.js.map": "/musicFest/static/js/OtcPage.0d0590a3.chunk.js.map",
+    "ProfilePage.js": "/musicFest/static/js/ProfilePage.fa8412ed.chunk.js",
+    "ProfilePage.js.map": "/musicFest/static/js/ProfilePage.fa8412ed.chunk.js.map",
     "main.css": "/musicFest/static/css/main.9d5b29c0.chunk.css",
-    "main.js": "/musicFest/static/js/main.ead25ebd.chunk.js",
-    "main.js.map": "/musicFest/static/js/main.ead25ebd.chunk.js.map",
-    "runtime-main.js": "/musicFest/static/js/runtime-main.f959ddd1.js",
-    "runtime-main.js.map": "/musicFest/static/js/runtime-main.f959ddd1.js.map",
-    "static/js/5.827e2533.chunk.js": "/musicFest/static/js/5.827e2533.chunk.js",
-    "static/js/5.827e2533.chunk.js.map": "/musicFest/static/js/5.827e2533.chunk.js.map",
-    "static/js/6.0f532d33.chunk.js": "/musicFest/static/js/6.0f532d33.chunk.js",
-    "static/js/6.0f532d33.chunk.js.map": "/musicFest/static/js/6.0f532d33.chunk.js.map",
-    "static/js/7.9275e445.chunk.js": "/musicFest/static/js/7.9275e445.chunk.js",
-    "static/js/7.9275e445.chunk.js.map": "/musicFest/static/js/7.9275e445.chunk.js.map",
+    "main.js": "/musicFest/static/js/main.3a4ebdb6.chunk.js",
+    "main.js.map": "/musicFest/static/js/main.3a4ebdb6.chunk.js.map",
+    "runtime-main.js": "/musicFest/static/js/runtime-main.49d9eb94.js",
+    "runtime-main.js.map": "/musicFest/static/js/runtime-main.49d9eb94.js.map",
+    "static/js/5.f5cce1d9.chunk.js": "/musicFest/static/js/5.f5cce1d9.chunk.js",
+    "static/js/5.f5cce1d9.chunk.js.map": "/musicFest/static/js/5.f5cce1d9.chunk.js.map",
+    "static/js/6.68983057.chunk.js": "/musicFest/static/js/6.68983057.chunk.js",
+    "static/js/6.68983057.chunk.js.map": "/musicFest/static/js/6.68983057.chunk.js.map",
+    "static/js/7.942a7c1d.chunk.js": "/musicFest/static/js/7.942a7c1d.chunk.js",
+    "static/js/7.942a7c1d.chunk.js.map": "/musicFest/static/js/7.942a7c1d.chunk.js.map",
     "index.html": "/musicFest/index.html",
     "static/css/main.9d5b29c0.chunk.css.map": "/musicFest/static/css/main.9d5b29c0.chunk.css.map",
-    "static/js/5.827e2533.chunk.js.LICENSE.txt": "/musicFest/static/js/5.827e2533.chunk.js.LICENSE.txt"
+    "static/js/5.f5cce1d9.chunk.js.LICENSE.txt": "/musicFest/static/js/5.f5cce1d9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f959ddd1.js",
-    "static/js/5.827e2533.chunk.js",
+    "static/js/runtime-main.49d9eb94.js",
+    "static/js/5.f5cce1d9.chunk.js",
     "static/css/main.9d5b29c0.chunk.css",
-    "static/js/main.ead25ebd.chunk.js"
+    "static/js/main.3a4ebdb6.chunk.js"
   ]
 }
