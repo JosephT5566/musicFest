@@ -8,6 +8,7 @@ import Main from './components/Main';
 import { theme } from './styles/theme';
 import { value } from './styles/value';
 import { initGA } from './index';
+import { STORAGE_KEY } from './utils/static';
 
 const useStyle = makeStyles({
 	app: {
@@ -26,6 +27,9 @@ function App() {
 
 	useEffect(() => {
 		initGA();
+		if (!localStorage.getItem(STORAGE_KEY.day)) {
+			localStorage.setItem(STORAGE_KEY.day, 0);
+		}
 	}, []);
 
 	return (

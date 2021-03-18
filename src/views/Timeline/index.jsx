@@ -7,6 +7,7 @@ import AdjustIcon from '@material-ui/icons/Adjust';
 import TimeLineOfDay from '../../components/TimelineOfDay';
 import { GApageView } from '../../../src';
 import { MEGA_START_TIME, SCALE_UNIT } from '../../utils/static';
+import { STORAGE_KEY } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeLineContainer: {},
@@ -125,12 +126,13 @@ const BaseLine = () => {
 
 export default function TimeLine() {
 	const classes = useStyle();
-	const [selectedDay, setSelectedDay] = useState(0);
+	const [selectedDay, setSelectedDay] = useState(Number(localStorage.getItem(STORAGE_KEY.day)));
 	const [selectedShows, setSelectedShows] = useState([]);
 	const { getData } = useContext(ShowsContext);
 
 	const handleClick = (value) => {
 		setSelectedDay(value);
+		localStorage.setItem(STORAGE_KEY.day, value);
 	};
 
 	useEffect(() => {
