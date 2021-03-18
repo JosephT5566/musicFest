@@ -2,14 +2,21 @@ name: Deploy gh-pages
 
 on: [push]
 
+env:
+  REACT_APP_ENV_TOP: top
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.1
+        env:
+          REACT_APP_ENV_STEP1: step1
 
       - name: Install and Build
+        env:
+          REACT_APP_ENV_STEP3: step3
         run: |
           npm install
           npm run build
@@ -19,3 +26,5 @@ jobs:
         with:
           branch: gh-pages
           folder: build
+        env:
+          REACT_APP_ENV_STEP3: step3
