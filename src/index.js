@@ -6,8 +6,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 export const initGA = () => {
-	console.log('MEASUREMENT_ID', process.env.REACT_APP_MEASUREMENT_ID);
-
 	ReactGA.initialize(process.env.REACT_APP_MEASUREMENT_ID);
 };
 export const GApageView = (page) => {
