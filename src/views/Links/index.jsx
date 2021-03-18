@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import GitHubIcon from '@material-ui/icons/GitHub';
+
+import { GApageView } from '../../../src';
 
 const useStyle = makeStyles((theme) => ({
 	linkPage: {
@@ -101,6 +103,11 @@ const PreviewLink = ({ url, title, description, image, icon }) => {
 
 export default function Links() {
 	const classes = useStyle();
+
+	useEffect(() => {
+		GApageView(window.location.hostname + window.location.pathname);
+	}, []);
+
 	return (
 		<div className={classes.linkPage}>
 			<div className={classes.previewContainer}>

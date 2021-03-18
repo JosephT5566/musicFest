@@ -5,6 +5,7 @@ import ShowsContext from '../../contexts/ShowsContext';
 
 import AdjustIcon from '@material-ui/icons/Adjust';
 import TimeLineOfDay from '../../components/TimelineOfDay';
+import { GApageView } from '../../../src';
 import { MEGA_START_TIME, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles((theme) => ({
@@ -132,6 +133,10 @@ export default function TimeLine() {
 		setSelectedDay(value);
 	};
 
+	useEffect(() => {
+		GApageView(window.location.hostname + window.location.pathname);
+	}, []);
+
 	const splitDataByDay = (data) => {
 		const arr = data.split(',');
 		let orderedData = [];
@@ -151,8 +156,8 @@ export default function TimeLine() {
 	};
 
 	useEffect(() => {
-		const data = getData()
-		if (data){
+		const data = getData();
+		if (data) {
 			setSelectedShows(splitDataByDay(getData()));
 		}
 	}, [getData]);

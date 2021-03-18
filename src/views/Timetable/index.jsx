@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigation } from 'react-navi';
 import { makeStyles } from '@material-ui/core/styles';
 import ShowsContext from '../../contexts/ShowsContext';
@@ -11,6 +11,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import { GApageView } from '../../../src';
 import { shows } from '../../data/shows.json';
 import { STORAGE_KEY } from '../../utils/static';
 
@@ -160,6 +161,10 @@ export default function TimeTable() {
 	const classes = useStyle();
 	const [openSnack, setOpenSnack] = useState(false);
 	const [selectedDay, setSelectedDay] = useState(0);
+
+	useEffect(() => {
+		GApageView(window.location.hostname + window.location.pathname);
+	}, []);
 
 	const handleClick = (value) => {
 		setSelectedDay(value);
