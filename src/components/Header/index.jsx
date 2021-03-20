@@ -10,6 +10,7 @@ const useStyle = makeStyles((theme) => ({
 		alignItems: 'center',
 		height: theme.headerHeight,
 		padding: '1em',
+		paddingRight: '4em',
 		backgroundColor: theme.palette.secondary.main,
 	},
 	a: {

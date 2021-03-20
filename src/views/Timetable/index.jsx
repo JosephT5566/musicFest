@@ -74,11 +74,11 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		position: 'fixed',
-		bottom: '4em',
 		right: '2em',
-		[theme.breakpoints.up('md')]: {
-			bottom: '3em',
-			right: '10em',
+		bottom: '4em',
+		[theme.breakpoints.up('sm')]: {
+			flexDirection: 'row',
+			bottom: '2em',
 		},
 	},
 	saveBtn: {
@@ -87,6 +87,9 @@ const useStyle = makeStyles((theme) => ({
 		boxShadow: '-5px 5px 10px',
 		'&:focus': {
 			backgroundColor: theme.palette.secondary.main,
+		},
+		[theme.breakpoints.up('sm')]: {
+			margin: '0.2em',
 		},
 	},
 	alertBar: {
@@ -160,7 +163,7 @@ const DayButton = ({ day, selectedDay, onClick, ...props }) => {
 export default function TimeTable() {
 	const classes = useStyle();
 	const [openSnack, setOpenSnack] = useState(false);
-	const [selectedDay, setSelectedDay] = useState(0);
+	const [selectedDay, setSelectedDay] = useState(Number(localStorage.getItem(STORAGE_KEY.day)));
 
 	useEffect(() => {
 		GApageView(window.location.hostname + window.location.pathname);
@@ -168,6 +171,7 @@ export default function TimeTable() {
 
 	const handleClick = (value) => {
 		setSelectedDay(value);
+		localStorage.setItem(STORAGE_KEY.day, value);
 	};
 
 	const handleOpenSnack = () => setOpenSnack(true);
