@@ -1,6 +1,10 @@
 name: Deploy gh-pages
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+
 
 env:
   REACT_APP_MEASUREMENT_ID: ${{ secrets.MEASUREMENT_ID }}
