@@ -95,6 +95,15 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={3}
 				onClick={() => {
+					navigation.navigate(`/${APP_NAME}/map/${url.hash}`);
+					if (btnClicked) btnClicked();
+				}}
+			>
+				Map
+			</Button>
+			<Button
+				index={4}
+				onClick={() => {
 					navigation.navigate(`/${APP_NAME}/links/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}

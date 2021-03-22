@@ -3,26 +3,34 @@ import { mount, route } from 'navi';
 const routes = mount({
 	'/musicFest': mount({
 		'/': route({
-			title: `Time Table`,
+			title: `Timetable`,
 			getView: () =>
 				import(
-					/*webpackChunkName: "MainPage"*/
+					/*webpackChunkName: "TimetablePage"*/
 					'../views/Timetable'
 				),
 		}),
 		'/timeline': route({
-			title: `Time Line`,
+			title: `Timeline`,
 			getView: () =>
 				import(
-					/*webpackChunkName: "OtcPage"*/
+					/*webpackChunkName: "TimelinePage"*/
 					'../views/Timeline'
+				),
+		}),
+		'/map': route({
+			title: `Map`,
+			getView: () =>
+				import(
+					/*webpackChunkName: "MapPage"*/
+					'../views/Map'
 				),
 		}),
 		'/links': route({
 			title: `Links`,
 			getView: () =>
 				import(
-					/*webpackChunkName: "ProfilePage"*/
+					/*webpackChunkName: "LinksPage"*/
 					'../views/Links'
 				),
 		}),
