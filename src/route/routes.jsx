@@ -18,6 +18,14 @@ const routes = mount({
 					'../views/Timeline'
 				),
 		}),
+		'/map': route({
+			title: `Map`,
+			getView: () =>
+				import(
+					/*webpackChunkName: "ProfilePage"*/
+					'../views/Map'
+				),
+		}),
 		'/links': route({
 			title: `Links`,
 			getView: () =>
