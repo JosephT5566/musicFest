@@ -170,7 +170,7 @@ const NavigatorMd = () => {
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<nav className={`${classes.navigation_md} ${visible}`}>
 				<div className={classes.itemsContainer}>
-					<IconButton className={classes.navButton} onClick={handleClick}>
+					<IconButton className={classes.navButton} aria-label="menu" onClick={handleClick}>
 						<MenuIcon />
 					</IconButton>
 					<Items btnClicked={handleButtonClicked} />

@@ -22,6 +22,7 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+		fontWeight: 'bold',
 		marginBottom: theme.tableHeadMarginBottom,
 		letterSpacing: theme.letterSpacing,
 	},
@@ -129,7 +130,7 @@ export default function StageColumn({ stage, shows, day }) {
 		return (
 			<div className={classes.column}>
 				<div className={classes.head} style={{ backgroundColor: `${stageColors[stage.index].main}` }}>
-					<h4>{stage.stageName}</h4>
+					{stage.stageName}
 				</div>
 				{shows.map((show, index) => {
 					const start = new Date(show.start);

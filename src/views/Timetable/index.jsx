@@ -120,7 +120,7 @@ const SaveButton = ({ onOpenSnack }) => {
 	};
 
 	return (
-		<IconButton className={classes.saveBtn} onClick={handleClick}>
+		<IconButton className={classes.saveBtn} aria-label="share" onClick={handleClick}>
 			<ShareIcon />
 		</IconButton>
 	);
@@ -141,7 +141,7 @@ const ResetButton = () => {
 	};
 
 	return (
-		<IconButton className={classes.saveBtn} onClick={handleClick}>
+		<IconButton className={classes.saveBtn} aria-label="reset" onClick={handleClick}>
 			<ReplayIcon />
 		</IconButton>
 	);
