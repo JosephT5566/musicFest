@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { MEGA_START_TIME, MEGA_END_TIME, STORAGE_KEY, MIN, SCALE_UNIT } from '../../utils/static';
+import { MEGA_START_TIME_TEST, MEGA_END_TIME_TEST, STORAGE_KEY, MIN, SCALE_UNIT } from '../../utils/static';
 
 const useStyle = makeStyles(() => ({
 	timeBackdrop: {
@@ -31,8 +31,8 @@ export default function TimeBackdrop({ className }) {
 	const [time, setTime] = useState(new Date());
 
 	const day = localStorage.getItem(STORAGE_KEY.day);
-	const todayStartTime = new Date(MEGA_START_TIME[day]);
-	const todayEndTime = new Date(MEGA_END_TIME[day]);
+	const todayStartTime = new Date(MEGA_START_TIME_TEST[day]);
+	const todayEndTime = new Date(MEGA_END_TIME_TEST[day]);
 
 	const isToday = () => time.getTime() > todayStartTime.getTime() && time.getTime() < todayEndTime.getTime();
 
