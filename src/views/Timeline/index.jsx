@@ -5,6 +5,7 @@ import ShowsContext from '../../contexts/ShowsContext';
 
 import AdjustIcon from '@material-ui/icons/Adjust';
 import TimeLineOfDay from '../../components/TimelineOfDay';
+import TimeBackdrop from '../../components/TimeBackdrop';
 import { GApageView } from '../../../src';
 import { MEGA_START_TIME, SCALE_UNIT } from '../../utils/static';
 import { STORAGE_KEY } from '../../utils/static';
@@ -60,6 +61,7 @@ const useStyle = makeStyles((theme) => ({
 			color: theme.palette.primary.main,
 		},
 	},
+	timeBackdrop: { top: `${0.5 * SCALE_UNIT}rem` },
 	baseLine: {
 		width: '3.8em',
 		paddingRight: '1em',
@@ -186,6 +188,7 @@ export default function TimeLine() {
 				</DayButton>
 			</div>
 			<div className={classes.timeline}>
+				<TimeBackdrop className={classes.timeBackdrop} />
 				<BaseLine />
 				{selectedShows.map((selectedShowsOfDay, index) => {
 					return (
