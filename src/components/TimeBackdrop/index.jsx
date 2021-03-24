@@ -37,8 +37,7 @@ export default function TimeBackdrop({ className }) {
 
 	const isToday = () => time.getTime() > todayStartTime.getTime() && time.getTime() < todayEndTime.getTime();
 
-	// const top = isToday() ? (time.getTime() - todayStartTime.getTime()) / MIN / 10 : 0;
-	const top = 50;
+	const top = isToday() ? (time.getTime() - todayStartTime.getTime()) / MIN / 10 : 0;
 
 	useEffect(() => {
 		const intervalID = setInterval(() => {
@@ -50,7 +49,7 @@ export default function TimeBackdrop({ className }) {
 		};
 	}, []);
 
-	if (1) {
+	if (isToday()) {
 		return (
 			<div
 				className={`${classes.timeBackdrop} ${className}`}
