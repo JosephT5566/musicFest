@@ -3,28 +3,29 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { MEGA_START_TIME_TEST, MEGA_END_TIME_TEST, STORAGE_KEY, MIN, SCALE_UNIT } from '../../utils/static';
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme) => ({
 	timeBackdrop: {
 		position: 'absolute',
 		top: '0',
 		width: '100%',
-		// backgroundColor: 'black',
-		background: 'linear-gradient(to top, black, transparent)',
-		opacity: '0.2',
+		height: '2px',
+		backgroundColor: 'black',
+		opacity: '0.3',
 		zIndex: '50',
 	},
 	currentTime: {
+		fontFamily: 'Playfair Display',
 		position: 'absolute',
 		bottom: '0.2em',
-		right: '0.5em',
-		color: 'white',
-		opacity: '0.7',
+		right: '0',
+		color: theme.palette.secondary.main,
+		opacity: '0.8',
 		fontSize: '50px',
 		fontWeight: 'bold',
 	},
 }));
 
-const INTERVAL = 1000 * 60; // min
+const INTERVAL = 1000 * 10; // 10 sec
 
 export default function TimeBackdrop({ className }) {
 	const classes = useStyle();
@@ -36,7 +37,7 @@ export default function TimeBackdrop({ className }) {
 
 	const isToday = () => time.getTime() > todayStartTime.getTime() && time.getTime() < todayEndTime.getTime();
 
-	const height = isToday() ? (time.getTime() - todayStartTime.getTime()) / MIN / 10 : 0;
+	const top = isToday() ? (time.getTime() - todayStartTime.getTime()) / MIN / 10 : 0;
 
 	useEffect(() => {
 		const intervalID = setInterval(() => {
@@ -53,11 +54,11 @@ export default function TimeBackdrop({ className }) {
 			<div
 				className={`${classes.timeBackdrop} ${className}`}
 				style={{
-					height: `${height * SCALE_UNIT}rem`,
+					top: `${top * SCALE_UNIT}rem`,
 				}}
 			>
 				<div className={classes.currentTime}>
-					{time.getHours()}:{time.getMinutes()}
+					{time.getHours()}:{time.getMinutes().toString().padStart(2, '0')}
 				</div>
 			</div>
 		);

@@ -61,7 +61,7 @@ const useStyle = makeStyles((theme) => ({
 			color: theme.palette.primary.main,
 		},
 	},
-	timeBackdrop: { top: `${0.5 * SCALE_UNIT}rem` },
+	timeBackdrop: { marginTop: `${0.5 * SCALE_UNIT}rem` },
 	baseLine: {
 		width: '3.8em',
 		paddingRight: '1em',
