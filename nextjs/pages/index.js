@@ -4,6 +4,7 @@ import ShowsContext from '../src/context/ShowsContext';
 
 import TimeScale from '../src/components/TimeScale';
 import TableOfDay from '../src/components/TableOfDay';
+import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
 import ReplayIcon from '@material-ui/icons/Replay';
@@ -174,7 +175,7 @@ export default function Home() {
 	const handleCloseSnack = () => setOpenSnack(false);
 
 	return (
-		<div className={classes.timeTableContainer}>
+		<Container className={classes.timeTableContainer}>
 			<div className={`${classes.dayBtnContainer} ${'day' + selectedDay}`}>
 				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
 					3/27
@@ -203,6 +204,6 @@ export default function Home() {
 					已複製網址，可加到書籤儲存。
 				</MuiAlert>
 			</Snackbar>
-		</div>
+		</Container>
 	);
 }
