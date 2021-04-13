@@ -18,6 +18,7 @@ const useStyle = makeStyles((theme) => ({
 	timeTableContainer: {
 		position: 'relative',
 		width: 'fit-content',
+		backgroundColor: theme.palette.background.default,
 	},
 	dayBtnContainer: {
 		position: 'sticky',

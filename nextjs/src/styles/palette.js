@@ -16,7 +16,7 @@ export const palette = {
     },
     background: {
         default: '#eaeaea',
-        paper: '#EFEFEF',
+        paper: '#bfbfbf',
     },
     text: {
         primary: '#2a2a2a',
