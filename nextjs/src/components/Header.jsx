@@ -17,7 +17,7 @@ const useStyle = makeStyles((theme) => ({
 		alignItems: 'center',
 		height: '100%',
 		textDecoration: 'none',
-		color: theme.palette.text.primary,
+		color: theme.palette.text.secondary,
 		'&:hover': {
 			color: theme.palette.primary.main,
 		},

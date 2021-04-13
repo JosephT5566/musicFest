@@ -113,8 +113,8 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 			className={`${classes.showButton} ${id}`}
 			style={{
 				height: `${height * SCALE_UNIT}rem`,
-				backgroundColor: active ? stageColors[stageIndex].main : bgColor.dark,
-				color: active ? textColor.light : textColor.dark,
+				backgroundColor: active ? stageColors[stageIndex].main : bgColor.paper,
+				color: active ? textColor.secondary : textColor.primary,
 			}}
 			onClick={handleClick}
 		>

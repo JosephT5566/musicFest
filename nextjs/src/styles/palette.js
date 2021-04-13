@@ -16,11 +16,11 @@ export const palette = {
     },
     background: {
         default: '#eaeaea',
-        paper: '#FEFEFE',
+        paper: '#EFEFEF',
     },
     text: {
-        primary: '#ffffff',
-        secondary: '#2a2a2a',
+        primary: '#2a2a2a',
+        secondary: '#ffffff',
     },
     stage: {
         0: {
