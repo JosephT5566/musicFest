@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigation } from 'react-navi';
+import { useRouter } from 'next/router';
 
 import { STORAGE_KEY } from '../static';
 
 const Context = React.createContext(''); // default value
 
 export function ShowsStore(props) {
-	const navigation = useNavigation();
+	const router = useRouter();
 	const selectedShow = useRef({
 		map: new Map(),
 	});
@@ -45,7 +45,7 @@ export function ShowsStore(props) {
 	};
 
 	useEffect(() => {
-		const url = navigation.getCurrentValue().url;
+		const hash = window.location.hash;
 		const defaultHash = localStorage.getItem(STORAGE_KEY.defaultHash);
 		const storageValue = localStorage.getItem(STORAGE_KEY.shows);
 
@@ -58,7 +58,7 @@ export function ShowsStore(props) {
 			} catch (error) {
 				console.log('hash url decode err: ', error);
 
-				navigation.navigate(url.pathname);
+				router.push(window.location.pathname);
 			}
 		};
 
@@ -68,12 +68,12 @@ export function ShowsStore(props) {
 			storageValue.split(',').forEach((item) => selectedShow.current.map.set(item, item));
 		};
 
-		if (url.hash !== '' && url.hash.substring(1) !== defaultHash) {
-			loadFromUrl(url.hash.substring(1));
+		if (hash !== '' && hash.substring(1) !== defaultHash) {
+			loadFromUrl(hash.substring(1));
 		} else {
 			loadFromStorage();
 		}
-	}, [navigation]);
+	}, []);
 
 	return (
 		<Context.Provider value={{ handleSelectShow, viewSelectedItems, getData, resetData, isIDExist }}>

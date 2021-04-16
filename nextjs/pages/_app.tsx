@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import '../styles/globals.css';
 import theme from '../src/styles/theme';
+import { ShowsStore } from '../src/context/ShowsContext';
 
 import Header from '../src/components/Header';
 import Navigation from '../src/components/Navigation';
+import { STORAGE_KEY } from '../src/static';
 
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {
@@ -13,15 +15,20 @@ function MyApp({ Component, pageProps }) {
 		if (jssStyles) {
 			jssStyles.parentElement!.removeChild(jssStyles);
 		}
+		if (!localStorage.getItem(STORAGE_KEY.day)) {
+			localStorage.setItem(STORAGE_KEY.day, '0');
+		}
 	}, []);
 
 	return (
 		<React.Fragment>
-			<ThemeProvider theme={theme}>
-				<Navigation />
-				<Header />
-				<Component {...pageProps} />
-			</ThemeProvider>
+			<ShowsStore>
+				<ThemeProvider theme={theme}>
+					<Navigation />
+					<Header />
+					<Component {...pageProps} />
+				</ThemeProvider>
+			</ShowsStore>
 		</React.Fragment>
 	);
 }
