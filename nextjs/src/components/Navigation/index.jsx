@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CurrentIndexStore } from './Context';
+import useLocation from '../../hooks/useLocation';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -76,18 +77,14 @@ const useStyle = makeStyles((theme) => ({
 
 const Items = ({ btnClicked }) => {
 	const router = useRouter();
-	const [hash, setHash] = useState('');
-
-	useEffect(() => {
-		setHash(window.location.hash);
-	}, []);
+	const url = useLocation()
 
 	return (
 		<CurrentIndexStore>
 			<Button
 				index={1}
 				onClick={() => {
-					router.push(`/${hash}`);
+					router.push(`/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
@@ -96,7 +93,7 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={2}
 				onClick={() => {
-					router.push(`/timeline/${hash}`);
+					router.push(`/timeline/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
@@ -105,7 +102,7 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={3}
 				onClick={() => {
-					router.push(`/map/${hash}`);
+					router.push(`/map/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
@@ -114,7 +111,7 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={4}
 				onClick={() => {
-					router.push(`/links/${hash}`);
+					router.push(`/links/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>

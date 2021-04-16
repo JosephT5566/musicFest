@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ShowsContext from '../src/context/ShowsContext';
+import useLocation from '../src/hooks/useLocation';
+import { useRouter } from 'next/router';
 
 import TimeScale from '../src/components/TimeScale';
 import TableOfDay from '../src/components/TableOfDay';
@@ -12,7 +14,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import { shows } from '../src/assets/data/shows.json';
-// import { STORAGE_KEY } from '../src/utils/static';
+import { STORAGE_KEY } from '../src/static';
 
 const useStyle = makeStyles((theme) => ({
 	timeTablePage: {
@@ -98,55 +100,53 @@ const useStyle = makeStyles((theme) => ({
 	},
 }));
 
-// const SaveButton = ({ onOpenSnack }) => {
-// 	const { getData } = useContext(ShowsContext);
-// 	const classes = useStyle();
-// 	const navigation = useNavigation();
+const SaveButton = ({ onOpenSnack }) => {
+	const { getData } = useContext(ShowsContext);
+	const classes = useStyle();
+	const router = useRouter();
+	const url = useLocation();
 
-// 	const url = navigation.getCurrentValue().url;
+	const handleClick = async () => {
+		const data = btoa(getData());
+		try {
+			await navigator.clipboard.writeText(`${url.host}${url.pathname}#${data}`); // copy to clipboard
+			if (data !== '' || url.hash.substring(1) !== '') {
+				router.push(`${url.pathname}#${data}`);
+				localStorage.setItem(STORAGE_KEY.defaultHash, data);
+			}
+			onOpenSnack();
+		} catch (error) {
+			console.error('Could not copy text: ', error);
+		}
+	};
 
-// 	const handleClick = async () => {
-// 		const data = btoa(getData());
-// 		console.log(url);
-// 		try {
-// 			await navigator.clipboard.writeText(`${window.location.host}${url.pathname}#${data}`); // copy to clipboard
-// 			if (data !== '' || url.hash.substring(1) !== '') {
-// 				navigation.navigate(`${url.pathname}#${data}`);
-// 				localStorage.setItem(STORAGE_KEY.defaultHash, data);
-// 			}
-// 			onOpenSnack();
-// 		} catch (error) {
-// 			console.error('Could not copy text: ', error);
-// 		}
-// 	};
+	return (
+		<IconButton className={classes.saveBtn} aria-label="share" onClick={handleClick}>
+			<ShareIcon />
+		</IconButton>
+	);
+};
 
-// 	return (
-// 		<IconButton className={classes.saveBtn} aria-label="share" onClick={handleClick}>
-// 			<ShareIcon />
-// 		</IconButton>
-// 	);
-// };
+const ResetButton = () => {
+	const { resetData } = useContext(ShowsContext);
+	const classes = useStyle();
+	const url = useLocation();
 
-// const ResetButton = () => {
-// 	const { resetData } = useContext(ShowsContext);
-// 	const classes = useStyle();
-// 	const navigation = useNavigation();
+	const handleClick = () => {
+		resetData();
+		localStorage.removeItem(STORAGE_KEY.shows);
 
-// 	const handleClick = () => {
-// 		resetData();
-// 		localStorage.removeItem(STORAGE_KEY.shows);
+		window.history.pushState(null, '', `${url.pathname}`);
+		window.location.reload();
+		localStorage.removeItem(STORAGE_KEY.defaultHash);
+	};
 
-// 		window.history.pushState(null, '', `${navigation.getCurrentValue().url.pathname}`);
-// 		window.location.reload();
-// 		localStorage.removeItem(STORAGE_KEY.defaultHash);
-// 	};
-
-// 	return (
-// 		<IconButton className={classes.saveBtn} aria-label="reset" onClick={handleClick}>
-// 			<ReplayIcon />
-// 		</IconButton>
-// 	);
-// };
+	return (
+		<IconButton className={classes.saveBtn} aria-label="reset" onClick={handleClick}>
+			<ReplayIcon />
+		</IconButton>
+	);
+};
 
 const DayButton = ({ day, selectedDay, onClick, ...props }) => {
 	const classes = useStyle();
@@ -164,8 +164,11 @@ const DayButton = ({ day, selectedDay, onClick, ...props }) => {
 export default function Home() {
 	const classes = useStyle();
 	const [openSnack, setOpenSnack] = useState(false);
-	// const [selectedDay, setSelectedDay] = useState(Number(localStorage.getItem(STORAGE_KEY.day)));
-	const [selectedDay, setSelectedDay] = useState(1);
+	const [selectedDay, setSelectedDay] = useState(0);
+
+	useEffect(() => {
+		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
+	}, []);
 
 	const handleClick = (value) => {
 		setSelectedDay(value);
@@ -193,8 +196,8 @@ export default function Home() {
 				})}
 			</div>
 			<div className={classes.btnContainer}>
-				{/* <SaveButton onOpenSnack={handleOpenSnack} /> */}
-				{/* <ResetButton /> */}
+				<SaveButton onOpenSnack={handleOpenSnack} />
+				<ResetButton />
 			</div>
 			<Snackbar
 				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

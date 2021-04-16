@@ -163,7 +163,7 @@ export default function TimeLine() {
 			const stageIndex = info[1];
 			const showIndex = info[2];
 
-			if (!orderedData[day]) {
+			while (!orderedData[day]) {
 				orderedData.push({ shows: [] });
 			}
 
@@ -178,6 +178,10 @@ export default function TimeLine() {
 			setSelectedShows(splitDataByDay(getData()));
 		}
 	}, [getData]);
+
+	useEffect(() => {
+		console.log('selectedShows', selectedShows);
+	}, [selectedShows]);
 
 	return (
 		<div className={classes.timeLinePage}>
