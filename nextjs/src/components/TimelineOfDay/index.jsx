@@ -57,7 +57,7 @@ const useStyle = makeStyles((theme) => ({
 			backgroundColor: theme.palette.primary.main,
 		},
 		[theme.breakpoints.down('sm')]: {
-			fontSize:'12px'
+			fontSize: '12px',
 		},
 	},
 	btnTextContainer: {

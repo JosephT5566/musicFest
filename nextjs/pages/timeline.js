@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import ShowsContext from '../src/context/ShowsContext';
 
+import Container from '@material-ui/core/Container';
 import AdjustIcon from '@material-ui/icons/Adjust';
 import TimeLineOfDay from '../src/components/TimeLineOfDay';
 import TimeBackdrop from '../src/components/TimeBackdrop';
@@ -179,12 +180,8 @@ export default function TimeLine() {
 		}
 	}, [getData]);
 
-	useEffect(() => {
-		console.log('selectedShows', selectedShows);
-	}, [selectedShows]);
-
 	return (
-		<div className={classes.timeLinePage}>
+		<Container className={classes.timeLinePage}>
 			<div className={`${classes.dayBtnContainer} ${'day' + selectedDay}`}>
 				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
 					3/27
@@ -207,6 +204,6 @@ export default function TimeLine() {
 					);
 				})}
 			</div>
-		</div>
+		</Container>
 	);
 }
