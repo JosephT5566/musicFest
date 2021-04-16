@@ -15,9 +15,8 @@ import { shows } from '../src/assets/data/shows.json';
 // import { STORAGE_KEY } from '../src/utils/static';
 
 const useStyle = makeStyles((theme) => ({
-	timeTableContainer: {
+	timeTablePage: {
 		position: 'relative',
-		width: 'fit-content',
 		backgroundColor: theme.palette.background.default,
 	},
 	dayBtnContainer: {
@@ -45,7 +44,7 @@ const useStyle = makeStyles((theme) => ({
 		},
 	},
 	dayBtn: {
-		fontFamily: theme.fontFamily,
+		fontFamily: theme.typography.fontFamily,
 		position: 'relative',
 		border: 'none',
 		fontSize: '1em',
@@ -69,6 +68,8 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'row',
 		marginBottom: '1em',
+		overflowX: 'scroll',
+		overflowY: 'hidden',
 	},
 	btnContainer: {
 		display: 'flex',
@@ -93,7 +94,7 @@ const useStyle = makeStyles((theme) => ({
 		},
 	},
 	alertBar: {
-		fontFamily: theme.fontFamily,
+		fontFamily: theme.typography.fontFamily,
 	},
 }));
 
@@ -176,7 +177,7 @@ export default function Home() {
 	const handleCloseSnack = () => setOpenSnack(false);
 
 	return (
-		<Container className={classes.timeTableContainer}>
+		<Container className={classes.timeTablePage}>
 			<div className={`${classes.dayBtnContainer} ${'day' + selectedDay}`}>
 				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
 					3/27

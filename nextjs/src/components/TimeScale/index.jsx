@@ -6,7 +6,7 @@ import { MEGA_START_TIME, SCALE_UNIT } from '../../static';
 
 const useStyle = makeStyles((theme) => ({
 	timeScale: {
-		paddingTop: `calc(${theme.tableHeadHeight} + ${theme.tableHeadMarginBottom})`,
+		paddingTop: `calc(${theme.typography.tableHeadHeight} + ${theme.typography.tableHeadMarginBottom})`,
 		paddingRight: '0.5em',
 		zIndex: '10',
 		position: 'sticky',

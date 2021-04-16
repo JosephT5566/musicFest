@@ -34,9 +34,9 @@ const useStyle = makeStyles((theme) => ({
 		display: 'flex',
 		zIndex: '100',
 
-		right: `-${theme.navWidth}`,
+		right: `-${theme.typography.navWidth}`,
 		height: '100vh',
-		width: theme.navWidth,
+		width: theme.typography.navWidth,
 		backgroundColor: theme.palette.secondary.dark,
 		transition: '0.6s',
 		'&.true': {
@@ -52,25 +52,31 @@ const useStyle = makeStyles((theme) => ({
 			justifyContent: 'center',
 		},
 		[theme.breakpoints.down('sm')]: {
-			paddingTop: theme.headerHeight,
+			paddingTop: theme.typography.headerHeight,
 			flexDirection: 'column',
 		},
 	},
 	navButton: {
 		position: 'fixed',
-		top: '0',
-		right: '0',
-		padding: '1em',
+		top: '0.4em',
+		right: '0.2em',
 		color: theme.palette.primary.main,
+		padding: '0.5em 0.8em',
+		backgroundColor: `${theme.palette.secondary.main}BF`,
+		borderRadius: '0.5em',
 		[theme.breakpoints.up('md')]: {
 			display: 'none',
+		},
+
+		'&:hover': {
+			backgroundColor: `${theme.palette.secondary.main}E5`,
 		},
 	},
 }));
 
 const Items = ({ btnClicked }) => {
 	const router = useRouter();
-	const [hash, setHash] = useState('')
+	const [hash, setHash] = useState('');
 
 	useEffect(() => {
 		setHash(window.location.hash);

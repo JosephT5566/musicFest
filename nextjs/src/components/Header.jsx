@@ -7,7 +7,7 @@ const useStyle = makeStyles((theme) => ({
 	header: {
 		display: 'flex',
 		alignItems: 'center',
-		height: theme.headerHeight,
+		height: theme.typography.headerHeight,
 		padding: '1em',
 		paddingRight: '4em',
 		backgroundColor: theme.palette.secondary.main,
