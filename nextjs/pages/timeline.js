@@ -66,7 +66,7 @@ const useStyle = makeStyles((theme) => ({
 	timeBackdrop: { marginTop: `${0.5 * SCALE_UNIT}rem` },
 	baseLine: {
 		width: '3.8em',
-		paddingRight: '1em',
+		marginRight: '1em',
 	},
 	scale: {
 		position: 'relative',
