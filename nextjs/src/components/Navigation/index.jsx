@@ -11,7 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
 import { debounce } from '../../utils/helpers';
-import { APP_NAME } from '../../static';
+import { BACKEND_URL } from '../../../src/config';
 
 const useStyle = makeStyles((theme) => ({
 	navigation_lg: {
@@ -77,14 +77,14 @@ const useStyle = makeStyles((theme) => ({
 
 const Items = ({ btnClicked }) => {
 	const router = useRouter();
-	const url = useLocation()
+	const url = useLocation();
 
 	return (
 		<CurrentIndexStore>
 			<Button
 				index={1}
 				onClick={() => {
-					router.push(`/${url.hash}`);
+					router.push(`${BACKEND_URL}/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
@@ -93,7 +93,7 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={2}
 				onClick={() => {
-					router.push(`/timeline/${url.hash}`);
+					router.push(`${BACKEND_URL}/timeline/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
@@ -102,7 +102,7 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={3}
 				onClick={() => {
-					router.push(`/map/${url.hash}`);
+					router.push(`${BACKEND_URL}/map/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
@@ -111,7 +111,7 @@ const Items = ({ btnClicked }) => {
 			<Button
 				index={4}
 				onClick={() => {
-					router.push(`/links/${url.hash}`);
+					router.push(`${BACKEND_URL}/links/${url.hash}`);
 					if (btnClicked) btnClicked();
 				}}
 			>
