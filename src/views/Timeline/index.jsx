@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ShowsContext from '../../contexts/ShowsContext';
 
 import AdjustIcon from '@material-ui/icons/Adjust';
-import TimeLineOfDay from '../../components/TimelineOfDay';
+import TimelineOfDay from '../../components/TimelineOfDay';
 import TimeBackdrop from '../../components/TimeBackdrop';
 import { GApageView } from '../../../src';
 import { MEGA_START_TIME, SCALE_UNIT } from '../../utils/static';
@@ -161,7 +161,7 @@ export default function TimeLine() {
 			const stageIndex = info[1];
 			const showIndex = info[2];
 
-			if (!orderedData[day]) {
+			while (!orderedData[day]) {
 				orderedData.push({ shows: [] });
 			}
 
@@ -192,7 +192,7 @@ export default function TimeLine() {
 				<BaseLine />
 				{selectedShows.map((selectedShowsOfDay, index) => {
 					return (
-						<TimeLineOfDay
+						<TimelineOfDay
 							key={index}
 							selectedShowsOfDay={selectedShowsOfDay.shows}
 							day={index}

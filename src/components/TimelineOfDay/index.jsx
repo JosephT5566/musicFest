@@ -135,7 +135,7 @@ const TimeLineButton = ({ showInfo, day }) => {
 	);
 };
 
-export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
+export default function TimelineOfDay({ selectedShowsOfDay, day, selected }) {
 	const classes = useStyle();
 	const [, rerender] = useState(null);
 	const itemsRef = useRef([]);
