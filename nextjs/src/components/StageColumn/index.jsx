@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ShowsContext from 'context/ShowsContext';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import { palette } from 'styles/palette';
 import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from 'static';

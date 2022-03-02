@@ -1,4 +1,4 @@
-import { red } from '@material-ui/core/colors'
+import { red } from '@mui/material/colors'
 
 export const palette = {
     primary: {

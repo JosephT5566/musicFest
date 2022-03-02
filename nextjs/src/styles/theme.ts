@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 import { palette } from './palette';
 import { typography } from './typography';
 
-declare module '@material-ui/core/styles/createTypography' {
+declare module '@mui/material/styles/createTypography' {
 	interface TypographyOptions {
 		navWidth?: string;
 		headerHeight?: string;

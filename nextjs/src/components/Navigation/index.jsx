@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CurrentIndexStore } from './Context';
 import useLocation from 'hooks/useLocation';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles, useTheme } from '@material-ui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Button from './Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import MenuIcon from '@material-ui/icons/Menu';
-import IconButton from '@material-ui/core/IconButton';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/material/IconButton';
 
 import { debounce } from 'utils/helpers';
 import { BACKEND_URL } from 'config';

@@ -1,16 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import ShowsContext from 'context/ShowsContext';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
 import TimeScale from 'components/TimeScale';
 import TableOfDay from 'components/TableOfDay';
-import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import ShareIcon from '@material-ui/icons/Share';
-import ReplayIcon from '@material-ui/icons/Replay';
-import Snackbar from '@material-ui/core/Snackbar';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import ShareIcon from '@mui/icons-material/Share';
+import ReplayIcon from '@mui/icons-material/Replay';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 import { shows } from 'assets/data/shows.json';

@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import ShowsContext from 'context/ShowsContext';
 
-import Container from '@material-ui/core/Container';
-import AdjustIcon from '@material-ui/icons/Adjust';
+import Container from '@mui/material/Container';
+import AdjustIcon from '@mui/icons-material/Adjust';
 import TimeLineOfDay from 'components/TimeLineOfDay';
 import TimeBackdrop from 'components/TimeBackdrop';
 import { MEGA_START_TIME, SCALE_UNIT } from 'static';

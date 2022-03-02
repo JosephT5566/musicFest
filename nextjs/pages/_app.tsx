@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import 'styles/globals.css';
 import theme from 'styles/theme';
 import { ShowsStore } from 'context/ShowsContext';

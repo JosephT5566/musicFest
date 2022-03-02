@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import { MEGA_START_TIME, MEGA_END_TIME, STORAGE_KEY, MIN, SCALE_UNIT } from 'static';
 
