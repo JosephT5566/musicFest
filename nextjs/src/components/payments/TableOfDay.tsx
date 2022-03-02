@@ -2,19 +2,26 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 
 import StageColumn from 'components/payments/StageColumn';
+import { IStage } from 'types/show';
 
-const StyledtableOfDay = styled('div')({
+const TableOfDayContainer = styled('div')({
 	display: 'flex',
 	flexDirection: 'row',
 });
 
-export default function TableOfDay({ showsOfDay, day, selected }) {
+interface props {
+	stages: IStage[];
+	day: number;
+	selected: number;
+}
+
+export default function TableOfDay({ stages, day, selected }: props) {
 	return (
-		<StyledtableOfDay sx={{ display: day === selected ? '' : 'none' }}>
-			{showsOfDay.map((stage, index) => {
-				const { stage: stageName, artists } = stage;
+		<TableOfDayContainer sx={{ display: day === selected ? '' : 'none' }}>
+			{stages.map((stage, index) => {
+				const { name: stageName, artists } = stage;
 				return <StageColumn key={stageName} stage={{ stageName, index }} shows={artists} day={day} />;
 			})}
-		</StyledtableOfDay>
+		</TableOfDayContainer>
 	);
 }
