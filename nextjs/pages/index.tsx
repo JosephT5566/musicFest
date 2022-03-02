@@ -5,7 +5,7 @@ import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
 import TimeScale from 'components/payments/TimeScale';
-import TableOfDay from 'components/TableOfDay';
+import TableOfDay from 'components/payments/TableOfDay';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
@@ -21,7 +21,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 	backgroundColor: theme.palette.background.default,
 }));
 
-const StyledButtonsContainer = styled('button')(({ theme }) => ({
+const StyledButtonsContainer = styled('div')(({ theme }) => ({
 	position: 'sticky',
 	display: 'flex',
 	width: 'fit-content',

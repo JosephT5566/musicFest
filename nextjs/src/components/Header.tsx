@@ -6,7 +6,7 @@ import Container from '@mui/material/Container';
 const StyledHeader = styled(Container)(({ theme }) => ({
 	display: 'flex',
 	alignItems: 'center',
-	height: theme.typography.headerHeight,
+	height: theme.layout.header.height,
 	padding: '1em',
 	paddingRight: '4em',
 	backgroundColor: theme.palette.secondary.main,

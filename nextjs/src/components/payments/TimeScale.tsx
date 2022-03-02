@@ -5,9 +5,9 @@ import { styled } from '@mui/material/styles';
 import { MEGA_START_TIME, SCALE_UNIT } from 'static';
 
 const StyledtimeScale = styled('div')(({ theme }) => ({
-	paddingTop: `calc(${theme.typography.tableHeadHeight} + ${theme.typography.tableHeadMarginBottom})`,
+	paddingTop: `calc(${theme.layout.tableHeadHeight} + ${theme.layout.tableHeadMarginBottom})`,
 	paddingRight: '0.5em',
-	zIndex: '10',
+	zIndex: 10,
 	position: 'sticky',
 	left: '-1em',
 }));
@@ -46,12 +46,12 @@ export default function TimeScale() {
 		const hh = time.getHours();
 		const mm = time.getMinutes() === 0 ? '00' : time.getMinutes();
 		scale.push(
-			<div className={classes.scale} key={i}>
-				<div className={classes.text}>
+			<Styledscale key={i}>
+				<Styledtext>
 					{hh}:{mm}
-				</div>
-			</div>
+				</Styledtext>
+			</Styledscale>
 		);
 	}
-	return <div className={classes.timeScale}>{scale}</div>;
+	return <StyledtimeScale>{scale}</StyledtimeScale>;
 }

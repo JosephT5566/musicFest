@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material/styles';
-import { Typography } from '@mui/material/styles/createTypography';
 
 import { palette } from './palette';
 import { typography } from './typography';

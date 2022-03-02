@@ -16,7 +16,7 @@ import { BACKEND_URL } from 'config';
 const StyledLargeNav = styled('nav')(({ theme }) => ({
 	position: 'fixed',
 	display: 'flex',
-	zIndex: '100',
+	zIndex: 100,
 
 	top: '0.5em',
 	left: '50%',
@@ -33,11 +33,11 @@ const StyledLargeNav = styled('nav')(({ theme }) => ({
 const StyledMediumNav = styled('nav')(({ theme }) => ({
 	position: 'fixed',
 	display: 'flex',
-	zIndex: '100',
+	zIndex: 100,
 
-	right: `-${theme.typography.navWidth}`,
+	right: `-${theme.layout.navbar.width}`,
 	height: '100vh',
-	width: theme.typography.navWidth,
+	width: theme.layout.navbar.width,
 	backgroundColor: theme.palette.secondary.dark,
 	transition: '0.6s',
 	'&.true': {
@@ -45,7 +45,7 @@ const StyledMediumNav = styled('nav')(({ theme }) => ({
 	},
 }));
 
-const StyledItemsContainer = styled('div')(({theme}) => ({
+const StyledItemsContainer = styled('div')(({ theme }) => ({
 	display: 'flex',
 	width: '100%',
 	padding: '0 0.5em',
@@ -54,12 +54,12 @@ const StyledItemsContainer = styled('div')(({theme}) => ({
 		justifyContent: 'center',
 	},
 	[theme.breakpoints.down('sm')]: {
-		paddingTop: theme.typography.headerHeight,
+		paddingTop: theme.layout.header.height,
 		flexDirection: 'column',
 	},
 }));
 
-const StyledNavButton = styled(IconButton)(({theme}) => ({
+const StyledNavButton = styled(IconButton)(({ theme }) => ({
 	position: 'fixed',
 	top: '0.4em',
 	right: '0.2em',
@@ -123,7 +123,6 @@ const Items = ({ btnClicked }) => {
 };
 
 const NavigatorLg = () => {
-
 	const [prevScrollPos, setPrevScrollPos] = useState(0);
 	const [visible, setVisible] = useState(true);
 
@@ -133,9 +132,7 @@ const NavigatorLg = () => {
 
 		// set state based on location info (explained in more detail below)
 		setVisible(
-			(prevScrollPos > currentScrollPos &&
-				prevScrollPos - currentScrollPos > 30) ||
-				currentScrollPos < 10
+			(prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 30) || currentScrollPos < 10
 		);
 
 		// set state to new scroll position
