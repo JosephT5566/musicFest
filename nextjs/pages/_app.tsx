@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import '../styles/globals.css';
-import theme from '../src/styles/theme';
-import { ShowsStore } from '../src/context/ShowsContext';
+import 'styles/globals.css';
+import theme from 'styles/theme';
+import { ShowsStore } from 'context/ShowsContext';
 
-import Header from '../src/components/Header';
-import Navigation from '../src/components/Navigation';
-import { STORAGE_KEY } from '../src/static';
+import Header from 'components/Header';
+import Navigation from 'components/Navigation';
+import { STORAGE_KEY } from 'static';
 
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {

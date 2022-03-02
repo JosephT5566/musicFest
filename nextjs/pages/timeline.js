@@ -1,14 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import ShowsContext from '../src/context/ShowsContext';
+import ShowsContext from 'context/ShowsContext';
 
 import Container from '@material-ui/core/Container';
 import AdjustIcon from '@material-ui/icons/Adjust';
-import TimeLineOfDay from '../src/components/TimeLineOfDay';
-import TimeBackdrop from '../src/components/TimeBackdrop';
-import { MEGA_START_TIME, SCALE_UNIT } from '../src/static';
-import { STORAGE_KEY } from '../src/static';
+import TimeLineOfDay from 'components/TimeLineOfDay';
+import TimeBackdrop from 'components/TimeBackdrop';
+import { MEGA_START_TIME, SCALE_UNIT } from 'static';
+import { STORAGE_KEY } from 'static';
 
 const useStyle = makeStyles((theme) => ({
 	timeLinePage: {

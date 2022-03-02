@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CurrentIndexStore } from './Context';
-import useLocation from '../../hooks/useLocation';
+import useLocation from 'hooks/useLocation';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -10,8 +10,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
-import { debounce } from '../../utils/helpers';
-import { BACKEND_URL } from '../../../src/config';
+import { debounce } from 'utils/helpers';
+import { BACKEND_URL } from 'config';
 
 const useStyle = makeStyles((theme) => ({
 	navigation_lg: {

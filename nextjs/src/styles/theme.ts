@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 import { palette } from './palette';
 import { typography } from './typography';
@@ -14,6 +14,6 @@ declare module '@material-ui/core/styles/createTypography' {
 }
 
 // Create a theme instance.
-const theme = createMuiTheme({ palette, typography });
+const theme = createTheme({ palette, typography });
 
 export default theme;

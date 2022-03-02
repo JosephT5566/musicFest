@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import { STORAGE_KEY } from '../static';
+import { STORAGE_KEY } from 'static';
 
 const Context = React.createContext(''); // default value
 

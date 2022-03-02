@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ShowsContext from '../src/context/ShowsContext';
-import useLocation from '../src/hooks/useLocation';
+import ShowsContext from 'context/ShowsContext';
+import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
-import TimeScale from '../src/components/TimeScale';
-import TableOfDay from '../src/components/TableOfDay';
+import TimeScale from 'components/TimeScale';
+import TableOfDay from 'components/TableOfDay';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
@@ -13,8 +13,8 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-import { shows } from '../src/assets/data/shows.json';
-import { STORAGE_KEY } from '../src/static';
+import { shows } from 'assets/data/shows.json';
+import { STORAGE_KEY } from 'static';
 
 const useStyle = makeStyles((theme) => ({
 	timeTablePage: {

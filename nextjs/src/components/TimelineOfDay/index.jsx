@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { shows } from '../../assets/data/shows.json';
-import { palette } from '../../styles/palette';
-import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from '../../static';
+import { shows } from 'assets/data/shows.json';
+import { palette } from 'styles/palette';
+import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from 'static';
 
 const useStyle = makeStyles((theme) => ({
 	tableOfDay: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import StageColumn from '../StageColumn';
+import StageColumn from 'components/StageColumn';
 
 const useStyle = makeStyles(() => ({
 	tableOfDay: {
