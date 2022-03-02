@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { styled } from '@mui/material/styles';
 import CurrentIndexContext from './Context';
 
-const useStyle = makeStyles((theme) => ({
+const StyledButton = styled('button')(({theme}) => ({
 	button: {
 		display: 'flex',
 		position: 'relative',
@@ -72,18 +72,17 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function Button({ index, onClick = null, children }) {
-	const classes = useStyle();
 	const currentIndexContext = useContext(CurrentIndexContext);
 	const active = index === currentIndexContext.currentIndex ? 'active' : '';
 	return (
-		<button
-			className={`${classes.button} ${active}`}
+		<StyledButton
+			className={`${active}`}
 			onClick={() => {
 				currentIndexContext.onIndexChange(index);
 				if (onClick) onClick();
 			}}
 		>
 			{children}
-		</button>
+		</StyledButton>
 	);
 }

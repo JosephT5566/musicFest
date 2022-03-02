@@ -1,18 +1,17 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { styled } from '@mui/material/styles';
 
 import Container from '@mui/material/Container';
 
-const useStyle = makeStyles((theme) => ({
-	header: {
-		display: 'flex',
-		alignItems: 'center',
-		height: theme.typography.headerHeight,
-		padding: '1em',
-		paddingRight: '4em',
-		backgroundColor: theme.palette.secondary.main,
-	},
-	a: {
+const StyledHeader = styled(Container)(({ theme }) => ({
+	display: 'flex',
+	alignItems: 'center',
+	height: theme.typography.headerHeight,
+	padding: '1em',
+	paddingRight: '4em',
+	backgroundColor: theme.palette.secondary.main,
+
+	'& a': {
 		display: 'flex',
 		alignItems: 'center',
 		height: '100%',
@@ -29,13 +28,12 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function Header() {
-	const classes = useStyle();
 	return (
-		<Container className={classes.header}>
-			<a className={classes.a} href="/">
-				<img src={"/mega_origin.png"} alt="mega_origin" />
+		<StyledHeader>
+			<a href="/">
+				<img src={'/mega_origin.png'} alt="mega_origin" />
 				<h2>Megaport Festival</h2>
 			</a>
-		</Container>
+		</StyledHeader>
 	);
 }

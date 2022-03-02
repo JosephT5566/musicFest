@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CurrentIndexStore } from './Context';
 import useLocation from 'hooks/useLocation';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Button from './Button';
@@ -13,65 +13,66 @@ import IconButton from '@mui/material/IconButton';
 import { debounce } from 'utils/helpers';
 import { BACKEND_URL } from 'config';
 
-const useStyle = makeStyles((theme) => ({
-	navigation_lg: {
-		position: 'fixed',
-		display: 'flex',
-		zIndex: '100',
+const StyledLargeNav = styled('nav')(({ theme }) => ({
+	position: 'fixed',
+	display: 'flex',
+	zIndex: '100',
 
-		top: '0.5em',
-		left: '50%',
-		transform: 'translate(-50%, 0)',
-		padding: '1em 0',
-		backgroundColor: theme.palette.secondary.main,
-		borderRadius: '0.5em',
-		transition: '0.6s',
-		'&.false': {
-			top: '-4.5em',
-		},
+	top: '0.5em',
+	left: '50%',
+	transform: 'translate(-50%, 0)',
+	padding: '1em 0',
+	backgroundColor: theme.palette.secondary.main,
+	borderRadius: '0.5em',
+	transition: '0.6s',
+	'&.false': {
+		top: '-4.5em',
 	},
-	navigation_md: {
-		position: 'fixed',
-		display: 'flex',
-		zIndex: '100',
+}));
 
-		right: `-${theme.typography.navWidth}`,
-		height: '100vh',
-		width: theme.typography.navWidth,
-		backgroundColor: theme.palette.secondary.dark,
-		transition: '0.6s',
-		'&.true': {
-			right: '0',
-		},
+const StyledMediumNav = styled('nav')(({ theme }) => ({
+	position: 'fixed',
+	display: 'flex',
+	zIndex: '100',
+
+	right: `-${theme.typography.navWidth}`,
+	height: '100vh',
+	width: theme.typography.navWidth,
+	backgroundColor: theme.palette.secondary.dark,
+	transition: '0.6s',
+	'&.true': {
+		right: '0',
 	},
-	itemsContainer: {
-		display: 'flex',
-		width: '100%',
-		padding: '0 0.5em',
+}));
 
-		[theme.breakpoints.up('md')]: {
-			justifyContent: 'center',
-		},
-		[theme.breakpoints.down('sm')]: {
-			paddingTop: theme.typography.headerHeight,
-			flexDirection: 'column',
-		},
+const StyledItemsContainer = styled('div')(({theme}) => ({
+	display: 'flex',
+	width: '100%',
+	padding: '0 0.5em',
+
+	[theme.breakpoints.up('md')]: {
+		justifyContent: 'center',
 	},
-	navButton: {
-		position: 'fixed',
-		top: '0.4em',
-		right: '0.2em',
-		color: theme.palette.primary.main,
-		padding: '0.5em 0.8em',
-		backgroundColor: `${theme.palette.secondary.main}BF`,
-		borderRadius: '0.5em',
-		[theme.breakpoints.up('md')]: {
-			display: 'none',
-		},
+	[theme.breakpoints.down('sm')]: {
+		paddingTop: theme.typography.headerHeight,
+		flexDirection: 'column',
+	},
+}));
 
-		'&:hover': {
-			backgroundColor: `${theme.palette.secondary.main}E5`,
-		},
+const StyledNavButton = styled(IconButton)(({theme}) => ({
+	position: 'fixed',
+	top: '0.4em',
+	right: '0.2em',
+	color: theme.palette.primary.main,
+	padding: '0.5em 0.8em',
+	backgroundColor: `${theme.palette.secondary.main}BF`,
+	borderRadius: '0.5em',
+	[theme.breakpoints.up('md')]: {
+		display: 'none',
+	},
+
+	'&:hover': {
+		backgroundColor: `${theme.palette.secondary.main}E5`,
 	},
 }));
 
@@ -122,7 +123,6 @@ const Items = ({ btnClicked }) => {
 };
 
 const NavigatorLg = () => {
-	const classes = useStyle();
 
 	const [prevScrollPos, setPrevScrollPos] = useState(0);
 	const [visible, setVisible] = useState(true);
@@ -133,7 +133,9 @@ const NavigatorLg = () => {
 
 		// set state based on location info (explained in more detail below)
 		setVisible(
-			(prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 30) || currentScrollPos < 10
+			(prevScrollPos > currentScrollPos &&
+				prevScrollPos - currentScrollPos > 30) ||
+				currentScrollPos < 10
 		);
 
 		// set state to new scroll position
@@ -147,16 +149,15 @@ const NavigatorLg = () => {
 	}, [prevScrollPos, visible, handleScroll]);
 
 	return (
-		<nav className={`${classes.navigation_lg} ${visible}`}>
-			<div className={classes.itemsContainer}>
+		<StyledLargeNav className={`${visible}`}>
+			<StyledItemsContainer>
 				<Items />
-			</div>
-		</nav>
+			</StyledItemsContainer>
+		</StyledLargeNav>
 	);
 };
 
 const NavigatorMd = () => {
-	const classes = useStyle();
 	const [visible, setVisible] = useState(false);
 
 	const handleClick = () => {
@@ -175,14 +176,14 @@ const NavigatorMd = () => {
 
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
-			<nav className={`${classes.navigation_md} ${visible}`}>
-				<div className={classes.itemsContainer}>
-					<IconButton className={classes.navButton} aria-label="menu" onClick={handleClick}>
+			<StyledMediumNav className={`${visible}`}>
+				<StyledItemsContainer>
+					<StyledNavButton aria-label="menu" onClick={handleClick}>
 						<MenuIcon />
-					</IconButton>
+					</StyledNavButton>
 					<Items btnClicked={handleButtonClicked} />
-				</div>
-			</nav>
+				</StyledItemsContainer>
+			</StyledMediumNav>
 		</ClickAwayListener>
 	);
 };

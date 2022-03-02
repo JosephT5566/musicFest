@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { styled } from '@mui/material/styles';
 
 import ShowsContext from 'context/ShowsContext';
 
@@ -10,10 +11,11 @@ import TimeBackdrop from 'components/TimeBackdrop';
 import { MEGA_START_TIME, SCALE_UNIT } from 'static';
 import { STORAGE_KEY } from 'static';
 
+const StyledContainer = styled(Container)(({}) => ({
+	backgroundColor: theme.palette.background.default,
+}));
+
 const useStyle = makeStyles((theme) => ({
-	timeLinePage: {
-		backgroundColor: theme.palette.background.default,
-	},
 	timeline: {
 		position: 'relative',
 		display: 'flex',
@@ -127,13 +129,23 @@ const BaseLine = () => {
 		const mm = time.getMinutes();
 		if (mm === 0) {
 			scale.push(
-				<div key={i} className={classes.scaleWithTime} style={{ height: `${SCALE_UNIT}rem` }}>
+				<div
+					key={i}
+					className={classes.scaleWithTime}
+					style={{ height: `${SCALE_UNIT}rem` }}
+				>
 					<div className="text">{hh}:00</div>
 					<AdjustIcon className="icon" />
 				</div>
 			);
 		} else {
-			scale.push(<div key={i} className={classes.scale} style={{ height: `${SCALE_UNIT}rem` }}></div>);
+			scale.push(
+				<div
+					key={i}
+					className={classes.scale}
+					style={{ height: `${SCALE_UNIT}rem` }}
+				></div>
+			);
 		}
 	}
 	return <div className={classes.baseLine}>{scale}</div>;
@@ -181,12 +193,22 @@ export default function TimeLine() {
 	}, [getData]);
 
 	return (
-		<Container className={classes.timeLinePage}>
-			<div className={`${classes.dayBtnContainer} ${'day' + selectedDay}`}>
-				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
+		<StyledContainer>
+			<div
+				className={`${classes.dayBtnContainer} ${'day' + selectedDay}`}
+			>
+				<DayButton
+					day={0}
+					selectedDay={selectedDay}
+					onClick={handleClick}
+				>
 					3/27
 				</DayButton>
-				<DayButton day={1} selectedDay={selectedDay} onClick={handleClick}>
+				<DayButton
+					day={1}
+					selectedDay={selectedDay}
+					onClick={handleClick}
+				>
 					3/28
 				</DayButton>
 			</div>
@@ -204,6 +226,6 @@ export default function TimeLine() {
 					);
 				})}
 			</div>
-		</Container>
+		</StyledContainer>
 	);
 }
