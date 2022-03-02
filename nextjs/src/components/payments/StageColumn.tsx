@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import ShowsContext from 'context/ShowsContext';
+import React, { useState, useEffect } from 'react';
+import { useIsIDExist, useSelectShow } from 'context/ShowsProvider';
 
 import { styled } from '@mui/material/styles';
 
@@ -79,7 +79,8 @@ const MovingTime = (props: { prevEndTime: Date; startTime: Date }) => {
 
 const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	const [active, setActive] = useState(false);
-	const { handleSelectShow, isIDExist } = useContext(ShowsContext);
+	const handleSelectShow = useSelectShow();
+	const isIDExist = useIsIDExist();
 	const id = `${day}:${stageIndex}:${showIndex}`;
 	const { stage: stageColors, text: textColor, background: bgColor } = palette;
 

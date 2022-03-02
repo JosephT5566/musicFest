@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 
-import ShowsContext from 'context/ShowsContext';
+import { useGetShowsString } from 'context/ShowsProvider';
 
 import Container from '@mui/material/Container';
 import AdjustIcon from '@mui/icons-material/Adjust';
@@ -147,7 +147,7 @@ const BaseLine = () => {
 export default function TimeLine() {
 	const [selectedDay, setSelectedDay] = useState('');
 	const [selectedShows, setSelectedShows] = useState([]);
-	const { getData } = useContext(ShowsContext);
+	const getData = useGetShowsString();
 
 	const handleClick = (value) => {
 		setSelectedDay(value);
@@ -159,7 +159,7 @@ export default function TimeLine() {
 		setSelectedDay(localStorage.getItem(STORAGE_KEY.day));
 	}, []);
 
-	const splitDataByDay = (data) => {
+	const splitDataByDay = (data: string) => {
 		const arr = data.split(',');
 		let orderedData = [];
 		arr.forEach((element) => {

@@ -3,7 +3,7 @@
 		{
 			"stages": [
 				{
-					"stage": "南霸天",
+					"name": "南霸天",
 					"artists": [
 						{
 							"name": "INFERNAL CHAOS",
@@ -43,7 +43,7 @@
 					]
 				},
 				{
-					"stage": "海龍王",
+					"name": "海龍王",
 					"artists": [
 						{
 							"name": "落差草原WWWW",
@@ -73,7 +73,7 @@
 					]
 				},
 				{
-					"stage": "女神龍",
+					"name": "女神龍",
 					"artists": [
 						{
 							"name": "厭世少年",
@@ -113,7 +113,7 @@
 					]
 				},
 				{
-					"stage": "卡魔麥",
+					"name": "卡魔麥",
 					"artists": [
 						{
 							"name": "一點生",
@@ -153,7 +153,7 @@
 					]
 				},
 				{
-					"stage": "出頭天",
+					"name": "出頭天",
 					"artists": [
 						{
 							"name": "水源",
@@ -178,7 +178,7 @@
 					]
 				},
 				{
-					"stage": "海波浪",
+					"name": "海波浪",
 					"artists": [
 						{
 							"name": "My Cat Eats My Hand",
@@ -218,7 +218,7 @@
 					]
 				},
 				{
-					"stage": "大雄丸",
+					"name": "大雄丸",
 					"artists": [
 						{
 							"name": "台北♡紐約 (Mia ft.9m88)",
@@ -238,7 +238,7 @@
 					]
 				},
 				{
-					"stage": "藍寶石",
+					"name": "藍寶石",
 					"artists": [
 						{
 							"name": "毀容姐妹會",
@@ -258,7 +258,7 @@
 					]
 				},
 				{
-					"stage": "青春夢",
+					"name": "青春夢",
 					"artists": [
 						{
 							"name": "楊士弘",
@@ -283,7 +283,7 @@
 					]
 				},
 				{
-					"stage": "小港祭",
+					"name": "小港祭",
 					"artists": [
 						{
 							"name": "T.F.L",
@@ -312,7 +312,7 @@
 		{
 			"stages": [
 				{
-					"stage": "南霸天",
+					"name": "南霸天",
 					"artists": [
 						{
 							"name": "東京中央線",
@@ -352,7 +352,7 @@
 					]
 				},
 				{
-					"stage": "海龍王",
+					"name": "海龍王",
 					"artists": [
 						{
 							"name": "OBSESS",
@@ -392,7 +392,7 @@
 					]
 				},
 				{
-					"stage": "女神龍",
+					"name": "女神龍",
 					"artists": [
 						{
 							"name": "海豚刑警",
@@ -432,7 +432,7 @@
 					]
 				},
 				{
-					"stage": "卡魔麥",
+					"name": "卡魔麥",
 					"artists": [
 						{
 							"name": "謎路人",
@@ -467,7 +467,7 @@
 					]
 				},
 				{
-					"stage": "出頭天",
+					"name": "出頭天",
 					"artists": [
 						{
 							"name": "Yaway-Mawring 雅維.茉芮",
@@ -492,7 +492,7 @@
 					]
 				},
 				{
-					"stage": "海波浪",
+					"name": "海波浪",
 					"artists": [
 						{
 							"name": "Rain and Picture",
@@ -532,7 +532,7 @@
 					]
 				},
 				{
-					"stage": "大雄丸",
+					"name": "大雄丸",
 					"artists": [
 						{
 							"name": "台灣通勤第一品牌",
@@ -552,7 +552,7 @@
 					]
 				},
 				{
-					"stage": "藍寶石",
+					"name": "藍寶石",
 					"artists": [
 						{
 							"name": "Ponay的原式Cover",
@@ -572,7 +572,7 @@
 					]
 				},
 				{
-					"stage": "青春夢",
+					"name": "青春夢",
 					"artists": [
 						{
 							"name": "吾橋有水",
@@ -597,7 +597,7 @@
 					]
 				},
 				{
-					"stage": "小港祭",
+					"name": "小港祭",
 					"artists": [
 						{
 							"name": "Da Wang",
