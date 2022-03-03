@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import ShowsContext, { useGetShowsString, useResetShows } from 'context/ShowsProvider';
+import { useGetShowsString, useResetShows } from 'context/ShowsProvider';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
@@ -112,7 +112,9 @@ const SaveButton = ({ onOpenSnack }) => {
 	const handleClick = async () => {
 		const data = btoa(getData());
 		try {
-			await navigator.clipboard.writeText(`${url.host}${url.pathname}#${data}`); // copy to clipboard
+			await navigator.clipboard.writeText(
+				`${url.host}${url.pathname}#${data}`
+			); // copy to clipboard
 			if (data !== '' || url.hash.substring(1) !== '') {
 				router.push(`${url.pathname}#${data}`);
 				localStorage.setItem(STORAGE_KEY.defaultHash, data);
@@ -182,17 +184,32 @@ export default function Home() {
 	return (
 		<StyledContainer>
 			<StyledButtonsContainer className={`${'day' + selectedDay}`}>
-				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
+				<DayButton
+					day={0}
+					selectedDay={selectedDay}
+					onClick={handleClick}
+				>
 					3/27
 				</DayButton>
-				<DayButton day={1} selectedDay={selectedDay} onClick={handleClick}>
+				<DayButton
+					day={1}
+					selectedDay={selectedDay}
+					onClick={handleClick}
+				>
 					3/28
 				</DayButton>
 			</StyledButtonsContainer>
 			<StyledTimeTable>
 				<TimeScale />
 				{shows.map((showsOfDay, index) => {
-					return <TableOfDay key={index} stages={showsOfDay.stages} day={index} selected={selectedDay} />;
+					return (
+						<TableOfDay
+							key={index}
+							stages={showsOfDay.stages}
+							day={index}
+							selected={selectedDay}
+						/>
+					);
 				})}
 			</StyledTimeTable>
 			<StyledBtnContainer>

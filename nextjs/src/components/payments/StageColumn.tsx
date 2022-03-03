@@ -5,8 +5,10 @@ import { styled } from '@mui/material/styles';
 
 import { palette } from 'styles/palette';
 import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from 'static';
+import moment, { Moment } from 'moment';
+import { IArtist, IStage } from 'types/show';
 
-const Styledcolumn = styled('div')(({ theme }) => ({
+const ColumnContainer = styled('div')(({ theme }) => ({
 	textAlign: 'center',
 	width: '7.4em',
 	[theme.breakpoints.down('md')]: {
@@ -62,31 +64,58 @@ const StyledFreeTimeScale = styled('div')(({ theme }) => ({
 	},
 }));
 
-const MovingTime = (props: { prevEndTime: Date; startTime: Date }) => {
+const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 	const { prevEndTime, startTime } = props;
-	const time = startTime.getTime() - prevEndTime.getTime();
-	const prevEndTimeMin = prevEndTime.getMinutes();
-	const height = time / MIN / 10;
 
-	if (time === 0) return null;
-	let scale = [];
-	for (let i = 0; i < height; i++) {
-		const theHour = (prevEndTimeMin + 10 + i * 10) % 60 === 0 ? 'theHour' : '';
-		scale.push(<StyledFreeTimeScale className={`${theHour}`} key={i}></StyledFreeTimeScale>);
+	const duration = moment.duration(startTime.diff(prevEndTime)).asMinutes();
+	const prevEndTimeMin = prevEndTime.minutes();
+	const height = duration / 10;
+
+	console.log(prevEndTime.format('HH:mm:ss'), startTime.format('HH:mm:ss'));
+
+	if (duration === 0) {
+		return null;
 	}
-	return scale;
+
+	return (
+		<>
+			{new Array(height).fill(undefined).map((_, index) => {
+				const theHour =
+					(prevEndTimeMin + 10 + index * 10) % 60 === 0
+						? 'theHour'
+						: '';
+				return (
+					<StyledFreeTimeScale
+						className={`${theHour}`}
+						key={index}
+					></StyledFreeTimeScale>
+				);
+			})}
+		</>
+	);
 };
 
-const ShowButton = ({ show, day, stageIndex, showIndex }) => {
+const ShowButton = (props: {
+	show: IArtist;
+	day: number;
+	stageIndex: number;
+	showIndex: number;
+}) => {
+	const { show, day, stageIndex, showIndex } = props;
+
 	const [active, setActive] = useState(false);
 	const handleSelectShow = useSelectShow();
 	const isIDExist = useIsIDExist();
 	const id = `${day}:${stageIndex}:${showIndex}`;
-	const { stage: stageColors, text: textColor, background: bgColor } = palette;
+	const {
+		stage: stageColors,
+		text: textColor,
+		background: bgColor,
+	} = palette;
 
-	const startTime = new Date(show.start);
-	const endTime = new Date(show.end);
-	const height = (endTime.getTime() - startTime.getTime()) / MIN / 10;
+	const startTime = moment(show.start);
+	const endTime = moment(show.end);
+	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
 
 	const handleClick = () => {
 		setActive((prev) => !prev);
@@ -101,17 +130,17 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	}, [isIDExist, id]);
 
 	useEffect(() => {
-		if (!handleSelectShow) return;
-
 		handleSelectShow(id, active);
-	}, [handleSelectShow, id, active]);
+	}, [id, active]);
 
 	return (
 		<StyledshowButton
 			className={`${id}`}
 			style={{
 				height: `${height * SCALE_UNIT}rem`,
-				backgroundColor: active ? stageColors[stageIndex].main : bgColor.paper,
+				backgroundColor: active
+					? stageColors[stageIndex].main
+					: bgColor.paper,
 				color: active ? textColor.secondary : textColor.primary,
 			}}
 			onClick={handleClick}
@@ -121,33 +150,55 @@ const ShowButton = ({ show, day, stageIndex, showIndex }) => {
 	);
 };
 
-export default function StageColumn({ stage, shows, day }) {
-	let prevEndTime = new Date(MEGA_START_TIME[day]);
-	let finalEndTime = new Date(MEGA_END_TIME[day]);
-	let prevShowTime = 0; // moving time + performance time
+export default function StageColumn(props: {
+	stage: IStage & { stageIndex: number };
+	shows: IArtist[];
+	day: number;
+}) {
+	const { stage, shows, day } = props;
+
+	const finalEndTime = moment(MEGA_END_TIME[day]);
+	const prevEndTimes = [
+		moment(MEGA_START_TIME[day]),
+		...shows.map((s) => moment(s.end)),
+	];
 	const stageColors = palette.stage;
 
 	if (shows) {
 		return (
-			<Styledcolumn>
-				<Styledhead sx={{ backgroundColor: `${stageColors[stage.index].main}` }}>{stage.stageName}</Styledhead>
+			<ColumnContainer>
+				<Styledhead
+					sx={{
+						backgroundColor: `${
+							stageColors[stage.stageIndex].main
+						}`,
+					}}
+				>
+					{stage.name}
+				</Styledhead>
 				{shows.map((show, index) => {
-					const start = new Date(show.start);
-					const end = new Date(show.end);
-					if (index !== 0) {
-						prevEndTime = new Date(prevEndTime.getTime() + prevShowTime);
-					}
-					prevShowTime = end.getTime() - prevEndTime.getTime();
+					const start = moment(show.start);
 
 					return (
 						<div key={index}>
-							<MovingTime prevEndTime={prevEndTime} startTime={start} />
-							<ShowButton show={show} day={day} stageIndex={stage.index} showIndex={index} />
+							<MovingTime
+								prevEndTime={prevEndTimes[index]}
+								startTime={start}
+							/>
+							<ShowButton
+								show={show}
+								day={day}
+								stageIndex={stage.stageIndex}
+								showIndex={index}
+							/>
 						</div>
 					);
 				})}
-				<MovingTime prevEndTime={new Date(prevEndTime.getTime() + prevShowTime)} startTime={finalEndTime} />
-			</Styledcolumn>
+				<MovingTime
+					prevEndTime={moment(shows[shows.length - 1].end)}
+					startTime={finalEndTime}
+				/>
+			</ColumnContainer>
 		);
 	}
 }

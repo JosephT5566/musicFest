@@ -20,7 +20,14 @@ export default function TableOfDay({ stages, day, selected }: props) {
 		<TableOfDayContainer sx={{ display: day === selected ? '' : 'none' }}>
 			{stages.map((stage, index) => {
 				const { name: stageName, artists } = stage;
-				return <StageColumn key={stageName} stage={{ stageName, index }} shows={artists} day={day} />;
+				return (
+					<StageColumn
+						key={stageName}
+						stage={{ ...stage, stageIndex: index }}
+						shows={artists}
+						day={day}
+					/>
+				);
 			})}
 		</TableOfDayContainer>
 	);
