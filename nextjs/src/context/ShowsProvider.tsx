@@ -26,24 +26,25 @@ export default function ShowsProvider({ children }: Props) {
 	const [selectedShows, setSelectedShows] = useState<string[]>([]);
 
 	const handleSelectShow = (id: string, active: boolean) => {
-		let storageValue = localStorage.getItem(STORAGE_KEY.shows)
-			? localStorage.getItem(STORAGE_KEY.shows).split(',')
-			: [];
+		console.log('execute handleSelectShow');
+
+		// let storageValue = localStorage.getItem(STORAGE_KEY.shows)
+		// 	? localStorage.getItem(STORAGE_KEY.shows).split(',')
+		// 	: [];
 		if (active) {
 			setSelectedShows((prev) => [...prev, id]);
 
-			localStorage.setItem(STORAGE_KEY.shows, JSON.stringify([...storageValue, id]));
+			// localStorage.setItem(STORAGE_KEY.shows, JSON.stringify([...storageValue, id]));
 		} else {
 			setSelectedShows((prev) => prev.filter((i) => i !== id));
 
-			const newValue = storageValue.filter((value) => value !== id);
-			localStorage.setItem(STORAGE_KEY.shows, JSON.stringify(newValue));
+			// const newValue = storageValue.filter((value) => value !== id);
+			// localStorage.setItem(STORAGE_KEY.shows, JSON.stringify(newValue));
 		}
 	};
 
 	const getShowsString = () => {
-		const keys = JSON.stringify(selectedShows);
-		return keys;
+		return selectedShows.length !== 0 ? selectedShows.join(',') : undefined;
 	};
 
 	const isIDExist = (id: string) => {
@@ -53,6 +54,10 @@ export default function ShowsProvider({ children }: Props) {
 	const resetShows = () => {
 		setSelectedShows([]);
 	};
+
+	// useEffect(() => {
+	// 	console.log('selectedShows', selectedShows.join(','));
+	// }, [selectedShows]);
 
 	useEffect(() => {
 		const hash = window.location.hash;
@@ -88,7 +93,14 @@ export default function ShowsProvider({ children }: Props) {
 
 	return (
 		<showsContext.Provider value={{ selectedShows }}>
-			<showsMethodsContext.Provider value={{ handleSelectShow, getShowsString, resetShows, isIDExist }}>
+			<showsMethodsContext.Provider
+				value={{
+					handleSelectShow,
+					getShowsString,
+					resetShows,
+					isIDExist,
+				}}
+			>
 				{children}
 			</showsMethodsContext.Provider>
 		</showsContext.Provider>
