@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
+import moment from 'moment';
 
 import { useGetShowsString } from 'context/ShowsProvider';
 
@@ -70,7 +71,7 @@ const StyledtimeBackdrop = styled(TimeBackdrop)(({ theme }) => ({
 	marginTop: `${0.5 * SCALE_UNIT}rem`,
 }));
 
-const StyledbaseLine = styled('div')({
+const BaseLineContainer = styled('div')({
 	width: '3.8em',
 	marginRight: '1em',
 });
@@ -123,66 +124,84 @@ const DayButton = ({ day, selectedDay, onClick, ...props }) => {
 };
 
 const BaseLine = () => {
-	const start = new Date(MEGA_START_TIME[0]);
-
-	let scale = [];
-	for (let i = 0; i < 63; i++) {
-		const time = new Date(start.getTime() + 10 * i * 60000);
-		const hh = time.getHours();
-		const mm = time.getMinutes();
-		if (mm === 0) {
-			scale.push(
-				<StyledscaleWithTime key={i} style={{ height: `${SCALE_UNIT}rem` }}>
-					<div className="text">{hh}:00</div>
-					<AdjustIcon className="icon" />
-				</StyledscaleWithTime>
-			);
-		} else {
-			scale.push(<Styledscale key={i} style={{ height: `${SCALE_UNIT}rem` }}></Styledscale>);
-		}
-	}
-	return <StyledbaseLine>{scale}</StyledbaseLine>;
+	return (
+		<BaseLineContainer>
+			{new Array(63).fill(undefined).map((_, index) => {
+				const time = moment(MEGA_START_TIME[0]).add(10 * index, 'm');
+				const mm = time.minute();
+				return mm === 0 ? (
+					<StyledscaleWithTime key={index} style={{ height: `${SCALE_UNIT}rem` }}>
+						<div className="text">{time.format('HH:mm')}</div>
+						<AdjustIcon className="icon" />
+					</StyledscaleWithTime>
+				) : (
+					<Styledscale key={index} style={{ height: `${SCALE_UNIT}rem` }}></Styledscale>
+				);
+			})}
+		</BaseLineContainer>
+	);
 };
 
+export interface ISelectedShows {
+	stageIndex: number;
+	showIndex: number;
+}
+
 export default function TimeLine() {
-	const [selectedDay, setSelectedDay] = useState('');
-	const [selectedShows, setSelectedShows] = useState([]);
+	const [selectedDay, setSelectedDay] = useState(0);
+	const [selectedShows, setSelectedShows] = useState<{ shows: ISelectedShows[] }[] | undefined>(
+		undefined
+	);
 	const getData = useGetShowsString();
 
-	const handleClick = (value) => {
+	const handleClick = (value: number) => {
 		setSelectedDay(value);
-		localStorage.setItem(STORAGE_KEY.day, value);
+		localStorage.setItem(STORAGE_KEY.day, value.toString());
 	};
 
 	useEffect(() => {
 		// GApageView(window.location.hostname + window.location.pathname);
-		setSelectedDay(localStorage.getItem(STORAGE_KEY.day));
+		const data = getData();
+
+		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
+		data && setSelectedShows(splitDataByDay(getData()));
 	}, []);
 
 	const splitDataByDay = (data: string) => {
-		const arr = data.split(',');
-		let orderedData = [];
-		arr.forEach((element) => {
-			const info = element.split(':');
-			const day = info[0];
-			const stageIndex = info[1];
-			const showIndex = info[2];
+		const ids = data.split(',');
 
-			while (!orderedData[day]) {
-				orderedData.push({ shows: [] });
-			}
-
-			orderedData[day].shows.push({ stageIndex, showIndex });
+		const infoArr = ids.map((id) => {
+			const info = id.split(':');
+			return {
+				day: info[0],
+				stageIndex: Number(info[1]),
+				showIndex: Number(info[2]),
+			};
 		});
-		return orderedData;
-	};
 
-	useEffect(() => {
-		const data = getData();
-		if (data) {
-			setSelectedShows(splitDataByDay(getData()));
-		}
-	}, [getData]);
+		console.log('infoArr', infoArr);
+
+		const daysArr = Array.from(new Set(infoArr.map((i) => i.day))).map((day) => ({
+			shows: infoArr.filter((i) => i.day === day),
+		}));
+
+		return daysArr;
+
+		// let orderedData = [];
+		// ids.forEach((element) => {
+		// 	const info = element.split(':');
+		// 	const day = info[0];
+		// 	const stageIndex = info[1];
+		// 	const showIndex = info[2];
+
+		// 	while (!orderedData[day]) {
+		// 		orderedData.push({ shows: [] });
+		// 	}
+
+		// 	orderedData[day].shows.push({ stageIndex, showIndex });
+		// });
+		// return orderedData;
+	};
 
 	return (
 		<StyledContainer>
@@ -197,16 +216,18 @@ export default function TimeLine() {
 			<Styledtimeline>
 				<StyledtimeBackdrop />
 				<BaseLine />
-				{selectedShows.map((selectedShowsOfDay, index) => {
-					return (
-						<TimeLineOfDay
-							key={index}
-							selectedShowsOfDay={selectedShowsOfDay.shows}
-							day={index}
-							selected={selectedDay}
-						/>
-					);
-				})}
+				{selectedShows
+					? selectedShows.map((selectedShowsOfDay, index) => {
+							return (
+								<TimeLineOfDay
+									key={index}
+									selectedShowsOfDay={selectedShowsOfDay.shows}
+									day={index}
+									selected={selectedDay}
+								/>
+							);
+					  })
+					: null}
 			</Styledtimeline>
 		</StyledContainer>
 	);

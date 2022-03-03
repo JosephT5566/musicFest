@@ -5,6 +5,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { shows } from 'assets/data/shows.json';
 import { palette } from 'styles/palette';
 import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from 'static';
+import { ISelectedShows } from '../../../pages/timeline';
 
 const StyledtableOfDay = styled('div')({
 	width: `calc(100vw - 1em - 3.8em)`,
@@ -93,8 +94,12 @@ const TimeLineButton = ({ showInfo, day }) => {
 	const top = (startTime.getTime() - megaStartTime.getTime()) / MIN / 10;
 	const height = (endTime.getTime() - startTime.getTime()) / MIN / 10;
 	const left = layer;
-	const startTimeString = `${startTime.getHours()}:${startTime.getMinutes() === 0 ? '00' : startTime.getMinutes()}`;
-	const endTimeString = `${endTime.getHours()}:${endTime.getMinutes() === 0 ? '00' : endTime.getMinutes()}`;
+	const startTimeString = `${startTime.getHours()}:${
+		startTime.getMinutes() === 0 ? '00' : startTime.getMinutes()
+	}`;
+	const endTimeString = `${endTime.getHours()}:${
+		endTime.getMinutes() === 0 ? '00' : endTime.getMinutes()
+	}`;
 
 	const handleClick = () => {
 		setActive((prev) => !prev);
@@ -127,7 +132,7 @@ const TimeLineButton = ({ showInfo, day }) => {
 				>
 					<StyledbtnTextContainer className={`${active}`}>
 						<StyledbtnTitle>{name}</StyledbtnTitle>
-						<div>{shows[day].stages[stageIndex].stage}</div>
+						<div>{shows[day].stages[stageIndex].name}</div>
 						<div>{startTimeString + ' - ' + endTimeString}</div>
 					</StyledbtnTextContainer>
 				</StyledtimelineBtn>
@@ -136,7 +141,12 @@ const TimeLineButton = ({ showInfo, day }) => {
 	);
 };
 
-export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
+export default function TimeLineOfDay(props: {
+	selectedShowsOfDay: ISelectedShows[];
+	day: number;
+	selected: number;
+}) {
+	const { selectedShowsOfDay, day, selected } = props;
 	const [, rerender] = useState(null);
 	const itemsRef = useRef([]);
 
@@ -145,6 +155,12 @@ export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
 	const height = (megaEndTime.getTime() - megaStartTime.getTime()) / MIN / 10;
 
 	useEffect(() => {
+		console.log('length', selectedShowsOfDay)
+		if (selectedShowsOfDay.length === 0) {
+			console.log('length is 0', selectedShowsOfDay.length)
+			return;
+		}
+
 		const checkLayer = (currentItem, currentLayer) => {
 			if (itemsRef.current.length === 0) {
 				return currentLayer;
@@ -169,8 +185,11 @@ export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
 
 		const setItemsInfo = () => {
 			selectedShowsOfDay.forEach((show) => {
+				console.log(show.stageIndex);
+				// console.log(shows[day].stages[show.stageIndex])
 				const showInfo = shows[day].stages[show.stageIndex].artists[show.showIndex];
 				const { name, start, end } = showInfo;
+
 				const startTime = new Date(start);
 				const endTime = new Date(end);
 				const stageIndex = show.stageIndex;
@@ -190,7 +209,12 @@ export default function TimeLineOfDay({ selectedShowsOfDay, day, selected }) {
 	}, [day, selectedShowsOfDay]);
 
 	return (
-		<StyledtableOfDay style={{ display: day === selected ? '' : 'none', height: `${height * SCALE_UNIT}rem` }}>
+		<StyledtableOfDay
+			style={{
+				display: day === selected ? '' : 'none',
+				height: `${height * SCALE_UNIT}rem`,
+			}}
+		>
 			{itemsRef.current.map((item, index) => {
 				return <TimeLineButton key={index} showInfo={item} day={day} />;
 			})}

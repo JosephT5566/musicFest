@@ -71,8 +71,6 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 	const prevEndTimeMin = prevEndTime.minutes();
 	const height = duration / 10;
 
-	console.log(prevEndTime.format('HH:mm:ss'), startTime.format('HH:mm:ss'));
-
 	if (duration === 0) {
 		return null;
 	}
