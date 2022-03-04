@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import moment from 'moment';
 
-import { useGetSelectedShowString } from 'context/ShowsProvider';
+import { useGetSelectedShow, useGetSelectedShowString } from 'context/ShowsProvider';
 
 import Container from '@mui/material/Container';
 import AdjustIcon from '@mui/icons-material/Adjust';
@@ -10,6 +10,7 @@ import TimeLineOfDay from 'components/payments/TimelineOfDay';
 import TimeBackdrop from 'components/payments/TimeBackdrop';
 import { MEGA_START_TIME, SCALE_UNIT } from 'static';
 import { STORAGE_KEY } from 'static';
+import programList from 'static/program/megaport2021';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
 	backgroundColor: theme.palette.background.default,
@@ -153,6 +154,21 @@ export default function TimeLine() {
 		undefined
 	);
 	const getData = useGetSelectedShowString();
+	const selectedIds = useGetSelectedShow();
+
+	const filteredPerfDays = programList.perfDays.map((prefDay) => {
+		return {
+			...prefDay,
+			stages: prefDay.stages
+				.map((stage) => {
+					return {
+						...stage,
+						artists: stage.artists.filter((artist) => selectedIds.includes(artist.id)),
+					};
+				})
+				.filter((stage) => stage.artists.length !== 0),
+		};
+	});
 
 	const handleClick = (value: number) => {
 		setSelectedDay(value);
