@@ -13,7 +13,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-import { shows } from 'assets/data/shows.json';
+import programList from 'static/program/megaport2021';
 import { STORAGE_KEY } from 'static';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
@@ -112,9 +112,7 @@ const SaveButton = ({ onOpenSnack }) => {
 	const handleClick = async () => {
 		const data = btoa(getData());
 		try {
-			await navigator.clipboard.writeText(
-				`${url.host}${url.pathname}#${data}`
-			); // copy to clipboard
+			await navigator.clipboard.writeText(`${url.host}${url.pathname}#${data}`); // copy to clipboard
 			if (data !== '' || url.hash.substring(1) !== '') {
 				router.push(`${url.pathname}#${data}`);
 				localStorage.setItem(STORAGE_KEY.defaultHash, data);
@@ -184,28 +182,20 @@ export default function Home() {
 	return (
 		<StyledContainer>
 			<StyledButtonsContainer className={`${'day' + selectedDay}`}>
-				<DayButton
-					day={0}
-					selectedDay={selectedDay}
-					onClick={handleClick}
-				>
+				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
 					3/27
 				</DayButton>
-				<DayButton
-					day={1}
-					selectedDay={selectedDay}
-					onClick={handleClick}
-				>
+				<DayButton day={1} selectedDay={selectedDay} onClick={handleClick}>
 					3/28
 				</DayButton>
 			</StyledButtonsContainer>
 			<StyledTimeTable>
 				<TimeScale />
-				{shows.map((showsOfDay, index) => {
+				{programList.perfDays.map((perfDay, index) => {
 					return (
 						<TableOfDay
 							key={index}
-							stages={showsOfDay.stages}
+							perfDay={perfDay}
 							day={index}
 							selected={selectedDay}
 						/>

@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import TimeScale from 'components/payments/TimeScale';
 import TableOfDay from 'components/payments/TableOfDay';
 
-import { IFest } from 'types/show';
+import { IProgramList } from 'types/show';
 
 const TimeTableContainer = styled('div')({
 	position: 'relative',
@@ -16,7 +16,7 @@ const TimeTableContainer = styled('div')({
 });
 
 interface props {
-	festival: IFest;
+	festival: IProgramList;
 	selectedDay: number;
 }
 
@@ -25,7 +25,7 @@ export default function TimeTable({ festival, selectedDay }: props) {
 		<TimeTableContainer>
 			<TimeScale />
 			{festival.perfDays.map((perfDay, index) => {
-				return <TableOfDay key={index} stages={perfDay.stages} day={index} selected={selectedDay} />;
+				return <TableOfDay key={index} perfDay={perfDay} day={index} selected={selectedDay} />;
 			})}
 		</TimeTableContainer>
 	);

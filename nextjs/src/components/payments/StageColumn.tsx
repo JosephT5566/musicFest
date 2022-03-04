@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useIsIDExist, useSelectShow } from 'context/ShowsProvider';
+import React from 'react';
+import { useGetSelectedShow, useSelectShow } from 'context/ShowsProvider';
+import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 import { styled } from '@mui/material/styles';
 
@@ -78,15 +79,9 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 	return (
 		<>
 			{new Array(height).fill(undefined).map((_, index) => {
-				const theHour =
-					(prevEndTimeMin + 10 + index * 10) % 60 === 0
-						? 'theHour'
-						: '';
+				const theHour = (prevEndTimeMin + 10 + index * 10) % 60 === 0 ? 'theHour' : '';
 				return (
-					<StyledFreeTimeScale
-						className={`${theHour}`}
-						key={index}
-					></StyledFreeTimeScale>
+					<StyledFreeTimeScale className={`${theHour}`} key={index}></StyledFreeTimeScale>
 				);
 			})}
 		</>
@@ -95,53 +90,26 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 
 const ShowButton = (props: {
 	show: IArtist;
-	day: number;
-	stageIndex: number;
-	showIndex: number;
+	buttonColor: SimplePaletteColorOptions;
+	active: boolean;
+	onClick: () => void;
 }) => {
-	const { show, day, stageIndex, showIndex } = props;
+	const { show, buttonColor, active, onClick } = props;
 
-	const [active, setActive] = useState(false);
-	const handleSelectShow = useSelectShow();
-	const isIDExist = useIsIDExist();
-	const id = `${day}:${stageIndex}:${showIndex}`;
-	const {
-		stage: stageColors,
-		text: textColor,
-		background: bgColor,
-	} = palette;
+	const { text: textColor, background: bgColor } = palette;
 
-	const startTime = moment(show.start);
-	const endTime = moment(show.end);
+	const startTime = moment(show.startTime);
+	const endTime = moment(show.endTime);
 	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
-
-	const handleClick = () => {
-		setActive((prev) => !prev);
-	};
-
-	// chack active first
-	useEffect(() => {
-		if (!isIDExist) return;
-
-		const isActive = isIDExist(id);
-		setActive(isActive);
-	}, [isIDExist, id]);
-
-	useEffect(() => {
-		handleSelectShow(id, active);
-	}, [id, active]);
 
 	return (
 		<StyledshowButton
-			className={`${id}`}
 			style={{
 				height: `${height * SCALE_UNIT}rem`,
-				backgroundColor: active
-					? stageColors[stageIndex].main
-					: bgColor.paper,
+				backgroundColor: active ? buttonColor.main : bgColor.paper,
 				color: active ? textColor.secondary : textColor.primary,
 			}}
-			onClick={handleClick}
+			onClick={onClick}
 		>
 			{show.name}
 		</StyledshowButton>
@@ -149,54 +117,52 @@ const ShowButton = (props: {
 };
 
 export default function StageColumn(props: {
-	stage: IStage & { stageIndex: number };
-	shows: IArtist[];
+	stage: IStage;
+	stageColor: SimplePaletteColorOptions;
 	day: number;
 }) {
-	const { stage, shows, day } = props;
+	const { stage, stageColor, day } = props;
+	const { artists } = stage;
+	const selectedIds = useGetSelectedShow();
+	const selectShow = useSelectShow();
 
 	const finalEndTime = moment(MEGA_END_TIME[day]);
-	const prevEndTimes = [
-		moment(MEGA_START_TIME[day]),
-		...shows.map((s) => moment(s.end)),
-	];
-	const stageColors = palette.stage;
+	const prevEndTimes = [moment(MEGA_START_TIME[day]), ...artists.map((s) => moment(s.endTime))];
 
-	if (shows) {
-		return (
-			<ColumnContainer>
-				<Styledhead
-					sx={{
-						backgroundColor: `${
-							stageColors[stage.stageIndex].main
-						}`,
-					}}
-				>
-					{stage.name}
-				</Styledhead>
-				{shows.map((show, index) => {
-					const start = moment(show.start);
+	const handleClickButton = (id: string) => {
+		selectShow(id);
+	};
 
-					return (
-						<div key={index}>
-							<MovingTime
-								prevEndTime={prevEndTimes[index]}
-								startTime={start}
-							/>
-							<ShowButton
-								show={show}
-								day={day}
-								stageIndex={stage.stageIndex}
-								showIndex={index}
-							/>
-						</div>
-					);
-				})}
-				<MovingTime
-					prevEndTime={moment(shows[shows.length - 1].end)}
-					startTime={finalEndTime}
-				/>
-			</ColumnContainer>
-		);
-	}
+	return (
+		<ColumnContainer>
+			<Styledhead
+				sx={{
+					backgroundColor: `${stageColor.main}`,
+				}}
+			>
+				{stage.name}
+			</Styledhead>
+			{artists.map((artist, index) => {
+				const start = moment(artist.startTime);
+
+				return (
+					<div key={index}>
+						<MovingTime prevEndTime={prevEndTimes[index]} startTime={start} />
+						<ShowButton
+							show={artist}
+							buttonColor={stageColor}
+							active={selectedIds.includes(artist.id)}
+							onClick={() => {
+								handleClickButton(artist.id);
+							}}
+						/>
+					</div>
+				);
+			})}
+			<MovingTime
+				prevEndTime={moment(artists[artists.length - 1].endTime)}
+				startTime={finalEndTime}
+			/>
+		</ColumnContainer>
+	);
 }
