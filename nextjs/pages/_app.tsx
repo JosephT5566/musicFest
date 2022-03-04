@@ -3,10 +3,12 @@ import { ThemeProvider } from '@mui/material/styles';
 import 'styles/globals.css';
 import theme from 'styles/theme';
 import ShowsProvider from 'context/ShowsProvider';
+import SnackbarProvider from 'context/SnackbarProvider';
 
 import Header from 'components/Header';
 import Navigation from 'view/layout/Navigation';
 import { STORAGE_KEY } from 'static';
+import Snackbar from 'components/shared/Snackbar';
 
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {
@@ -24,13 +26,16 @@ function MyApp({ Component, pageProps }) {
 		<React.Fragment>
 			<title>2021 大港開唱選擇器 Megaport Festival Selector</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
-			<ShowsProvider>
-				<ThemeProvider theme={theme}>
-					<Navigation />
-					<Header />
-					<Component {...pageProps} />
-				</ThemeProvider>
-			</ShowsProvider>
+			<SnackbarProvider>
+				<ShowsProvider>
+					<ThemeProvider theme={theme}>
+						<Navigation />
+						<Header />
+						<Component {...pageProps} />
+					</ThemeProvider>
+				</ShowsProvider>
+				<Snackbar />
+			</SnackbarProvider>
 		</React.Fragment>
 	);
 }
