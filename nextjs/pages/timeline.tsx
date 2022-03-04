@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import moment from 'moment';
 
-import { useGetShowsString } from 'context/ShowsProvider';
+import { useGetSelectedShowString } from 'context/ShowsProvider';
 
 import Container from '@mui/material/Container';
 import AdjustIcon from '@mui/icons-material/Adjust';
@@ -152,7 +152,7 @@ export default function TimeLine() {
 	const [selectedShows, setSelectedShows] = useState<{ shows: ISelectedShows[] }[] | undefined>(
 		undefined
 	);
-	const getData = useGetShowsString();
+	const getData = useGetSelectedShowString();
 
 	const handleClick = (value: number) => {
 		setSelectedDay(value);

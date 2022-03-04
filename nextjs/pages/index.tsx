@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { useGetShowsString, useResetShows } from 'context/ShowsProvider';
+import { useGetSelectedShow, useResetShows } from 'context/ShowsProvider';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
@@ -10,11 +10,10 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 
 import programList from 'static/program/megaport2021';
 import { STORAGE_KEY } from 'static';
+import { useOpenSnackbar } from 'context/SnackbarProvider';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
 	position: 'relative',
@@ -100,22 +99,19 @@ const StyledSaveBtn = styled(IconButton)(({ theme }) => ({
 	},
 }));
 
-const StyledAlertBar = styled(MuiAlert)(({ theme }) => ({
-	fontFamily: theme.typography.fontFamily,
-}));
+const SaveButton = (props: { onOpenSnack: () => void }) => {
+	const { onOpenSnack } = props;
+	const selectedShows = useGetSelectedShow();
 
-const SaveButton = ({ onOpenSnack }) => {
-	const getData = useGetShowsString();
 	const router = useRouter();
 	const url = useLocation();
 
 	const handleClick = async () => {
-		const data = btoa(getData());
+		const data = btoa(JSON.stringify(selectedShows));
 		try {
 			await navigator.clipboard.writeText(`${url.host}${url.pathname}#${data}`); // copy to clipboard
 			if (data !== '' || url.hash.substring(1) !== '') {
 				router.push(`${url.pathname}#${data}`);
-				localStorage.setItem(STORAGE_KEY.defaultHash, data);
 			}
 			onOpenSnack();
 		} catch (error) {
@@ -132,15 +128,12 @@ const SaveButton = ({ onOpenSnack }) => {
 
 const ResetButton = () => {
 	const resetData = useResetShows();
-	const url = useLocation();
+	// const url = useLocation();
 
 	const handleClick = () => {
 		resetData();
-		localStorage.removeItem(STORAGE_KEY.shows);
-
-		window.history.pushState(null, '', `${url.pathname}`);
-		window.location.reload();
-		localStorage.removeItem(STORAGE_KEY.defaultHash);
+		// window.history.pushState(null, '', `${url.pathname}`);
+		// window.location.reload();
 	};
 
 	return (
@@ -163,8 +156,8 @@ const DayButton = ({ day, selectedDay, onClick, ...props }) => {
 };
 
 export default function Home() {
-	const [openSnack, setOpenSnack] = useState(false);
 	const [selectedDay, setSelectedDay] = useState(0);
+	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
 		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
@@ -175,9 +168,9 @@ export default function Home() {
 		localStorage.setItem(STORAGE_KEY.day, value);
 	};
 
-	const handleOpenSnack = () => setOpenSnack(true);
-
-	const handleCloseSnack = () => setOpenSnack(false);
+	const handleOpenSnack = () => {
+		openSnackbar('success', '已複製網址，可加到書籤儲存。');
+	};
 
 	return (
 		<StyledContainer>
@@ -206,16 +199,6 @@ export default function Home() {
 				<SaveButton onOpenSnack={handleOpenSnack} />
 				<ResetButton />
 			</StyledBtnContainer>
-			<Snackbar
-				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-				open={openSnack}
-				autoHideDuration={1500}
-				onClose={handleCloseSnack}
-			>
-				<StyledAlertBar variant="filled" severity="success">
-					已複製網址，可加到書籤儲存。
-				</StyledAlertBar>
-			</Snackbar>
 		</StyledContainer>
 	);
 }

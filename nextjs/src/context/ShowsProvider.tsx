@@ -9,7 +9,7 @@ interface showsProps {
 
 interface showsMethodsProps {
 	handleSelectShow: (id: string) => void;
-	getShowsString: () => string;
+	getSelectedShowString: () => string;
 	resetShows: () => void;
 }
 
@@ -26,72 +26,51 @@ export default function ShowsProvider({ children }: Props) {
 
 	useEffect(() => {
 		const hash = window.location.hash;
-		const defaultHash = localStorage.getItem(STORAGE_KEY.defaultHash);
 		const storageValue = localStorage.getItem(STORAGE_KEY.shows);
 
-		const loadFromUrl = (encode: string) => {
+		if (hash) {
 			try {
-				const dec = atob(encode);
-				const selectedArr = dec.split(',');
-				setSelectedShows(selectedArr);
-
-				localStorage.setItem(STORAGE_KEY.defaultHash, encode);
+				const dec = atob(hash.substring(1));
+				setSelectedShows(JSON.parse(dec));
 			} catch (error) {
 				console.log('hash url decode err: ', error);
-
-				router.push(window.location.pathname);
 			}
-		};
+			router.push(window.location.pathname);
+			return;
+		}
 
-		const loadFromStorage = () => {
-			if (!storageValue) return;
-
-			setSelectedShows(storageValue.split(','));
-		};
-
-		if (hash !== '' && hash.substring(1) !== defaultHash) {
-			loadFromUrl(hash.substring(1));
-		} else {
-			loadFromStorage();
+		if (storageValue) {
+			JSON.parse(storageValue).length > 0 && setSelectedShows(JSON.parse(storageValue));
 		}
 	}, []);
 
+	useEffect(() => {
+		console.log('selectedShows', selectedShows);
+		localStorage.setItem(STORAGE_KEY.shows, JSON.stringify(selectedShows));
+	}, [selectedShows]);
+
 	const handleSelectShow = (id: string) => {
-		console.log('execute handleSelectShow');
+		// console.log('execute handleSelectShow');
 
-		// let storageValue = localStorage.getItem(STORAGE_KEY.shows)
-		// 	? localStorage.getItem(STORAGE_KEY.shows).split(',')
-		// 	: [];
-		if (!selectedShows.includes(id)) {
-			setSelectedShows((prev) => [...prev, id]);
-
-			// localStorage.setItem(STORAGE_KEY.shows, JSON.stringify([...storageValue, id]));
-		} else {
-			setSelectedShows((prev) => prev.filter((i) => i !== id));
-
-			// const newValue = storageValue.filter((value) => value !== id);
-			// localStorage.setItem(STORAGE_KEY.shows, JSON.stringify(newValue));
-		}
+		selectedShows.includes(id)
+			? setSelectedShows((prev) => prev.filter((i) => i !== id))
+			: setSelectedShows((prev) => [...prev, id]);
 	};
 
-	const getShowsString = () => {
-		return selectedShows.length !== 0 ? selectedShows.join(',') : undefined;
+	const getSelectedShowString = () => {
+		return selectedShows.length !== 0 ? JSON.stringify(selectedShows) : undefined;
 	};
 
 	const resetShows = () => {
 		setSelectedShows([]);
 	};
 
-	// useEffect(() => {
-	// 	console.log('selectedShows', selectedShows.join(','));
-	// }, [selectedShows]);
-
 	return (
 		<showsContext.Provider value={{ selectedShows }}>
 			<showsMethodsContext.Provider
 				value={{
 					handleSelectShow,
-					getShowsString,
+					getSelectedShowString,
 					resetShows,
 				}}
 			>
@@ -104,5 +83,5 @@ export default function ShowsProvider({ children }: Props) {
 export const useGetSelectedShow = () => useContext(showsContext).selectedShows;
 
 export const useSelectShow = () => useContext(showsMethodsContext).handleSelectShow;
-export const useGetShowsString = () => useContext(showsMethodsContext).getShowsString;
+export const useGetSelectedShowString = () => useContext(showsMethodsContext).getSelectedShowString;
 export const useResetShows = () => useContext(showsMethodsContext).resetShows;
