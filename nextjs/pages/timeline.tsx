@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import moment from 'moment';
 
-import { useGetSelectedShow, useGetSelectedShowString } from 'context/ShowsProvider';
+import { useGetSelectedShow, useGetSelectedShowString } from 'providers/ShowsProvider';
 
 import Container from '@mui/material/Container';
 import AdjustIcon from '@mui/icons-material/Adjust';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetSelectedShow, useSelectShow } from 'context/ShowsProvider';
+import { useGetSelectedShow, useSelectShow } from 'providers/ShowsProvider';
 import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 import { styled } from '@mui/material/styles';

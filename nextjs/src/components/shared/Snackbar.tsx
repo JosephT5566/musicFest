@@ -4,7 +4,7 @@ import WarningIcon from '@mui/icons-material/Error';
 import CheckIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Cancel';
 import { styled } from '@mui/material/styles';
-import { useCloseSnackbar, useSnackbarProps } from 'context/SnackbarProvider';
+import { useCloseSnackbar, useSnackbarProps } from 'providers/SnackbarProvider';
 
 const StyledSnackbar = styled(MaterialSnackbar)({
 	'& > div': {

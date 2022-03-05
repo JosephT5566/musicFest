@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import 'styles/globals.css';
 import theme from 'styles/theme';
-import ShowsProvider from 'context/ShowsProvider';
-import SnackbarProvider from 'context/SnackbarProvider';
+import ShowsProvider from 'providers/ShowsProvider';
+import SnackbarProvider from 'providers/SnackbarProvider';
 
 import Header from 'components/Header';
 import Navigation from 'view/layout/Navigation';
