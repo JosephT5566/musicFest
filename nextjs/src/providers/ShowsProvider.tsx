@@ -9,7 +9,6 @@ interface showsProps {
 
 interface showsMethodsProps {
 	handleSelectShow: (id: string) => void;
-	getSelectedShowString: () => string;
 	resetShows: () => void;
 }
 
@@ -57,10 +56,6 @@ export default function ShowsProvider({ children }: Props) {
 			: setSelectedShows((prev) => [...prev, id]);
 	};
 
-	const getSelectedShowString = () => {
-		return selectedShows.length !== 0 ? JSON.stringify(selectedShows) : undefined;
-	};
-
 	const resetShows = () => {
 		setSelectedShows([]);
 	};
@@ -70,7 +65,6 @@ export default function ShowsProvider({ children }: Props) {
 			<showsMethodsContext.Provider
 				value={{
 					handleSelectShow,
-					getSelectedShowString,
 					resetShows,
 				}}
 			>
@@ -83,5 +77,4 @@ export default function ShowsProvider({ children }: Props) {
 export const useGetSelectedShow = () => useContext(showsContext).selectedShows;
 
 export const useSelectShow = () => useContext(showsMethodsContext).handleSelectShow;
-export const useGetSelectedShowString = () => useContext(showsMethodsContext).getSelectedShowString;
 export const useResetShows = () => useContext(showsMethodsContext).resetShows;

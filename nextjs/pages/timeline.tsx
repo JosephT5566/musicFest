@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import moment from 'moment';
 
-import { useGetSelectedShow, useGetSelectedShowString } from 'providers/ShowsProvider';
+import { useGetSelectedShow } from 'providers/ShowsProvider';
 
 import Container from '@mui/material/Container';
 import AdjustIcon from '@mui/icons-material/Adjust';
@@ -150,23 +150,17 @@ export interface ISelectedShows {
 
 export default function TimeLine() {
 	const [selectedDay, setSelectedDay] = useState(0);
-	const [selectedShows, setSelectedShows] = useState<{ shows: ISelectedShows[] }[] | undefined>(
-		undefined
-	);
-	const getData = useGetSelectedShowString();
 	const selectedIds = useGetSelectedShow();
 
-	const filteredPerfDays = programList.perfDays.map((prefDay) => {
+	const filtedPerfDays = programList.perfDays.map((prefDay) => {
 		return {
 			...prefDay,
-			stages: prefDay.stages
-				.map((stage) => {
-					return {
-						...stage,
-						artists: stage.artists.filter((artist) => selectedIds.includes(artist.id)),
-					};
-				})
-				.filter((stage) => stage.artists.length !== 0),
+			stages: prefDay.stages.map((stage) => {
+				return {
+					...stage,
+					artists: stage.artists.filter((artist) => selectedIds.includes(artist.id)),
+				};
+			}),
 		};
 	});
 
@@ -177,47 +171,9 @@ export default function TimeLine() {
 
 	useEffect(() => {
 		// GApageView(window.location.hostname + window.location.pathname);
-		const data = getData();
 
 		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
-		data && setSelectedShows(splitDataByDay(getData()));
 	}, []);
-
-	const splitDataByDay = (data: string) => {
-		const ids = data.split(',');
-
-		const infoArr = ids.map((id) => {
-			const info = id.split(':');
-			return {
-				day: info[0],
-				stageIndex: Number(info[1]),
-				showIndex: Number(info[2]),
-			};
-		});
-
-		console.log('infoArr', infoArr);
-
-		const daysArr = Array.from(new Set(infoArr.map((i) => i.day))).map((day) => ({
-			shows: infoArr.filter((i) => i.day === day),
-		}));
-
-		return daysArr;
-
-		// let orderedData = [];
-		// ids.forEach((element) => {
-		// 	const info = element.split(':');
-		// 	const day = info[0];
-		// 	const stageIndex = info[1];
-		// 	const showIndex = info[2];
-
-		// 	while (!orderedData[day]) {
-		// 		orderedData.push({ shows: [] });
-		// 	}
-
-		// 	orderedData[day].shows.push({ stageIndex, showIndex });
-		// });
-		// return orderedData;
-	};
 
 	return (
 		<StyledContainer>
@@ -232,18 +188,16 @@ export default function TimeLine() {
 			<Styledtimeline>
 				<StyledtimeBackdrop />
 				<BaseLine />
-				{selectedShows
-					? selectedShows.map((selectedShowsOfDay, index) => {
-							return (
-								<TimeLineOfDay
-									key={index}
-									selectedShowsOfDay={selectedShowsOfDay.shows}
-									day={index}
-									selected={selectedDay}
-								/>
-							);
-					  })
-					: null}
+				{filtedPerfDays.map((perfDay, index) => {
+					return (
+						<TimeLineOfDay
+							key={index}
+							stages={perfDay.stages}
+							day={index}
+							selectedDay={selectedDay}
+						/>
+					);
+				})}
 			</Styledtimeline>
 		</StyledContainer>
 	);

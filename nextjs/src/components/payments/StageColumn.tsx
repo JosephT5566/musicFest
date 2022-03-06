@@ -5,7 +5,7 @@ import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { styled } from '@mui/material/styles';
 
 import { palette } from 'styles/palette';
-import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from 'static';
+import { MEGA_START_TIME, MEGA_END_TIME, SCALE_UNIT } from 'static';
 import moment, { Moment } from 'moment';
 import { IArtist, IStage } from 'types/show';
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { styled } from '@mui/material/styles';
+import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { shows } from 'assets/data/shows.json';
 import { palette } from 'styles/palette';
-import { MEGA_START_TIME, MEGA_END_TIME, MIN, SCALE_UNIT } from 'static';
-import { ISelectedShows } from '../../../pages/timeline';
+import { MEGA_START_TIME, MEGA_END_TIME, SCALE_UNIT } from 'static';
+import { IArtist, IStage } from 'types/show';
+import moment from 'moment';
 
 const StyledtableOfDay = styled('div')({
 	width: `calc(100vw - 1em - 3.8em)`,
@@ -84,22 +85,25 @@ const StyledbtnTitle = styled('div')({
 	width: '100%',
 });
 
-const TimeLineButton = ({ showInfo, day }) => {
+type ShowItem = IArtist & {
+	stageName: string;
+	layer: number;
+	itemColor: SimplePaletteColorOptions;
+};
+
+const TimeLineButton = (props: { showInfo: ShowItem; day: number }) => {
+	const { showInfo, day } = props;
 	const [active, setActive] = useState(false);
 
-	const { stage: stageColors, text: textColor } = palette;
-	const { name, startTime, endTime, layer, stageIndex } = showInfo;
-	const megaStartTime = new Date(MEGA_START_TIME[day]);
+	const { text: textColor } = palette;
+	const { name, startTime, endTime, layer, itemColor, stageName } = showInfo;
+	const megaStartTime = moment(MEGA_START_TIME[day]);
+	const startMoment = moment(startTime);
+	const endMoment = moment(endTime);
 
-	const top = (startTime.getTime() - megaStartTime.getTime()) / MIN / 10;
-	const height = (endTime.getTime() - startTime.getTime()) / MIN / 10;
+	const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
+	const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
 	const left = layer;
-	const startTimeString = `${startTime.getHours()}:${
-		startTime.getMinutes() === 0 ? '00' : startTime.getMinutes()
-	}`;
-	const endTimeString = `${endTime.getHours()}:${
-		endTime.getMinutes() === 0 ? '00' : endTime.getMinutes()
-	}`;
 
 	const handleClick = () => {
 		setActive((prev) => !prev);
@@ -126,14 +130,14 @@ const TimeLineButton = ({ showInfo, day }) => {
 						left: `${left + left * 1}em`,
 						minHeight: `${height * SCALE_UNIT}rem`,
 						height: `${height * SCALE_UNIT}rem`,
-						backgroundColor: stageColors[stageIndex].main,
+						backgroundColor: itemColor.main,
 						color: active ? textColor.primary : textColor.secondary,
 					}}
 				>
 					<StyledbtnTextContainer className={`${active}`}>
 						<StyledbtnTitle>{name}</StyledbtnTitle>
-						<div>{shows[day].stages[stageIndex].name}</div>
-						<div>{startTimeString + ' - ' + endTimeString}</div>
+						<div>{stageName}</div>
+						<div>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</div>
 					</StyledbtnTextContainer>
 				</StyledtimelineBtn>
 			</StyledtimelineBtnContainer>
@@ -142,81 +146,66 @@ const TimeLineButton = ({ showInfo, day }) => {
 };
 
 export default function TimeLineOfDay(props: {
-	selectedShowsOfDay: ISelectedShows[];
+	stages: IStage[];
 	day: number;
-	selected: number;
+	selectedDay: number;
 }) {
-	const { selectedShowsOfDay, day, selected } = props;
-	const [, rerender] = useState(null);
-	const itemsRef = useRef([]);
+	const { stages, day, selectedDay } = props;
 
-	const megaStartTime = new Date(MEGA_START_TIME[day]);
-	const megaEndTime = new Date(MEGA_END_TIME[day]);
-	const height = (megaEndTime.getTime() - megaStartTime.getTime()) / MIN / 10;
+	const megaStartTime = moment(MEGA_START_TIME[day]);
+	const megaEndTime = moment(MEGA_END_TIME[day]);
+	const height = moment.duration(megaEndTime.diff(megaStartTime)).asMinutes() / 10;
+	const layerHashRef = useRef<number[]>(new Array(Math.floor(height)).fill(0));
 
 	useEffect(() => {
-		console.log('length', selectedShowsOfDay)
-		if (selectedShowsOfDay.length === 0) {
-			console.log('length is 0', selectedShowsOfDay.length)
-			return;
-		}
+		// reset layerHashRef every re-render
+		layerHashRef.current = new Array(Math.floor(height)).fill(0);
+	});
 
-		const checkLayer = (currentItem, currentLayer) => {
-			if (itemsRef.current.length === 0) {
-				return currentLayer;
-			}
+	const filtedStages: ShowItem[][] = stages
+		.map((stage, index) =>
+			stage.artists.map((artist) => ({
+				stageName: stage.name,
+				itemColor: palette.stage[index],
+				layer: 0,
+				...artist,
+			}))
+		)
+		.filter((item) => item.length !== 0)
+		.map((stages) => {
+			return stages.map((item) => {
+				const startMoment = moment(item.startTime);
+				const endMoment = moment(item.endTime);
+				const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
+				const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
+				let layer = 0;
 
-			itemsRef.current.forEach((item) => {
-				if (item.layer !== currentLayer) {
-					// no matter if layer is different
-					return;
+				for (let i = top; i <= top + height; i++) {
+					layerHashRef.current[i] += 1;
+					if (layerHashRef.current[i] > layer) {
+						layer = layerHashRef.current[i];
+					}
 				}
-				if (
-					(currentItem.startTime.getTime() >= item.startTime.getTime() &&
-						currentItem.startTime.getTime() < item.endTime.getTime()) ||
-					(currentItem.endTime.getTime() > item.startTime.getTime() &&
-						currentItem.endTime.getTime() <= item.endTime.getTime())
-				) {
-					currentLayer = checkLayer(currentItem, currentLayer + 1);
-				}
+				// console.log('layerHashRef.current', layerHashRef.current);
+
+				return {
+					...item,
+					layer: layer - 1,
+				};
 			});
-			return currentLayer;
-		};
-
-		const setItemsInfo = () => {
-			selectedShowsOfDay.forEach((show) => {
-				console.log(show.stageIndex);
-				// console.log(shows[day].stages[show.stageIndex])
-				const showInfo = shows[day].stages[show.stageIndex].artists[show.showIndex];
-				const { name, start, end } = showInfo;
-
-				const startTime = new Date(start);
-				const endTime = new Date(end);
-				const stageIndex = show.stageIndex;
-				const currentItem = { name, startTime, endTime, stageIndex };
-				let layer = checkLayer(currentItem, 0);
-
-				itemsRef.current.push({ ...currentItem, layer });
-			});
-		};
-
-		if (itemsRef.current.length > 0) {
-			// avoid add itemRef repeatedly
-			return;
-		}
-		setItemsInfo();
-		rerender({});
-	}, [day, selectedShowsOfDay]);
+		});
 
 	return (
 		<StyledtableOfDay
 			style={{
-				display: day === selected ? '' : 'none',
+				display: day === selectedDay ? '' : 'none',
 				height: `${height * SCALE_UNIT}rem`,
 			}}
 		>
-			{itemsRef.current.map((item, index) => {
-				return <TimeLineButton key={index} showInfo={item} day={day} />;
+			{filtedStages.map((stage) => {
+				return stage.map((item) => (
+					<TimeLineButton key={item.id} showInfo={item} day={day} />
+				));
 			})}
 		</StyledtableOfDay>
 	);
