@@ -18,6 +18,8 @@ export interface IStage {
 }
 
 export interface IPerfDay {
+	dayStartTime: string;
+	dayEndTime: string;
 	stages: IStage[];
 }
 

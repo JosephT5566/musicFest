@@ -1,6 +1,8 @@
 import { IArtist, IPerfDay, IProgramList } from 'types/show';
 
 const day1: IPerfDay = {
+	dayStartTime: '2021-03-27T11:40',
+	dayEndTime: '2021-03-27T22:00',
 	stages: [
 		{
 			name: '南霸天',
@@ -362,6 +364,8 @@ const day1: IPerfDay = {
 };
 
 const day2: IPerfDay = {
+	dayStartTime: '2021-03-28T11:40',
+	dayEndTime: '2021-03-28T22:00',
 	stages: [
 		{
 			name: '南霸天',
