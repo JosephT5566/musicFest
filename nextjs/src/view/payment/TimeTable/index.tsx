@@ -1,8 +1,8 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 
-import TimeScale from 'components/payments/TimeScale';
-import TableOfDay from 'components/payments/TableOfDay';
+import TimeScale from './TimeScale';
+import TableOfDay from './TableOfDay';
 
 import { IProgramList } from 'types/show';
 

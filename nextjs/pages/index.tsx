@@ -4,8 +4,7 @@ import { useGetSelectedShow, useResetShows } from 'providers/ShowsProvider';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
-import TimeScale from 'components/payments/TimeScale';
-import TableOfDay from 'components/payments/TableOfDay';
+import TimeTable from 'view/payment/TimeTable';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
@@ -65,15 +64,6 @@ const StyledDayBtn = styled('button')(({ theme }) => ({
 		color: theme.palette.primary.main,
 	},
 }));
-
-const StyledTimeTable = styled('div')({
-	position: 'relative',
-	display: 'flex',
-	flexDirection: 'row',
-	marginBottom: '1em',
-	overflowX: 'scroll',
-	overflowY: 'hidden',
-});
 
 const StyledBtnContainer = styled('div')(({ theme }) => ({
 	display: 'flex',
@@ -182,19 +172,7 @@ export default function Home() {
 					3/28
 				</DayButton>
 			</StyledButtonsContainer>
-			<StyledTimeTable>
-				<TimeScale />
-				{programList.perfDays.map((perfDay, index) => {
-					return (
-						<TableOfDay
-							key={index}
-							perfDay={perfDay}
-							day={index}
-							selected={selectedDay}
-						/>
-					);
-				})}
-			</StyledTimeTable>
+			<TimeTable festival={programList} selectedDay={selectedDay} />
 			<StyledBtnContainer>
 				<SaveButton onOpenSnack={handleOpenSnack} />
 				<ResetButton />
