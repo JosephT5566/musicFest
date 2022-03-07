@@ -4,6 +4,10 @@ import { useGetSelectedShow, useResetShows } from 'providers/ShowsProvider';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
+import ButtonGroup from '@mui/material/ButtonGroup';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import TimelineIcon from '@mui/icons-material/Timeline';
+
 import TimeTable from 'view/payment/TimeTable';
 import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
@@ -14,6 +18,8 @@ import programList from 'assets/program/megaport2021';
 import { STORAGE_KEY } from 'constants/static';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
 import DaySelector from 'components/shared/DaySelector';
+import { Button } from '@mui/material';
+import TimeLine from 'view/payment/TimeLine';
 
 const StyledBtnContainer = styled('div')(({ theme }) => ({
 	display: 'flex',
@@ -83,8 +89,11 @@ const ResetButton = () => {
 	);
 };
 
-export default function Home() {
+type IMode = 'timetable' | 'timeline';
+
+export default function Megaport2021() {
 	const [selectedDay, setSelectedDay] = useState(0);
+	const [mode, setMode] = useState<IMode>('timetable');
 	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
@@ -102,12 +111,38 @@ export default function Home() {
 
 	return (
 		<PageContainer>
+			<ButtonGroup>
+				<Button
+					variant={mode === 'timetable' ? 'contained' : 'outlined'}
+					startIcon={<TableChartIcon />}
+					onClick={() => {
+						setMode('timetable');
+					}}
+				>
+					{'Time Table'}
+				</Button>
+				<Button
+					variant={mode === 'timeline' ? 'contained' : 'outlined'}
+					startIcon={<TimelineIcon />}
+					onClick={() => {
+						setMode('timeline');
+					}}
+				>
+					{'Time Line'}
+				</Button>
+			</ButtonGroup>
 			<DaySelector days={['3/27', '3/28']} selectedDay={selectedDay} onClick={handleClick} />
-			<TimeTable festival={programList} selectedDay={selectedDay} />
-			<StyledBtnContainer>
-				<SaveButton onOpenSnack={handleOpenSnack} />
-				<ResetButton />
-			</StyledBtnContainer>
+			{mode === 'timetable' ? (
+				<>
+					<TimeTable festival={programList} selectedDay={selectedDay} />
+					<StyledBtnContainer>
+						<SaveButton onOpenSnack={handleOpenSnack} />
+						<ResetButton />
+					</StyledBtnContainer>
+				</>
+			) : (
+				<TimeLine programList={programList} selectedDay={selectedDay} />
+			)}
 		</PageContainer>
 	);
 }
