@@ -5,7 +5,7 @@ import theme from 'styles/theme';
 import ShowsProvider from 'providers/ShowsProvider';
 import SnackbarProvider from 'providers/SnackbarProvider';
 
-import Header from 'components/Header';
+import Header from 'view/layout/Header';
 import Navigation from 'view/layout/Navigation';
 import { STORAGE_KEY } from 'static';
 import Snackbar from 'components/shared/Snackbar';
