@@ -60,6 +60,7 @@ export default function DaySelector({ days, selectedDay, onClick }: Props) {
 						// console.log(Number((e.target as HTMLButtonElement).value));
 						onClick(Number((e.target as HTMLButtonElement).value));
 					}}
+					key={index}
 				>
 					{day}
 				</StyledDayBtn>

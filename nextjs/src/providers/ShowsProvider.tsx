@@ -44,7 +44,7 @@ export default function ShowsProvider({ children }: Props) {
 	}, []);
 
 	useEffect(() => {
-		console.log('selectedShows', selectedShows);
+		// console.log('selectedShows', selectedShows);
 		localStorage.setItem(STORAGE_KEY.shows, JSON.stringify(selectedShows));
 	}, [selectedShows]);
 
