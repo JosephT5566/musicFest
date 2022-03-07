@@ -8,6 +8,7 @@ import SnackbarProvider from 'providers/SnackbarProvider';
 import Header from 'view/layout/Header';
 import Navigation from 'view/layout/Navigation';
 import Snackbar from 'components/shared/Snackbar';
+import { ContentContainer } from 'components/base/Container';
 
 import { STORAGE_KEY } from 'static';
 
@@ -32,7 +33,9 @@ function MyApp({ Component, pageProps }) {
 					<ThemeProvider theme={theme}>
 						<Navigation />
 						<Header />
-						<Component {...pageProps} />
+						<ContentContainer>
+							<Component {...pageProps} />
+						</ContentContainer>
 					</ThemeProvider>
 				</ShowsProvider>
 				<Snackbar />

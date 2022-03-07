@@ -1,10 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Container from '@mui/material/Container';
 
-const StyledmapPage = styled(Container)({
-	overflow: 'scroll',
-});
+import { PageContainer } from 'components/base/Container';
 
 const StyledmapImg = styled('img')(({ theme }) => ({
 	[theme.breakpoints.up('md')]: {
@@ -17,8 +14,12 @@ const StyledmapImg = styled('img')(({ theme }) => ({
 
 export default function Map() {
 	return (
-		<StyledmapPage>
+		<PageContainer
+			sx={{
+				overflow: 'scroll',
+			}}
+		>
 			<StyledmapImg src={'/megaport_map.jpg'} alt="mega map" />
-		</StyledmapPage>
+		</PageContainer>
 	);
 }

@@ -5,65 +5,15 @@ import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
 import TimeTable from 'view/payment/TimeTable';
-import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { PageContainer } from 'components/base/Container';
 
 import programList from 'static/program/megaport2021';
 import { STORAGE_KEY } from 'static';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
-
-const StyledContainer = styled(Container)(({ theme }) => ({
-	position: 'relative',
-	backgroundColor: theme.palette.background.default,
-}));
-
-const StyledButtonsContainer = styled('div')(({ theme }) => ({
-	position: 'sticky',
-	display: 'flex',
-	width: 'fit-content',
-	left: '50%',
-	transform: 'translateX(-50%)',
-	margin: '0.5em 0 1em',
-	'&::after': {
-		content: `''`,
-		position: 'absolute',
-		backgroundColor: theme.palette.primary.main,
-		borderRadius: '1em',
-		width: '1em',
-		height: '4px',
-		bottom: '0',
-		transition: '500ms',
-	},
-	'&.day0::after': {
-		left: '0%',
-	},
-	'&.day1::after': {
-		left: '50%',
-	},
-}));
-
-const StyledDayBtn = styled('button')(({ theme }) => ({
-	fontFamily: theme.typography.fontFamily,
-	position: 'relative',
-	border: 'none',
-	fontSize: '1em',
-	backgroundColor: theme.palette.background.default,
-	borderRadius: '0.6em',
-	padding: '0.5em 0',
-	marginRight: '1.5em',
-	'&:hover': {
-		cursor: 'pointer',
-		color: theme.palette.primary.main,
-	},
-	'&:focus': {
-		outline: '0',
-	},
-	'&.true': {
-		color: theme.palette.primary.main,
-	},
-}));
+import DaySelector from 'components/shared/DaySelector';
 
 const StyledBtnContainer = styled('div')(({ theme }) => ({
 	display: 'flex',
@@ -133,18 +83,6 @@ const ResetButton = () => {
 	);
 };
 
-const DayButton = ({ day, selectedDay, onClick, ...props }) => {
-	const active = day === selectedDay ? true : false;
-
-	const handleClick = () => onClick(day);
-
-	return (
-		<StyledDayBtn className={`${active}`} onClick={handleClick}>
-			{props.children}
-		</StyledDayBtn>
-	);
-};
-
 export default function Home() {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const openSnackbar = useOpenSnackbar();
@@ -153,9 +91,9 @@ export default function Home() {
 		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
 	}, []);
 
-	const handleClick = (value) => {
+	const handleClick = (value: number) => {
 		setSelectedDay(value);
-		localStorage.setItem(STORAGE_KEY.day, value);
+		localStorage.setItem(STORAGE_KEY.day, value.toString());
 	};
 
 	const handleOpenSnack = () => {
@@ -163,20 +101,13 @@ export default function Home() {
 	};
 
 	return (
-		<StyledContainer>
-			<StyledButtonsContainer className={`${'day' + selectedDay}`}>
-				<DayButton day={0} selectedDay={selectedDay} onClick={handleClick}>
-					3/27
-				</DayButton>
-				<DayButton day={1} selectedDay={selectedDay} onClick={handleClick}>
-					3/28
-				</DayButton>
-			</StyledButtonsContainer>
+		<PageContainer>
+			<DaySelector days={['3/27', '3/28']} selectedDay={selectedDay} onClick={handleClick} />
 			<TimeTable festival={programList} selectedDay={selectedDay} />
 			<StyledBtnContainer>
 				<SaveButton onOpenSnack={handleOpenSnack} />
 				<ResetButton />
 			</StyledBtnContainer>
-		</StyledContainer>
+		</PageContainer>
 	);
 }

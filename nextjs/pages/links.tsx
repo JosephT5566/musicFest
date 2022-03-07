@@ -1,15 +1,8 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Container from '@mui/material/Container';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
-
-const StyledlinkPage = styled(Container)(({ theme }) => ({
-	display: 'flex',
-	flexDirection: 'column',
-	padding: '1em 0',
-	minHeight: `calc(100vh - ${theme.layout.header.height} - 2em)`,
-}));
+import { PageContainer } from 'components/base/Container';
 
 const StyledpreviewContainer = styled('div')(({ theme }) => ({
 	paddingBottom: '1em',
@@ -88,7 +81,13 @@ const Styledpreview = styled('a')(({ theme }) => ({
 	},
 }));
 
-const PreviewLink = (props: { url: string; title: string; description: string; image: string; icon?: string }) => {
+const PreviewLink = (props: {
+	url: string;
+	title: string;
+	description: string;
+	image: string;
+	icon?: string;
+}) => {
 	const { url, title, description, image, icon } = props;
 	const IconImg = () => (icon ? <img src={icon} alt="icon" /> : null);
 
@@ -109,7 +108,7 @@ const PreviewLink = (props: { url: string; title: string; description: string; i
 
 export default function Links() {
 	return (
-		<StyledlinkPage>
+		<PageContainer>
 			<StyledpreviewContainer>
 				<div className="preview">
 					<PreviewLink
@@ -134,10 +133,14 @@ export default function Links() {
 				</div>
 			</StyledpreviewContainer>
 			<StylediconsContainer>
-				<a href="https://github.com/JosephT5566/musicFest" target="_blank" rel="noopener noreferrer">
+				<a
+					href="https://github.com/JosephT5566/musicFest"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					<StyledGitHubIcon />
 				</a>
 			</StylediconsContainer>
-		</StyledlinkPage>
+		</PageContainer>
 	);
 }

@@ -7,6 +7,7 @@ import TableOfDay from './TableOfDay';
 import { IProgramList } from 'types/show';
 
 const TimeTableContainer = styled('div')({
+	width: '100%',
 	position: 'relative',
 	display: 'flex',
 	flexDirection: 'row',
@@ -25,7 +26,9 @@ export default function TimeTable({ festival, selectedDay }: props) {
 		<TimeTableContainer>
 			<TimeScale />
 			{festival.perfDays.map((perfDay, index) => {
-				return <TableOfDay key={index} perfDay={perfDay} day={index} selected={selectedDay} />;
+				return (
+					<TableOfDay key={index} perfDay={perfDay} day={index} selected={selectedDay} />
+				);
 			})}
 		</TimeTableContainer>
 	);
