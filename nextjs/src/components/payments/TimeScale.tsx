@@ -11,7 +11,7 @@ const TimeScaleContainer = styled('div')(({ theme }) => ({
 	paddingRight: '0.5em',
 	zIndex: 10,
 	position: 'sticky',
-	left: '-1em',
+	left: '0',
 }));
 
 const Styledscale = styled('div')(({ theme }) => ({
