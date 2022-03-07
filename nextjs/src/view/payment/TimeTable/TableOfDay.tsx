@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 
-import StageColumn from 'components/payments/StageColumn';
+import StageColumn from 'view/payment/TimeTable/StageColumn';
 import { IPerfDay } from 'types/show';
 import { palette } from 'styles/palette';
 
