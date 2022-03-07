@@ -68,10 +68,6 @@ const StyleddayBtn = styled('button')(({ theme }) => ({
 	},
 }));
 
-const StyledtimeBackdrop = styled(TimeBackdrop)(({ theme }) => ({
-	marginTop: `${0.5 * SCALE_UNIT}rem`,
-}));
-
 const BaseLineContainer = styled('div')({
 	width: '3.8em',
 	marginRight: '1em',
@@ -186,7 +182,7 @@ export default function TimeLine() {
 				</DayButton>
 			</StyleddayBtnContainer>
 			<Styledtimeline>
-				<StyledtimeBackdrop />
+				<TimeBackdrop selectedDay={selectedDay} />
 				<BaseLine />
 				{filtedPerfDays.map((perfDay, index) => {
 					return (

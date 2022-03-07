@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 
-import { MEGA_START_TIME, MEGA_END_TIME, STORAGE_KEY, MIN, SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'static';
+import programList from 'static/program/megaport2021';
+import moment from 'moment';
 
 const StyledtimeBackdrop = styled('div')({
 	position: 'absolute',
 	top: '0',
+	marginTop: `${0.5 * SCALE_UNIT}rem`,
 	width: '100%',
 	height: '2px',
 	backgroundColor: 'black',
@@ -26,23 +29,23 @@ const StyledcurrentTime = styled('div')(({ theme }) => ({
 
 const INTERVAL = 1000 * 10; // 10 sec
 
-export default function TimeBackdrop(props: { className?: string }) {
-	const { className } = props;
-	const [time, setTime] = useState(new Date());
-	const [day, setDay] = useState(0);
+export default function TimeBackdrop(props: { selectedDay: number }) {
+	const { selectedDay } = props;
+	const [time, setTime] = useState(moment());
 
 	// const day = localStorage.getItem(STORAGE_KEY.day);
-	const todayStartTime = new Date(MEGA_START_TIME[day]);
-	const todayEndTime = new Date(MEGA_END_TIME[day]);
+	const todayStartTime = moment(programList.perfDays[selectedDay].dayStartTime);
+	const todayEndTime = moment(programList.perfDays[selectedDay].dayEndTime);
 
-	const isToday = () => time.getTime() > todayStartTime.getTime() && time.getTime() < todayEndTime.getTime();
+	const isToday = () => {
+		return time.isBetween(todayStartTime, todayEndTime);
+	};
 
-	const top = isToday() ? (time.getTime() - todayStartTime.getTime()) / MIN / 10 : 0;
+	const top = isToday() ? moment.duration(time.diff(todayStartTime)).asMinutes() / 10 : 0;
 
 	useEffect(() => {
-		setDay(localStorage.getItem(STORAGE_KEY.day));
 		const intervalID = setInterval(() => {
-			setTime(new Date());
+			setTime(moment());
 		}, INTERVAL);
 
 		return () => {
@@ -50,20 +53,15 @@ export default function TimeBackdrop(props: { className?: string }) {
 		};
 	}, []);
 
-	if (isToday()) {
-		return (
+	return (
+		isToday() && (
 			<StyledtimeBackdrop
-				className={`${className}`}
 				sx={{
 					top: `${top * SCALE_UNIT}rem`,
 				}}
 			>
-				<StyledcurrentTime>
-					{time.getHours()}:{time.getMinutes().toString().padStart(2, '0')}
-				</StyledcurrentTime>
+				<StyledcurrentTime>{time.format('HH:mm')}</StyledcurrentTime>
 			</StyledtimeBackdrop>
-		);
-	} else {
-		return null;
-	}
+		)
+	);
 }
