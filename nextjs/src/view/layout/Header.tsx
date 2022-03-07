@@ -1,18 +1,17 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 
-import Container from '@mui/material/Container';
-
-const StyledHeader = styled(Container)(({ theme }) => ({
+const StyledHeader = styled('div')(({ theme }) => ({
+	height: theme.layout.header.height,
+	backgroundColor: theme.palette.secondary.main,
 	display: 'flex',
 	alignItems: 'center',
-	height: theme.layout.header.height,
-	padding: '1em',
+	padding: '1em 2em',
 	paddingRight: '4em',
-	backgroundColor: theme.palette.secondary.main,
 
 	'& a': {
 		display: 'flex',
+		gap: '1em',
 		alignItems: 'center',
 		height: '100%',
 		textDecoration: 'none',
@@ -21,8 +20,7 @@ const StyledHeader = styled(Container)(({ theme }) => ({
 			color: theme.palette.primary.main,
 		},
 		'& img': {
-			height: '90%',
-			padding: '0 1em',
+			height: '100%',
 		},
 	},
 }));
