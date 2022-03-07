@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { STORAGE_KEY } from 'static';
+import { STORAGE_KEY } from 'constants/static';
 
 interface showsProps {
 	selectedShows: string[];

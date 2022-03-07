@@ -4,10 +4,10 @@ import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { palette } from 'styles/palette';
-import { SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
 import moment from 'moment';
-import programList from 'static/program/megaport2021';
+import programList from 'assets/program/megaport2021';
 
 const StyledtableOfDay = styled('div')({
 	width: `calc(100vw - 1em - 3.8em)`,

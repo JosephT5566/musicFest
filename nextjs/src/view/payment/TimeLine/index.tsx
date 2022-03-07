@@ -7,7 +7,7 @@ import TimeBackdrop from './TimeBackdrop';
 import TimeLineOfDay from './TimelineOfDay';
 
 import { useGetSelectedShow } from 'providers/ShowsProvider';
-import { SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'constants/static';
 import { IProgramList } from 'types/show';
 
 const Styledtimeline = styled('div')({

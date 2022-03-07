@@ -3,8 +3,8 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 
 import moment from 'moment';
-import { SCALE_UNIT } from 'static';
-import programList from 'static/program/megaport2021';
+import { SCALE_UNIT } from 'constants/static';
+import programList from 'assets/program/megaport2021';
 
 const TimeScaleContainer = styled('div')(({ theme }) => ({
 	paddingTop: `calc(${theme.layout.tableHeadHeight} + ${theme.layout.tableHeadMarginBottom})`,

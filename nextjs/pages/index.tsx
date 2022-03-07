@@ -10,8 +10,8 @@ import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { PageContainer } from 'components/base/Container';
 
-import programList from 'static/program/megaport2021';
-import { STORAGE_KEY } from 'static';
+import programList from 'assets/program/megaport2021';
+import { STORAGE_KEY } from 'constants/static';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
 import DaySelector from 'components/shared/DaySelector';
 

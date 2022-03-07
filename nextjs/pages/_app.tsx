@@ -10,7 +10,7 @@ import Navigation from 'view/layout/Navigation';
 import Snackbar from 'components/shared/Snackbar';
 import { ContentContainer } from 'components/base/Container';
 
-import { STORAGE_KEY } from 'static';
+import { STORAGE_KEY } from 'constants/static';
 
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {

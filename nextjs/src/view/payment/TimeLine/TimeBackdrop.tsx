@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 
-import { SCALE_UNIT } from 'static';
-import programList from 'static/program/megaport2021';
+import { SCALE_UNIT } from 'constants/static';
+import programList from 'assets/program/megaport2021';
 import moment from 'moment';
 
 const StyledtimeBackdrop = styled('div')({

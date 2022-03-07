@@ -5,10 +5,10 @@ import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { styled } from '@mui/material/styles';
 
 import { palette } from 'styles/palette';
-import { SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'constants/static';
 import moment, { Moment } from 'moment';
 import { IArtist, IStage } from 'types/show';
-import programList from 'static/program/megaport2021';
+import programList from 'assets/program/megaport2021';
 
 const ColumnContainer = styled('div')(({ theme }) => ({
 	textAlign: 'center',

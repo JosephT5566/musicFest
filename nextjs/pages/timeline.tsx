@@ -4,8 +4,8 @@ import DaySelector from 'components/shared/DaySelector';
 import { PageContainer } from 'components/base/Container';
 import TimeLine from 'view/payment/TimeLine';
 
-import programList from 'static/program/megaport2021';
-import { STORAGE_KEY } from 'static';
+import programList from 'assets/program/megaport2021';
+import { STORAGE_KEY } from 'constants/static';
 
 export interface ISelectedShows {
 	stageIndex: number;
