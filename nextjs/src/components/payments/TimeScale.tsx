@@ -3,7 +3,8 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 
 import moment from 'moment';
-import { MEGA_START_TIME, SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'static';
+import programList from 'static/program/megaport2021';
 
 const TimeScaleContainer = styled('div')(({ theme }) => ({
 	paddingTop: `calc(${theme.layout.tableHeadHeight} + ${theme.layout.tableHeadMarginBottom})`,
@@ -42,13 +43,11 @@ export default function TimeScale() {
 	return (
 		<TimeScaleContainer>
 			{new Array(62).fill(undefined).map((_, index) => {
-				const time = moment(MEGA_START_TIME[0]).add(10 * index, 'm');
+				const time = moment(programList.perfDays[0].dayStartTime).add(10 * index, 'm');
 
 				return (
 					<Styledscale key={index}>
-						<Styledtext>
-							{time.format('HH:mm')}
-						</Styledtext>
+						<Styledtext>{time.format('HH:mm')}</Styledtext>
 					</Styledscale>
 				);
 			})}

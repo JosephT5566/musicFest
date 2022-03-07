@@ -5,9 +5,10 @@ import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { styled } from '@mui/material/styles';
 
 import { palette } from 'styles/palette';
-import { MEGA_START_TIME, MEGA_END_TIME, SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'static';
 import moment, { Moment } from 'moment';
 import { IArtist, IStage } from 'types/show';
+import programList from 'static/program/megaport2021';
 
 const ColumnContainer = styled('div')(({ theme }) => ({
 	textAlign: 'center',
@@ -68,11 +69,10 @@ const StyledFreeTimeScale = styled('div')(({ theme }) => ({
 const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 	const { prevEndTime, startTime } = props;
 
-	const duration = moment.duration(startTime.diff(prevEndTime)).asMinutes();
+	const height = moment.duration(startTime.diff(prevEndTime)).asMinutes() / 10;
 	const prevEndTimeMin = prevEndTime.minutes();
-	const height = duration / 10;
 
-	if (duration === 0) {
+	if (height === 0) {
 		return null;
 	}
 
@@ -126,8 +126,11 @@ export default function StageColumn(props: {
 	const selectedIds = useGetSelectedShow();
 	const selectShow = useSelectShow();
 
-	const finalEndTime = moment(MEGA_END_TIME[day]);
-	const prevEndTimes = [moment(MEGA_START_TIME[day]), ...artists.map((s) => moment(s.endTime))];
+	const finalEndTime = moment(programList.perfDays[day].dayEndTime);
+	const prevEndTimes = [
+		moment(programList.perfDays[day].dayStartTime),
+		...artists.map((s) => moment(s.endTime)),
+	];
 
 	const handleClickButton = (id: string) => {
 		selectShow(id);

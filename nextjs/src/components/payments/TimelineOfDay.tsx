@@ -4,9 +4,10 @@ import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { palette } from 'styles/palette';
-import { MEGA_START_TIME, MEGA_END_TIME, SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'static';
 import { IArtist, IStage } from 'types/show';
 import moment from 'moment';
+import programList from 'static/program/megaport2021';
 
 const StyledtableOfDay = styled('div')({
 	width: `calc(100vw - 1em - 3.8em)`,
@@ -97,7 +98,7 @@ const TimeLineButton = (props: { showInfo: ShowItem; day: number }) => {
 
 	const { text: textColor } = palette;
 	const { name, startTime, endTime, layer, itemColor, stageName } = showInfo;
-	const megaStartTime = moment(MEGA_START_TIME[day]);
+	const megaStartTime = moment(programList.perfDays[day].dayStartTime);
 	const startMoment = moment(startTime);
 	const endMoment = moment(endTime);
 
@@ -152,8 +153,8 @@ export default function TimeLineOfDay(props: {
 }) {
 	const { stages, day, selectedDay } = props;
 
-	const megaStartTime = moment(MEGA_START_TIME[day]);
-	const megaEndTime = moment(MEGA_END_TIME[day]);
+	const megaStartTime = moment(programList.perfDays[day].dayStartTime);
+	const megaEndTime = moment(programList.perfDays[day].dayEndTime);
 	const height = moment.duration(megaEndTime.diff(megaStartTime)).asMinutes() / 10;
 	const layerHashRef = useRef<number[]>(new Array(Math.floor(height)).fill(0));
 

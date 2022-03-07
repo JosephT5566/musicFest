@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import TimeLineOfDay from 'components/payments/TimelineOfDay';
 import TimeBackdrop from 'components/payments/TimeBackdrop';
-import { MEGA_START_TIME, SCALE_UNIT } from 'static';
+import { SCALE_UNIT } from 'static';
 import { STORAGE_KEY } from 'static';
 import programList from 'static/program/megaport2021';
 
@@ -124,7 +124,7 @@ const BaseLine = () => {
 	return (
 		<BaseLineContainer>
 			{new Array(63).fill(undefined).map((_, index) => {
-				const time = moment(MEGA_START_TIME[0]).add(10 * index, 'm');
+				const time = moment(programList.perfDays[0].dayStartTime).add(10 * index, 'm');
 				const mm = time.minute();
 				return mm === 0 ? (
 					<StyledscaleWithTime key={index} style={{ height: `${SCALE_UNIT}rem` }}>
