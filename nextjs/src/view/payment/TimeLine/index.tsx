@@ -10,7 +10,8 @@ import { useGetSelectedShow } from 'providers/ShowsProvider';
 import { SCALE_UNIT } from 'constants/static';
 import { IProgramList } from 'types/show';
 
-const Styledtimeline = styled('div')({
+const TimelineContainer = styled('div')({
+	width: '100%',
 	position: 'relative',
 	display: 'flex',
 	marginBottom: '1em',
@@ -98,7 +99,7 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 	});
 
 	return (
-		<Styledtimeline>
+		<TimelineContainer>
 			<TimeBackdrop selectedDay={selectedDay} />
 			<BaseLine programList={programList} />
 			{filtedPerfDays.map((perfDay, index) => {
@@ -111,6 +112,6 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 					/>
 				);
 			})}
-		</Styledtimeline>
+		</TimelineContainer>
 	);
 }
