@@ -4,22 +4,33 @@ import { useGetSelectedShow, useResetShows } from 'providers/ShowsProvider';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
-import ButtonGroup from '@mui/material/ButtonGroup';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import TimelineIcon from '@mui/icons-material/Timeline';
-
 import TimeTable from 'view/payment/TimeTable';
+import TimeLine from 'view/payment/TimeLine';
 import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { PageContainer } from 'components/base/Container';
+import DaySelector from 'components/shared/DaySelector';
+import DisplayModeSelector from 'components/shared/DisplayModeSelector';
+
+import { IDisplayMode } from 'types/displayMode';
+import { useOpenSnackbar } from 'providers/SnackbarProvider';
 
 import programList from 'assets/program/megaport2021';
 import { STORAGE_KEY } from 'constants/static';
-import { useOpenSnackbar } from 'providers/SnackbarProvider';
-import DaySelector from 'components/shared/DaySelector';
-import { Button } from '@mui/material';
-import TimeLine from 'view/payment/TimeLine';
+
+const SelectorsContainer = styled('div')(({ theme }) => ({
+	width: '100%',
+	display: 'flex',
+	justifyContent: 'space-between',
+	paddingInline: '2rem',
+
+	[theme.breakpoints.down('md')]: {
+		flexDirection: 'column',
+		gap: '0.5rem',
+		alignItems: 'center',
+	},
+}));
 
 const StyledBtnContainer = styled('div')(({ theme }) => ({
 	display: 'flex',
@@ -89,11 +100,9 @@ const ResetButton = () => {
 	);
 };
 
-type IMode = 'timetable' | 'timeline';
-
 export default function Megaport2021() {
 	const [selectedDay, setSelectedDay] = useState(0);
-	const [mode, setMode] = useState<IMode>('timetable');
+	const [mode, setMode] = useState<IDisplayMode>('timetable');
 	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
@@ -111,27 +120,14 @@ export default function Megaport2021() {
 
 	return (
 		<PageContainer>
-			<ButtonGroup>
-				<Button
-					variant={mode === 'timetable' ? 'contained' : 'outlined'}
-					startIcon={<TableChartIcon />}
-					onClick={() => {
-						setMode('timetable');
-					}}
-				>
-					{'Time Table'}
-				</Button>
-				<Button
-					variant={mode === 'timeline' ? 'contained' : 'outlined'}
-					startIcon={<TimelineIcon />}
-					onClick={() => {
-						setMode('timeline');
-					}}
-				>
-					{'Time Line'}
-				</Button>
-			</ButtonGroup>
-			<DaySelector days={['3/27', '3/28']} selectedDay={selectedDay} onClick={handleClick} />
+			<SelectorsContainer>
+				<DisplayModeSelector mode={mode} setMode={setMode} />
+				<DaySelector
+					days={['3/27', '3/28']}
+					selectedDay={selectedDay}
+					onClick={handleClick}
+				/>
+			</SelectorsContainer>
 			{mode === 'timetable' ? (
 				<>
 					<TimeTable festival={programList} selectedDay={selectedDay} />
