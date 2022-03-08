@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { PageContainer } from 'components/base/Container';
+import { H1 } from 'components/base/Typography';
 import DaySelector from 'components/shared/DaySelector';
 import DisplayModeSelector from 'components/shared/DisplayModeSelector';
 
@@ -18,6 +19,7 @@ import { useOpenSnackbar } from 'providers/SnackbarProvider';
 
 import programList from 'assets/program/megaport2021';
 import { STORAGE_KEY } from 'constants/static';
+import moment from 'moment';
 
 const SelectorsContainer = styled('div')(({ theme }) => ({
 	width: '100%',
@@ -120,10 +122,11 @@ export default function Megaport2021() {
 
 	return (
 		<PageContainer>
+			<H1 sx={{ fontSize: '2rem' }}>{'2021 MEGAPORT'}</H1>
 			<SelectorsContainer>
 				<DisplayModeSelector mode={mode} setMode={setMode} />
 				<DaySelector
-					days={['3/27', '3/28']}
+					days={programList.perfDays.map((d) => moment(d.dayStartTime).format('MM/DD'))}
 					selectedDay={selectedDay}
 					onClick={handleClick}
 				/>

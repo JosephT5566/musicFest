@@ -11,21 +11,22 @@ export default class MyDocument extends Document {
 					<link rel="icon" href="/favicon.ico" />
 					{/* PWA primary color */}
 					<meta name="theme-color" content={theme.palette.primary.main} />
+					<link rel="preconnect" href="https://fonts.googleapis.com" />
+					<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 					<link
+						href="https://fonts.googleapis.com/css2?family=Changa+One&family=Noto+Sans+TC:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
 						rel="stylesheet"
-						href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-					/>
-					<link
-						href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap"
-						rel="stylesheet"
-					/>
-					<meta property="og:title" content="2021 大港開唱選擇器 Megaport Festival Selector" />
-					<meta property="og:description" content="2021大港開唱，看團選擇器" />
+					></link>
+					<meta property="og:title" content="大港開唱選擇器 Megaport Festival Selector" />
+					<meta property="og:description" content="大港開唱，看團選擇器" />
 					<meta property="og:type" content="website" />
 					<meta property="og:image" content="https://i.imgur.com/OgYq1S8.png" />
-					<meta property="og:site_name" content="2021 大港開唱選擇器 Megaport Festival Selector" />
+					<meta
+						property="og:site_name"
+						content="大港開唱選擇器 Megaport Festival Selector"
+					/>
 					<meta property="og:url" content="https://josepht5566.github.io/musicFest" />
-					<meta name="description" content="2021大港開唱，看團選擇器" />
+					<meta name="description" content="大港開唱，看團選擇器" />
 					<link rel="manifest" href="/manifest.json" />
 				</Head>
 				<body>
