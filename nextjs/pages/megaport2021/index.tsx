@@ -7,8 +7,10 @@ import { useRouter } from 'next/router';
 import TimeTable from 'view/payment/TimeTable';
 import TimeLine from 'view/payment/TimeLine';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
+import MapIcon from '@mui/icons-material/Map';
 import { PageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
 import DaySelector from 'components/shared/DaySelector';
@@ -18,14 +20,15 @@ import { IDisplayMode } from 'types/displayMode';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
 
 import programList from 'assets/program/megaport2021';
-import { STORAGE_KEY } from 'constants/static';
+import { APP_NAME, ROUTE, STORAGE_KEY } from 'constants/static';
 import moment from 'moment';
+import Head from 'next/head';
 
 const SelectorsContainer = styled('div')(({ theme }) => ({
 	width: '100%',
 	display: 'flex',
 	justifyContent: 'space-between',
-	paddingInline: '2rem',
+	paddingInline: '1rem',
 
 	[theme.breakpoints.down('md')]: {
 		flexDirection: 'column',
@@ -105,6 +108,7 @@ const ResetButton = () => {
 export default function Megaport2021() {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
+	const router = useRouter();
 	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
@@ -122,7 +126,11 @@ export default function Megaport2021() {
 
 	return (
 		<PageContainer>
-			<H1 sx={{ fontSize: '2rem' }}>{'2021 MEGAPORT'}</H1>
+			<Head>
+				<title>{`${APP_NAME} | 2021`}</title>
+			</Head>
+
+			<H1>{'2021 MEGAPORT'}</H1>
 			<SelectorsContainer>
 				<DisplayModeSelector mode={mode} setMode={setMode} />
 				<DaySelector
@@ -130,6 +138,15 @@ export default function Megaport2021() {
 					selectedDay={selectedDay}
 					onClick={handleClick}
 				/>
+				<Button
+					variant={'outlined'}
+					endIcon={<MapIcon />}
+					onClick={() => {
+						router.push(ROUTE.megaport2021.map);
+					}}
+				>
+					{'地圖'}
+				</Button>
 			</SelectorsContainer>
 			{mode === 'timetable' ? (
 				<>
