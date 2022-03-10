@@ -12,14 +12,13 @@ export const STORAGE_KEY = {
 
 export const ROUTE = {
 	root: '/',
+	links: '/links',
 	megaport2021: {
 		root: '/megaport2021',
-		links: '/megaport2021/links',
 		map: '/megaport2021/map',
 	},
 	megaport2022: {
 		root: '/megaport2022',
-		links: '/megaport2022/links',
 		map: '/megaport2022/map',
 	},
 };
