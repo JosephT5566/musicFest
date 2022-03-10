@@ -1,18 +1,18 @@
 import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 
-export const ContentContainer = styled(Container)(({ theme }) => ({
+export const ContentContainer = styled('div')(({ theme }) => ({
 	minHeight: `calc(100vh - ${theme.layout.header.height})`,
 }));
 
-export const PageContainer = styled('div')(() => ({
+export const PageContainer = styled(Container)({
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
 	position: 'relative',
 	gap: '1rem',
 	paddingBlock: '1rem 2rem',
-}));
+});
 
 export const FixedButtonsContainer = styled('div')({
 	display: 'flex',
