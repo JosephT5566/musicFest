@@ -31,7 +31,6 @@ function MyApp({ Component, pageProps }) {
 			<SnackbarProvider>
 				<ShowsProvider>
 					<ThemeProvider theme={theme}>
-						<Navigation />
 						<Header />
 						<ContentContainer>
 							<Component {...pageProps} />

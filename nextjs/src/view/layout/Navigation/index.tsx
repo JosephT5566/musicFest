@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { CurrentIndexStore } from './Context';
 import useLocation from 'hooks/useLocation';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -10,25 +8,14 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 
-import { debounce } from 'utils/helpers';
 import { BACKEND_URL } from 'config';
+import { ROUTE } from 'constants/static';
+import { NavItem } from 'types/navigation';
 
-const StyledLargeNav = styled('nav')(({ theme }) => ({
-	position: 'fixed',
+const StyledLargeNav = styled('nav')({
 	display: 'flex',
-	zIndex: 100,
-
-	top: '0.5em',
-	left: '50%',
-	transform: 'translate(-50%, 0)',
-	padding: '1em 0',
-	backgroundColor: theme.palette.secondary.main,
-	borderRadius: '0.5em',
-	transition: '0.6s',
-	'&.false': {
-		top: '-4.5em',
-	},
-}));
+	gap: '1rem',
+});
 
 const StyledMediumNav = styled('nav')(({ theme }) => ({
 	position: 'fixed',
@@ -36,6 +23,7 @@ const StyledMediumNav = styled('nav')(({ theme }) => ({
 	zIndex: 100,
 
 	right: `-${theme.layout.navbar.width}`,
+	top: 0,
 	height: '100vh',
 	width: theme.layout.navbar.width,
 	backgroundColor: theme.palette.secondary.dark,
@@ -59,96 +47,97 @@ const StyledItemsContainer = styled('div')(({ theme }) => ({
 	},
 }));
 
-const StyledNavButton = styled(IconButton)(({ theme }) => ({
+const StyledAnchor = styled('a')(({ theme }) => ({
+	position: 'relative',
+	display: 'flex',
+	color: theme.palette.common.white,
+
+	'&:focus': {
+		outline: '0',
+	},
+
+	'&.active': {
+		color: theme.palette.primary.main,
+	},
+
+	// add underline
+	'&::after': {
+		content: `''`,
+		position: 'absolute',
+		height: '2px',
+		width: '0%',
+		background: theme.palette.primary.main,
+
+		transition: '200ms',
+		[theme.breakpoints.up('md')]: {
+			bottom: '-1em',
+		},
+		[theme.breakpoints.down('sm')]: {
+			bottom: '0',
+		},
+	},
+	'&:hover::after': {
+		width: '90%',
+		background: theme.palette.primary.main,
+	},
+	'&:focus::after': {
+		width: '90%',
+	},
+	'&.active::after': {
+		width: '90%',
+	},
+	'&.active:hover::after': {
+		background: theme.palette.primary.main,
+	},
+}));
+
+const MenuButtonContainer = styled('div')(({ theme }) => ({
 	position: 'fixed',
-	top: '0.4em',
-	right: '0.2em',
+	height: theme.layout.header.height,
+	display: 'flex',
+	top: 0,
+	right: '1rem',
+	alignItems: 'center',
+	justifyContent: 'center',
+}));
+
+const StyledMenuButton = styled(IconButton)(({ theme }) => ({
 	color: theme.palette.primary.main,
 	padding: '0.5em 0.8em',
 	backgroundColor: `${theme.palette.secondary.main}BF`,
 	borderRadius: '0.5em',
-	[theme.breakpoints.up('md')]: {
-		display: 'none',
-	},
 
 	'&:hover': {
 		backgroundColor: `${theme.palette.secondary.main}E5`,
 	},
 }));
 
-const Items = ({ btnClicked }) => {
-	const router = useRouter();
-	const url = useLocation();
+const navItems = [new NavItem('外部連結', ROUTE.links)];
+
+const NavItems = (props: { navItems: NavItem[] }) => {
+	const { navItems } = props;
 
 	return (
-		<CurrentIndexStore>
-			<Button
-				index={1}
-				onClick={() => {
-					router.push(`${BACKEND_URL}/${url.hash}`);
-					if (btnClicked) btnClicked();
-				}}
-			>
-				Time Table
-			</Button>
-			<Button
-				index={2}
-				onClick={() => {
-					router.push(`${BACKEND_URL}/timeline/${url.hash}`);
-					if (btnClicked) btnClicked();
-				}}
-			>
-				Time Line
-			</Button>
-			<Button
-				index={3}
-				onClick={() => {
-					router.push(`${BACKEND_URL}/map/${url.hash}`);
-					if (btnClicked) btnClicked();
-				}}
-			>
-				Map
-			</Button>
-			<Button
-				index={4}
-				onClick={() => {
-					router.push(`${BACKEND_URL}/links/${url.hash}`);
-					if (btnClicked) btnClicked();
-				}}
-			>
-				Links
-			</Button>
-		</CurrentIndexStore>
+		<>
+			{navItems.map((n) => (
+				<StyledAnchor
+					href={n.route}
+					onClick={() => {
+						console.log('links');
+					}}
+				>
+					{n.label}
+				</StyledAnchor>
+			))}
+		</>
 	);
 };
 
 const NavigatorLg = () => {
-	const [prevScrollPos, setPrevScrollPos] = useState(0);
-	const [visible, setVisible] = useState(true);
-
-	const handleScroll = debounce(() => {
-		// find current scroll position
-		const currentScrollPos = window.pageYOffset;
-
-		// set state based on location info (explained in more detail below)
-		setVisible(
-			(prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 30) || currentScrollPos < 10
-		);
-
-		// set state to new scroll position
-		setPrevScrollPos(currentScrollPos);
-	}, 100);
-
-	useEffect(() => {
-		window.addEventListener('scroll', handleScroll);
-
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, [prevScrollPos, visible, handleScroll]);
-
 	return (
-		<StyledLargeNav className={`${visible}`}>
+		<StyledLargeNav>
 			<StyledItemsContainer>
-				<Items />
+				<NavItems navItems={navItems} />
 			</StyledItemsContainer>
 		</StyledLargeNav>
 	);
@@ -167,18 +156,16 @@ const NavigatorMd = () => {
 		}
 	};
 
-	const handleButtonClicked = () => {
-		setVisible(false);
-	};
-
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<StyledMediumNav className={`${visible}`}>
 				<StyledItemsContainer>
-					<StyledNavButton aria-label="menu" onClick={handleClick}>
-						<MenuIcon />
-					</StyledNavButton>
-					<Items btnClicked={handleButtonClicked} />
+					<MenuButtonContainer>
+						<StyledMenuButton aria-label="menu" onClick={handleClick}>
+							<MenuIcon />
+						</StyledMenuButton>
+					</MenuButtonContainer>
+					<NavItems navItems={navItems} />
 				</StyledItemsContainer>
 			</StyledMediumNav>
 		</ClickAwayListener>
@@ -187,8 +174,6 @@ const NavigatorMd = () => {
 
 export default function Navigator() {
 	const theme = useTheme();
-	if (useMediaQuery(theme.breakpoints.up('md'))) {
-		return <NavigatorLg />;
-	}
-	return <NavigatorMd />;
+
+	return useMediaQuery(theme.breakpoints.up('md')) ? <NavigatorLg /> : <NavigatorMd />;
 }

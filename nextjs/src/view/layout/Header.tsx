@@ -1,15 +1,17 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import Navigation from './Navigation';
 
-const StyledHeader = styled('div')(({ theme }) => ({
+const StyledHeader = styled('header')(({ theme }) => ({
 	height: theme.layout.header.height,
 	backgroundColor: theme.palette.secondary.main,
 	display: 'flex',
 	alignItems: 'center',
+	justifyContent: 'space-between',
 	padding: '1em 2em',
 	paddingRight: '4em',
 
-	'& a': {
+	'& .logo': {
 		display: 'flex',
 		gap: '1em',
 		alignItems: 'center',
@@ -28,10 +30,11 @@ const StyledHeader = styled('div')(({ theme }) => ({
 export default function Header() {
 	return (
 		<StyledHeader>
-			<a href="/">
+			<a className={'logo'} href="/">
 				<img src={'/mega_origin.png'} alt="mega_origin" />
 				<h2>Megaport Festival</h2>
 			</a>
+			<Navigation />
 		</StyledHeader>
 	);
 }
