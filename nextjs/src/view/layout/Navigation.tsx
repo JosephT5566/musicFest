@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import useLocation from 'hooks/useLocation';
+import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import Button from './Button';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 
-import { BACKEND_URL } from 'config';
 import { ROUTE } from 'constants/static';
 import { NavItem } from 'types/navigation';
 
@@ -20,7 +17,7 @@ const StyledLargeNav = styled('nav')({
 const StyledMediumNav = styled('nav')(({ theme }) => ({
 	position: 'fixed',
 	display: 'flex',
-	zIndex: 100,
+	zIndex: theme.zIndex.drawer,
 
 	right: `-${theme.layout.navbar.width}`,
 	top: 0,
@@ -36,14 +33,12 @@ const StyledMediumNav = styled('nav')(({ theme }) => ({
 const StyledItemsContainer = styled('div')(({ theme }) => ({
 	display: 'flex',
 	width: '100%',
-	padding: '0 0.5em',
+	gap: '1rem',
 
-	[theme.breakpoints.up('md')]: {
-		justifyContent: 'center',
-	},
 	[theme.breakpoints.down('sm')]: {
 		paddingTop: theme.layout.header.height,
 		flexDirection: 'column',
+		paddingInline: '1em',
 	},
 }));
 
@@ -51,6 +46,7 @@ const StyledAnchor = styled('a')(({ theme }) => ({
 	position: 'relative',
 	display: 'flex',
 	color: theme.palette.common.white,
+	fontFamily: theme.typography.fontFamily,
 
 	'&:focus': {
 		outline: '0',
@@ -69,12 +65,7 @@ const StyledAnchor = styled('a')(({ theme }) => ({
 		background: theme.palette.primary.main,
 
 		transition: '200ms',
-		[theme.breakpoints.up('md')]: {
-			bottom: '-1em',
-		},
-		[theme.breakpoints.down('sm')]: {
-			bottom: '0',
-		},
+		bottom: '-0.5em',
 	},
 	'&:hover::after': {
 		width: '90%',
@@ -119,13 +110,8 @@ const NavItems = (props: { navItems: NavItem[] }) => {
 
 	return (
 		<>
-			{navItems.map((n) => (
-				<StyledAnchor
-					href={n.route}
-					onClick={() => {
-						console.log('links');
-					}}
-				>
+			{navItems.map((n, index) => (
+				<StyledAnchor href={n.route} key={index}>
 					{n.label}
 				</StyledAnchor>
 			))}
@@ -172,7 +158,7 @@ const NavigatorMd = () => {
 	);
 };
 
-export default function Navigator() {
+export default function Navigation() {
 	const theme = useTheme();
 
 	return useMediaQuery(theme.breakpoints.up('md')) ? <NavigatorLg /> : <NavigatorMd />;
