@@ -13,3 +13,13 @@ export const PageContainer = styled('div')(() => ({
 	gap: '1rem',
 	paddingBlock: '1rem 2rem',
 }));
+
+export const FixedButtonsContainer = styled('div')({
+	display: 'flex',
+	flexDirection: 'column',
+	position: 'fixed',
+	gap: '0.5rem',
+	alignItems: 'end',
+	right: '2rem',
+	bottom: '2rem',
+});

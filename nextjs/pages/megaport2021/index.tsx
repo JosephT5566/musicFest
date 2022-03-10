@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 
 import TimeTable from 'view/payment/TimeTable';
 import TimeLine from 'view/payment/TimeLine';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
 import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
 import MapIcon from '@mui/icons-material/Map';
@@ -15,6 +13,8 @@ import { PageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
 import DaySelector from 'components/shared/DaySelector';
 import DisplayModeSelector from 'components/shared/DisplayModeSelector';
+import { FixedButtonsContainer } from 'components/base/Container';
+import { ShadowIconButton } from 'components/base/Button';
 
 import { IDisplayMode } from 'types/displayMode';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
@@ -35,30 +35,6 @@ const SelectorsContainer = styled('div')(({ theme }) => ({
 		paddingInline: '0',
 		gap: '0.5rem',
 		alignItems: 'start',
-	},
-}));
-
-const StyledBtnContainer = styled('div')(({ theme }) => ({
-	display: 'flex',
-	flexDirection: 'column',
-	position: 'fixed',
-	right: '2em',
-	bottom: '4em',
-	[theme.breakpoints.up('sm')]: {
-		flexDirection: 'row',
-		bottom: '2em',
-	},
-}));
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-	backgroundColor: theme.palette.secondary.main,
-	color: theme.palette.primary.main,
-	boxShadow: '-5px 5px 10px',
-	'&:focus': {
-		backgroundColor: theme.palette.secondary.main,
-	},
-	[theme.breakpoints.up('sm')]: {
-		margin: '0.2em',
 	},
 }));
 
@@ -83,9 +59,9 @@ const SaveButton = (props: { onOpenSnack: () => void }) => {
 	};
 
 	return (
-		<StyledIconButton aria-label="share" onClick={handleClick}>
+		<ShadowIconButton aria-label="share" onClick={handleClick}>
 			<ShareIcon />
-		</StyledIconButton>
+		</ShadowIconButton>
 	);
 };
 
@@ -100,9 +76,9 @@ const ResetButton = () => {
 	};
 
 	return (
-		<StyledIconButton aria-label="reset" onClick={handleClick}>
+		<ShadowIconButton aria-label="reset" onClick={handleClick}>
 			<ReplayIcon />
-		</StyledIconButton>
+		</ShadowIconButton>
 	);
 };
 
@@ -139,25 +115,24 @@ export default function Megaport2021() {
 					selectedDay={selectedDay}
 					onClick={handleClick}
 				/>
-				{/* <Button
-					variant={'outlined'}
-					endIcon={<MapIcon />}
-					onClick={() => {
-						router.push(ROUTE.megaport2021.map);
-					}}
-				>
-					{'地圖'}
-				</Button> */}
 			</SelectorsContainer>
 			{mode === 'timetable' ? (
 				<TimeTable festival={programList} selectedDay={selectedDay} />
 			) : (
 				<TimeLine programList={programList} selectedDay={selectedDay} />
 			)}
-			<StyledBtnContainer>
+			<FixedButtonsContainer>
 				<SaveButton onOpenSnack={handleOpenSnack} />
 				<ResetButton />
-			</StyledBtnContainer>
+				<ShadowIconButton
+					size={'large'}
+					onClick={() => {
+						router.push(ROUTE.megaport2021.map);
+					}}
+				>
+					{<MapIcon />}
+				</ShadowIconButton>
+			</FixedButtonsContainer>
 		</PageContainer>
 	);
 }
