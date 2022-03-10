@@ -32,8 +32,9 @@ const SelectorsContainer = styled('div')(({ theme }) => ({
 
 	[theme.breakpoints.down('md')]: {
 		flexDirection: 'column',
+		paddingInline: '0',
 		gap: '0.5rem',
-		alignItems: 'center',
+		alignItems: 'start',
 	},
 }));
 
@@ -49,7 +50,7 @@ const StyledBtnContainer = styled('div')(({ theme }) => ({
 	},
 }));
 
-const StyledSaveBtn = styled(IconButton)(({ theme }) => ({
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
 	backgroundColor: theme.palette.secondary.main,
 	color: theme.palette.primary.main,
 	boxShadow: '-5px 5px 10px',
@@ -82,9 +83,9 @@ const SaveButton = (props: { onOpenSnack: () => void }) => {
 	};
 
 	return (
-		<StyledSaveBtn aria-label="share" onClick={handleClick}>
+		<StyledIconButton aria-label="share" onClick={handleClick}>
 			<ShareIcon />
-		</StyledSaveBtn>
+		</StyledIconButton>
 	);
 };
 
@@ -99,9 +100,9 @@ const ResetButton = () => {
 	};
 
 	return (
-		<StyledSaveBtn aria-label="reset" onClick={handleClick}>
+		<StyledIconButton aria-label="reset" onClick={handleClick}>
 			<ReplayIcon />
-		</StyledSaveBtn>
+		</StyledIconButton>
 	);
 };
 
@@ -138,7 +139,7 @@ export default function Megaport2021() {
 					selectedDay={selectedDay}
 					onClick={handleClick}
 				/>
-				<Button
+				{/* <Button
 					variant={'outlined'}
 					endIcon={<MapIcon />}
 					onClick={() => {
@@ -146,19 +147,17 @@ export default function Megaport2021() {
 					}}
 				>
 					{'地圖'}
-				</Button>
+				</Button> */}
 			</SelectorsContainer>
 			{mode === 'timetable' ? (
-				<>
-					<TimeTable festival={programList} selectedDay={selectedDay} />
-					<StyledBtnContainer>
-						<SaveButton onOpenSnack={handleOpenSnack} />
-						<ResetButton />
-					</StyledBtnContainer>
-				</>
+				<TimeTable festival={programList} selectedDay={selectedDay} />
 			) : (
 				<TimeLine programList={programList} selectedDay={selectedDay} />
 			)}
+			<StyledBtnContainer>
+				<SaveButton onOpenSnack={handleOpenSnack} />
+				<ResetButton />
+			</StyledBtnContainer>
 		</PageContainer>
 	);
 }

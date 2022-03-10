@@ -12,7 +12,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 	'&.MuiButton-contained': {
 		color: theme.palette.common.white,
-        boxShadow: 'none',
+		boxShadow: 'none',
 	},
 }));
 
@@ -30,6 +30,7 @@ export default function DisplayModeSelector({ mode, setMode }: Props) {
 				onClick={() => {
 					setMode('timetable');
 				}}
+				aria-label={'time table'}
 			>
 				{'時刻表'}
 			</StyledButton>
@@ -39,6 +40,7 @@ export default function DisplayModeSelector({ mode, setMode }: Props) {
 				onClick={() => {
 					setMode('timeline');
 				}}
+				aria-label={'time line'}
 			>
 				{'時間軸'}
 			</StyledButton>
