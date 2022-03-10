@@ -8,5 +8,6 @@ export const typography: TypographyOptions = {
 	},
 	h2: {
 		fontFamily: 'Changa One, Noto Sans TC',
+		fontSize: '2rem',
 	},
 };
