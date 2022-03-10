@@ -1,8 +1,11 @@
 import React from 'react';
+import Head from 'next/head';
 import { styled } from '@mui/material/styles';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { PageContainer } from 'components/base/Container';
+import { H1 } from 'components/base/Typography';
+import { APP_NAME } from 'constants/static';
 
 const StyledpreviewContainer = styled('div')(({ theme }) => ({
 	paddingBottom: '1em',
@@ -109,13 +112,20 @@ const PreviewLink = (props: {
 export default function Links() {
 	return (
 		<PageContainer>
+			<Head>
+				<title>{`${APP_NAME} | 外部連結`}</title>
+			</Head>
+
+			<H1 sx={{ fontWeight: 'bold' }}>{'外部連結'}</H1>
 			<StyledpreviewContainer>
 				<div className="preview">
 					<PreviewLink
 						url={'https://www.megaportfest.com/index.php'}
-						image={'http://www.megaportfest.com/300x300a.jpg'}
-						title={'Megaport Festival 大港開唱 2021'}
-						description={`【2021大港，確定開唱！】❤一張票一世情，望你牽成❤3月27-28日 | 高雄駁二藝術特區`}
+						image={
+							'https://megaportfest.com/wp-content/uploads/2021/12/title-lineup.png'
+						}
+						title={'Megaport Festival 大港開唱'}
+						description={`即將邁入第十三屆的《大港開唱》，是每年於高雄舉辦的大型音樂祭典，近年已是台灣最具指標性的大型戶外音樂祭活動。2022大港開唱即將再度開催，3/26－27日於高雄駁二藝術特區，不見不散！`}
 						icon={'http://formoz.com/megaport/icon2.ico'}
 					/>
 				</div>
