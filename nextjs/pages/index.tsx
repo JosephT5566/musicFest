@@ -16,21 +16,53 @@ const HeroContainer = styled('div')({
 });
 
 const StyledAnchor = styled('a')(({ theme }) => ({
-	color: theme.palette.common.white,
 	height: '20em',
 	width: '15em',
-	borderRadius: '0.5em',
-	overflow: 'hidden',
-}));
-
-const PosterContainer = styled('div')({
 	padding: '1em 2em',
-	height: 'inherit',
 	display: 'flex',
+	position: 'relative',
 	alignItems: 'center',
 	justifyContent: 'center',
+	borderRadius: '0.5em',
 	backgroundPosition: 'center',
 	backgroundSize: 'cover',
+	boxShadow: `${theme.palette.grey[800]} 4px 4px 10px 0px`,
+	color: theme.palette.common.white,
+	overflow: 'hidden',
+
+	'&::before': {
+		content: `''`,
+		position: 'absolute',
+		backgroundColor: theme.palette.grey[900],
+		borderRadius: '0.5em',
+		opacity: 0.3,
+		width: '100%',
+		height: '100%',
+		top: '0',
+		left: '0',
+	},
+
+	'& > h1': {
+		zIndex: 1,
+	},
+
+	'&:hover h1': {
+		fontSize: '4em',
+		transition: '500ms',
+	},
+
+	'&:focus h1': {
+		fontSize: '4em',
+		transition: '500ms',
+	},
+}));
+
+const PostersContainer = styled('div')({
+	width: '100%',
+	display: 'grid',
+	gridTemplateColumns: 'repeat(auto-fill, minmax(15em, 1fr))',
+	gap: '0.5rem',
+	justifyItems: 'center',
 });
 
 export default function Home() {
@@ -42,16 +74,20 @@ export default function Home() {
 
 			<PageContainer>
 				<H1 sx={{ fontWeight: 'bold' }}>{'大港開唱選擇器'}</H1>
-				<StyledAnchor href={ROUTE.megaport2021.root}>
-					<PosterContainer sx={{ backgroundImage: `url("${IMAGES.posters[2021]}")` }}>
+				<PostersContainer>
+					<StyledAnchor
+						href={ROUTE.megaport2021.root}
+						sx={{ backgroundImage: `url("${IMAGES.posters[2021]}")` }}
+					>
 						<H1>{'2021'}</H1>
-					</PosterContainer>
-				</StyledAnchor>
-				<StyledAnchor href={ROUTE.megaport2022.root}>
-					<PosterContainer sx={{ backgroundImage: `url("${IMAGES.posters[2022]}")` }}>
+					</StyledAnchor>
+					<StyledAnchor
+						href={ROUTE.megaport2022.root}
+						sx={{ backgroundImage: `url("${IMAGES.posters[2022]}")` }}
+					>
 						<H1>{'2022'}</H1>
-					</PosterContainer>
-				</StyledAnchor>
+					</StyledAnchor>
+				</PostersContainer>
 			</PageContainer>
 		</HeroContainer>
 	);
