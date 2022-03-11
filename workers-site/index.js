@@ -1,4 +1,5 @@
 import { getAssetFromKV, mapRequestToAsset } from '@cloudflare/kv-asset-handler'
+import mime from 'mime'
 
 /**
  * The DEBUG flag will do two things that help during development:
@@ -26,7 +27,9 @@ addEventListener('fetch', event => {
 
 async function handleEvent(event) {
   const url = new URL(event.request.url)
-  let options = {}
+  let options = {
+    mapRequestToAsset: mapToAsset
+  }
 
   /**
    * You can add custom logic to how we fetch your assets
@@ -41,7 +44,10 @@ async function handleEvent(event) {
         bypassCache: true,
       };
     }
-    const page = await getAssetFromKV(event, options);
+
+    const page = await getAssetFromKV(event, {
+      mapRequestToAsset: (req) => mapToAsset(req),
+    });
 
     // allow headers to be altered
     const response = new Response(page.body, page);
@@ -89,4 +95,26 @@ function handlePrefix(prefix) {
     // inherit all other props from the default request
     return new Request(url.toString(), defaultAssetKey)
   }
+}
+
+const mapToAsset = (request) => {
+  const parsedUrl = new URL(request.url)
+  let pathname = parsedUrl.pathname
+
+  // TODO: hack - this is not bulletproof
+  let hasExtension = pathname.includes('.')
+
+  if (pathname.endsWith('/')) {
+    // If path looks like a directory append index.html
+    // e.g. If path is /about/ -> /about/index.html
+    pathname = pathname.concat('index.html')
+  } else if (!hasExtension || !mime.getType(pathname)) {
+    pathname = pathname.concat('.html')
+  }
+
+  parsedUrl.pathname = pathname
+
+  const req = new Request(parsedUrl.toString(), request)
+
+  return req
 }
