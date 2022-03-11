@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import 'styles/globals.css';
 import theme from 'styles/theme';
-import ShowsProvider from 'providers/ShowsProvider';
 import SnackbarProvider from 'providers/SnackbarProvider';
 
 import Header from 'view/layout/Header';
-import Navigation from 'view/layout/Navigation';
 import Snackbar from 'components/shared/Snackbar';
 import { ContentContainer } from 'components/base/Container';
 
@@ -29,14 +27,12 @@ function MyApp({ Component, pageProps }) {
 			<title>2021 大港開唱選擇器 Megaport Festival Selector</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<SnackbarProvider>
-				<ShowsProvider>
-					<ThemeProvider theme={theme}>
-						<Header />
-						<ContentContainer>
-							<Component {...pageProps} />
-						</ContentContainer>
-					</ThemeProvider>
-				</ShowsProvider>
+				<ThemeProvider theme={theme}>
+					<Header />
+					<ContentContainer>
+						<Component {...pageProps} />
+					</ContentContainer>
+				</ThemeProvider>
 				<Snackbar />
 			</SnackbarProvider>
 		</React.Fragment>

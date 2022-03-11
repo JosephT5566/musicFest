@@ -1,8 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { STORAGE_KEY } from 'constants/static';
-
 interface showsProps {
 	selectedShows: string[];
 }
@@ -16,16 +14,17 @@ const showsContext = createContext<showsProps>({} as showsProps); // default val
 const showsMethodsContext = createContext<showsMethodsProps>({} as showsMethodsProps); // default value
 
 interface Props {
+	storageKey: string;
 	children: React.ReactNode;
 }
 
-export default function ShowsProvider({ children }: Props) {
+export default function ShowsProvider({ storageKey, children }: Props) {
 	const router = useRouter();
 	const [selectedShows, setSelectedShows] = useState<string[]>([]);
 
 	useEffect(() => {
 		const hash = window.location.hash;
-		const storageValue = localStorage.getItem(STORAGE_KEY.shows);
+		const storageValue = localStorage.getItem(storageKey);
 
 		if (hash) {
 			try {
@@ -45,7 +44,7 @@ export default function ShowsProvider({ children }: Props) {
 
 	useEffect(() => {
 		// console.log('selectedShows', selectedShows);
-		localStorage.setItem(STORAGE_KEY.shows, JSON.stringify(selectedShows));
+		localStorage.setItem(storageKey, JSON.stringify(selectedShows));
 	}, [selectedShows]);
 
 	const handleSelectShow = (id: string) => {

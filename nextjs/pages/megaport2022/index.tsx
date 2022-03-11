@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { useGetSelectedShow, useResetShows } from 'providers/ShowsProvider';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/router';
 
@@ -16,8 +15,9 @@ import DisplayModeSelector from 'components/shared/DisplayModeSelector';
 import { FixedButtonsContainer } from 'components/base/Container';
 import { ShadowIconButton } from 'components/base/Button';
 
-import { IDisplayMode } from 'types/displayMode';
+import ShowsProvider, { useGetSelectedShow, useResetShows } from 'providers/ShowsProvider';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
+import { IDisplayMode } from 'types/displayMode';
 
 import programList from 'assets/program/megaport2021';
 import { APP_NAME, ROUTE, STORAGE_KEY } from 'constants/static';
@@ -102,13 +102,14 @@ export default function Megaport2021() {
 	};
 
 	return (
-		<PageContainer>
-			<Head>
-				<title>{`${APP_NAME} | 2022`}</title>
-			</Head>
+		<ShowsProvider storageKey={ROUTE.megaport2022.root}>
+			<PageContainer>
+				<Head>
+					<title>{`${APP_NAME} | 2022`}</title>
+				</Head>
 
-			<H1>{'2022 MEGAPORT'}</H1>
-			{/* <SelectorsContainer>
+				<H1>{'2022 MEGAPORT'}</H1>
+				{/* <SelectorsContainer>
 				<DisplayModeSelector mode={mode} setMode={setMode} />
 				<DaySelector
 					days={programList.perfDays.map((d) => moment(d.dayStartTime).format('MM/DD'))}
@@ -121,18 +122,19 @@ export default function Megaport2021() {
 			) : (
 				<TimeLine programList={programList} selectedDay={selectedDay} />
 			)} */}
-			<FixedButtonsContainer>
-				<SaveButton onOpenSnack={handleOpenSnack} />
-				<ResetButton />
-				<ShadowIconButton
-					size={'large'}
-					onClick={() => {
-						router.push(ROUTE.megaport2022.map);
-					}}
-				>
-					{<MapIcon />}
-				</ShadowIconButton>
-			</FixedButtonsContainer>
-		</PageContainer>
+				<FixedButtonsContainer>
+					<SaveButton onOpenSnack={handleOpenSnack} />
+					<ResetButton />
+					<ShadowIconButton
+						size={'large'}
+						onClick={() => {
+							router.push(ROUTE.megaport2022.map);
+						}}
+					>
+						{<MapIcon />}
+					</ShadowIconButton>
+				</FixedButtonsContainer>
+			</PageContainer>
+		</ShowsProvider>
 	);
 }

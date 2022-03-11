@@ -5,8 +5,6 @@ export const APP_NAME = '大港開唱看團選擇器';
 export const SCALE_UNIT = 1.3;
 
 export const STORAGE_KEY = {
-	shows: 'shows',
-	defaultHash: 'defaultHash',
 	day: 'day',
 };
 
