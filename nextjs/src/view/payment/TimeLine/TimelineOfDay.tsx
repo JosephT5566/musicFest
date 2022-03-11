@@ -6,8 +6,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
-import moment from 'moment';
-import programList from 'assets/program/megaport2021';
+import moment, { Moment } from 'moment';
 
 const StyledtableOfDay = styled('div')({
 	width: `calc(100vw - 1em - 3.8em)`,
@@ -92,13 +91,12 @@ type ShowItem = IArtist & {
 	itemColor: SimplePaletteColorOptions;
 };
 
-const TimeLineButton = (props: { showInfo: ShowItem; day: number }) => {
-	const { showInfo, day } = props;
+const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day: number }) => {
+	const { megaStartTime, showInfo, day } = props;
 	const [active, setActive] = useState(false);
 
 	const { text: textColor } = palette;
 	const { name, startTime, endTime, layer, itemColor, stageName } = showInfo;
-	const megaStartTime = moment(programList.perfDays[day].dayStartTime);
 	const startMoment = moment(startTime);
 	const endMoment = moment(endTime);
 
@@ -147,15 +145,15 @@ const TimeLineButton = (props: { showInfo: ShowItem; day: number }) => {
 };
 
 export default function TimeLineOfDay(props: {
+	startTime: Moment;
+	endTime: Moment;
 	stages: IStage[];
 	day: number;
 	selectedDay: number;
 }) {
-	const { stages, day, selectedDay } = props;
+	const { startTime, endTime, stages, day, selectedDay } = props;
 
-	const megaStartTime = moment(programList.perfDays[day].dayStartTime);
-	const megaEndTime = moment(programList.perfDays[day].dayEndTime);
-	const height = moment.duration(megaEndTime.diff(megaStartTime)).asMinutes() / 10;
+	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
 	const layerHashRef = useRef<number[]>(new Array(Math.floor(height)).fill(0));
 
 	useEffect(() => {
@@ -177,7 +175,7 @@ export default function TimeLineOfDay(props: {
 			return stages.map((item) => {
 				const startMoment = moment(item.startTime);
 				const endMoment = moment(item.endTime);
-				const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
+				const top = moment.duration(startMoment.diff(startTime)).asMinutes() / 10;
 				const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
 				let layer = 0;
 
@@ -205,7 +203,12 @@ export default function TimeLineOfDay(props: {
 		>
 			{filtedStages.map((stage) => {
 				return stage.map((item) => (
-					<TimeLineButton key={item.id} showInfo={item} day={day} />
+					<TimeLineButton
+						megaStartTime={startTime}
+						key={item.id}
+						showInfo={item}
+						day={day}
+					/>
 				));
 			})}
 		</StyledtableOfDay>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import moment from 'moment';
 
 import StageColumn from 'view/payment/TimeTable/StageColumn';
 import { IPerfDay } from 'types/show';
@@ -22,7 +23,14 @@ export default function TableOfDay({ perfDay, day, selected }: props) {
 	return (
 		<TableOfDayContainer sx={{ display: day === selected ? '' : 'none' }}>
 			{perfDay.stages.map((stage, index) => (
-				<StageColumn key={index} stageColor={stageColors[index]} stage={stage} day={day} />
+				<StageColumn
+					dayStartTime={moment(perfDay.dayStartTime)}
+					dayEndTime={moment(perfDay.dayEndTime)}
+					key={index}
+					stageColor={stageColors[index]}
+					stage={stage}
+					day={day}
+				/>
 			))}
 		</TableOfDayContainer>
 	);

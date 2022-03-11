@@ -84,6 +84,8 @@ const BaseLine = (props: { programList: IProgramList }) => {
 
 export default function TimeLine({ programList, selectedDay }: Props) {
 	const selectedIds = useGetSelectedShow();
+	const dayStartTime = moment(programList.perfDays[selectedDay].dayStartTime);
+	const dayEndTime = moment(programList.perfDays[selectedDay].dayEndTime);
 
 	const filtedPerfDays = programList.perfDays.map((prefDay) => {
 		return {
@@ -99,11 +101,13 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 
 	return (
 		<TimelineContainer>
-			<TimeBackdrop selectedDay={selectedDay} />
+			<TimeBackdrop dayStartTime={dayStartTime} dayEndTime={dayEndTime} />
 			<BaseLine programList={programList} />
 			{filtedPerfDays.map((perfDay, index) => {
 				return (
 					<TimeLineOfDay
+						startTime={moment(perfDay.dayStartTime)}
+						endTime={moment(perfDay.dayEndTime)}
 						key={index}
 						stages={perfDay.stages}
 						day={index}

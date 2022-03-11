@@ -120,7 +120,7 @@ export default function Megaport2021() {
 					/>
 				</SelectorsContainer>
 				{mode === 'timetable' ? (
-					<TimeTable festival={programList} selectedDay={selectedDay} />
+					<TimeTable programList={programList} selectedDay={selectedDay} />
 				) : (
 					<TimeLine programList={programList} selectedDay={selectedDay} />
 				)}

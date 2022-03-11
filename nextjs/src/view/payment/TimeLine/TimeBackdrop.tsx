@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 
 import { SCALE_UNIT } from 'constants/static';
-import programList from 'assets/program/megaport2021';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 const StyledtimeBackdrop = styled('div')({
 	position: 'absolute',
@@ -29,19 +28,17 @@ const StyledcurrentTime = styled('div')(({ theme }) => ({
 
 const INTERVAL = 1000 * 10; // 10 sec
 
-export default function TimeBackdrop(props: { selectedDay: number }) {
-	const { selectedDay } = props;
+export default function TimeBackdrop(props: { dayStartTime: Moment; dayEndTime: Moment }) {
+	const { dayStartTime, dayEndTime } = props;
 	const [time, setTime] = useState(moment());
 
 	// const day = localStorage.getItem(STORAGE_KEY.day);
-	const todayStartTime = moment(programList.perfDays[selectedDay].dayStartTime);
-	const todayEndTime = moment(programList.perfDays[selectedDay].dayEndTime);
 
 	const isToday = () => {
-		return time.isBetween(todayStartTime, todayEndTime);
+		return time.isBetween(dayStartTime, dayEndTime);
 	};
 
-	const top = isToday() ? moment.duration(time.diff(todayStartTime)).asMinutes() / 10 : 0;
+	const top = isToday() ? moment.duration(time.diff(dayStartTime)).asMinutes() / 10 : 0;
 
 	useEffect(() => {
 		const intervalID = setInterval(() => {

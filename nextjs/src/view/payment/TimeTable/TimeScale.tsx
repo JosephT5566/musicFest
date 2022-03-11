@@ -2,9 +2,8 @@ import React from 'react';
 
 import { styled } from '@mui/material/styles';
 
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { SCALE_UNIT } from 'constants/static';
-import programList from 'assets/program/megaport2021';
 
 const TimeScaleContainer = styled('div')(({ theme }) => ({
 	paddingTop: `calc(${theme.layout.tableHeadHeight} + ${theme.layout.tableHeadMarginBottom})`,
@@ -39,11 +38,18 @@ const Styledtext = styled('div')({
 	transform: 'translate(0, -50%)',
 });
 
-export default function TimeScale() {
+interface Props {
+	startTime: Moment;
+	endTime: Moment;
+}
+
+export default function TimeScale({ startTime, endTime }: Props) {
+	const scales = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
+
 	return (
 		<TimeScaleContainer>
-			{new Array(62).fill(undefined).map((_, index) => {
-				const time = moment(programList.perfDays[0].dayStartTime).add(10 * index, 'm');
+			{new Array(scales).fill(undefined).map((_, index) => {
+				const time = moment(startTime).add(10 * index, 'm');
 
 				return (
 					<Styledscale key={index}>
