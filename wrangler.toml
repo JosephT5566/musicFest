@@ -1,0 +1,9 @@
+name = "music-fest"
+type = "webpack"
+routes = ['musicfest.josephtseng-tw.com/*']
+account_id = "1f7783c7c3c593ab98bad669c80ae933"
+zone_id = "a3d90b71b4797dd1aece4f5966dc20d6"
+usage_model = ''
+workers_dev = true
+compatibility_date = "2022-03-11"
+site = {bucket = "./out",entry-point = "workers-site"}
