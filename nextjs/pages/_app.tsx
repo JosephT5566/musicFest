@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
-import '../styles/globals.css';
-import theme from '../src/styles/theme';
-import { ShowsStore } from '../src/context/ShowsContext';
+import { ThemeProvider } from '@mui/material/styles';
+import 'styles/globals.css';
+import theme from 'styles/theme';
+import SnackbarProvider from 'providers/SnackbarProvider';
 
-import Header from '../src/components/Header';
-import Navigation from '../src/components/Navigation';
-import { STORAGE_KEY } from '../src/static';
+import Header from 'view/layout/Header';
+import Snackbar from 'components/shared/Snackbar';
+import { ContentContainer } from 'components/base/Container';
+
+import { STORAGE_KEY } from 'constants/static';
 
 function MyApp({ Component, pageProps }) {
 	useEffect(() => {
@@ -24,13 +26,15 @@ function MyApp({ Component, pageProps }) {
 		<React.Fragment>
 			<title>2021 大港開唱選擇器 Megaport Festival Selector</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
-			<ShowsStore>
+			<SnackbarProvider>
 				<ThemeProvider theme={theme}>
-					<Navigation />
 					<Header />
-					<Component {...pageProps} />
+					<ContentContainer>
+						<Component {...pageProps} />
+					</ContentContainer>
 				</ThemeProvider>
-			</ShowsStore>
+				<Snackbar />
+			</SnackbarProvider>
 		</React.Fragment>
 	);
 }
