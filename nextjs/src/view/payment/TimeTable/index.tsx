@@ -12,8 +12,7 @@ const TimeTableContainer = styled('div')({
 	display: 'flex',
 	flexDirection: 'row',
 	marginBottom: '1em',
-	overflowX: 'scroll',
-	overflowY: 'hidden',
+	overflow: 'auto',
 });
 
 interface props {

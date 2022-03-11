@@ -11,8 +11,12 @@ export const PageContainer = styled(Container)({
 	alignItems: 'center',
 	position: 'relative',
 	gap: '1rem',
-	paddingBlock: '1rem 2rem',
+	paddingBlock: '1rem',
 });
+
+export const SelectPageContainer = styled(PageContainer)(({ theme }) => ({
+	maxHeight: `calc(100vh - ${theme.layout.header.height})`,
+}));
 
 export const FixedButtonsContainer = styled('div')({
 	display: 'flex',

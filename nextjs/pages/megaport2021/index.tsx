@@ -9,7 +9,7 @@ import TimeLine from 'view/payment/TimeLine';
 import ShareIcon from '@mui/icons-material/Share';
 import ReplayIcon from '@mui/icons-material/Replay';
 import MapIcon from '@mui/icons-material/Map';
-import { PageContainer } from 'components/base/Container';
+import { SelectPageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
 import DaySelector from 'components/shared/DaySelector';
 import DisplayModeSelector from 'components/shared/DisplayModeSelector';
@@ -102,7 +102,7 @@ export default function Megaport2021() {
 	};
 
 	return (
-		<PageContainer>
+		<SelectPageContainer>
 			<Head>
 				<title>{`${APP_NAME} | 2021`}</title>
 			</Head>
@@ -133,6 +133,6 @@ export default function Megaport2021() {
 					{<MapIcon />}
 				</ShadowIconButton>
 			</FixedButtonsContainer>
-		</PageContainer>
+		</SelectPageContainer>
 	);
 }

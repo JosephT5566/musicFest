@@ -14,7 +14,6 @@ const TimelineContainer = styled('div')({
 	width: '100%',
 	position: 'relative',
 	display: 'flex',
-	marginBottom: '1em',
 });
 
 const BaseLineContainer = styled('div')({
