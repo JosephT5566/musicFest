@@ -73,7 +73,7 @@ export default function Home() {
 			</Head>
 
 			<PageContainer>
-				<H1 sx={{ fontWeight: 'bold' }}>{'大港開唱選擇器'}</H1>
+				<H1>{'大港開唱選擇器'}</H1>
 				<PostersContainer>
 					<StyledAnchor
 						href={ROUTE.megaport2021.root}

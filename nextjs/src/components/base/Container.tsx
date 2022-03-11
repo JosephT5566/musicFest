@@ -12,6 +12,10 @@ export const PageContainer = styled(Container)({
 	position: 'relative',
 	gap: '1rem',
 	paddingBlock: '1rem',
+
+	'& > h1': {
+		fontWeight: 'bold',
+	},
 });
 
 export const SelectPageContainer = styled(PageContainer)(({ theme }) => ({
