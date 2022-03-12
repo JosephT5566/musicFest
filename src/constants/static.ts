@@ -1,6 +1,6 @@
 export const MIN = 60000; // 60 sec * 1000 milliseconds
 
-export const APP_NAME = '大港開唱看團選擇器';
+export const APP_NAME = '大港開唱選擇器';
 
 export const SCALE_UNIT = 1.3;
 
