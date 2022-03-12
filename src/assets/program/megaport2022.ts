@@ -331,7 +331,7 @@ const day1: IPerfDay = {
 				}),
 				new IArtist({
 					id: '0:8:3',
-					name: '無獻Osean',
+					name: '吳獻Osean',
 					startTime: '2022-03-26T18:00',
 					endTime: '2022-03-26T18:40',
 				}),

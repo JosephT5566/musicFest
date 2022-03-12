@@ -18,15 +18,15 @@ export default class MyDocument extends Document {
 						rel="stylesheet"
 					></link>
 					<meta property="og:title" content="大港開唱選擇器 Megaport Festival Selector" />
-					<meta property="og:description" content="大港開唱，看團選擇器" />
+					<meta property="og:description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
 					<meta property="og:type" content="website" />
-					<meta property="og:image" content="https://i.imgur.com/OgYq1S8.png" />
+					<meta property="og:image" content="https://i.imgur.com/MKtF24C.png" />
 					<meta
 						property="og:site_name"
 						content="大港開唱選擇器 Megaport Festival Selector"
 					/>
 					<meta property="og:url" content="https://josepht5566.github.io/musicFest" />
-					<meta name="description" content="大港開唱，看團選擇器" />
+					<meta name="description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
 					<link rel="manifest" href="/manifest.json" />
 				</Head>
 				<body>
