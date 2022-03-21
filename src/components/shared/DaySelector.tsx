@@ -36,7 +36,7 @@ const StyledDayBtn = styled('button')(({ theme }) => ({
 		color: theme.palette.primary.main,
 	},
 	'&:focus': {
-		outline: '0',
+		// outline: '0',
 	},
 	'&.true': {
 		color: theme.palette.primary.main,

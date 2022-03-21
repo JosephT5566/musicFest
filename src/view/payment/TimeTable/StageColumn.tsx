@@ -8,6 +8,7 @@ import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
 import moment, { Moment } from 'moment';
 import { IArtist, IStage } from 'types/show';
+import { height } from '@mui/system';
 
 const ColumnContainer = styled('div')(({ theme }) => ({
 	textAlign: 'center',
@@ -28,17 +29,30 @@ const Styledhead = styled('div')(({ theme }) => ({
 	marginBottom: theme.layout.tableHeadMarginBottom,
 	letterSpacing: theme.layout.letterSpacing,
 }));
-const StyledshowButton = styled('button')(({ theme }) => ({
+
+const StyledShowButton = styled('button', {
+	shouldForwardProp: (prop) => prop !== 'background' && prop !== 'height',
+})<{
+	background: string;
+	height: string;
+}>(({ theme, background, height }) => ({
 	fontFamily: theme.typography.fontFamily,
 	width: '100%',
+	height: height,
 	borderRadius: '0.5em',
 	border: 'none',
 	letterSpacing: theme.layout.letterSpacing,
+	background: theme.palette.background.paper,
+	color: theme.palette.text.primary,
+	'&.active': {
+		background: background,
+		color: theme.palette.text.secondary,
+	},
 	'&:hover': {
 		cursor: 'pointer',
 	},
 	'&:focus': {
-		outline: '0',
+		outline: `2px solid ${theme.palette.grey[800]}`,
 	},
 	[theme.breakpoints.down('md')]: {
 		letterSpacing: '0',
@@ -96,23 +110,19 @@ const ShowButton = (props: {
 }) => {
 	const { show, buttonColor, active, onClick } = props;
 
-	const { text: textColor, background: bgColor } = palette;
-
 	const startTime = moment(show.startTime);
 	const endTime = moment(show.endTime);
 	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
 
 	return (
-		<StyledshowButton
-			style={{
-				height: `${height * SCALE_UNIT}rem`,
-				backgroundColor: active ? buttonColor.main : bgColor.paper,
-				color: active ? textColor.secondary : textColor.primary,
-			}}
+		<StyledShowButton
+			className={active ? 'active' : ''}
+			height={`${height * SCALE_UNIT}rem`}
+			background={buttonColor.main}
 			onClick={onClick}
 		>
 			{show.name}
-		</StyledshowButton>
+		</StyledShowButton>
 	);
 };
 
