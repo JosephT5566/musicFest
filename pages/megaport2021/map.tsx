@@ -9,6 +9,7 @@ import { ShadowIconButton } from 'components/base/Button';
 
 import { APP_NAME, ROUTE } from 'constants/static';
 import { useRouter } from 'next/router';
+import { IMAGES } from 'constants/images';
 
 const ImageContainer = styled('div')({
 	width: '100%',
@@ -35,7 +36,7 @@ export default function Map() {
 
 			<H1>{'2021 MEGAPORT'}</H1>
 			<ImageContainer>
-				<StyledmapImg src={'/megaport_map.jpg'} alt="mega map" />
+				<StyledmapImg src={IMAGES.maps[2021]} alt="mega map" />
 			</ImageContainer>
 			<FixedButtonsContainer>
 				<ShadowIconButton

@@ -4,4 +4,8 @@ export const IMAGES = {
 		2021: '/images/posters/poster_2021.png',
 		2022: '/images/posters/poster_2022.png',
 	},
+	maps: {
+		2021: '/images/maps/map2021.jpg',
+		2022: '/images/maps/map2022.png',
+	},
 };
