@@ -22,12 +22,12 @@ const StyledtimelineBtnContainer = styled('div')({
 	width: '100%',
 });
 
-const StyledtimelineBtn = styled('button')({
+const StyledTimelineBtn = styled('button')({
 	position: 'absolute',
 	border: 'none',
 	borderRadius: '0.5em',
 	transition: '500ms ease-out',
-	width: '1.2em',
+	width: '1.2rem',
 	zIndex: 1,
 	'&:hover': {
 		cursor: 'pointer',
@@ -36,7 +36,7 @@ const StyledtimelineBtn = styled('button')({
 		outline: '0',
 	},
 	'&.true': {
-		width: '20em',
+		width: '15rem',
 		zIndex: 10,
 	},
 });
@@ -73,7 +73,7 @@ const StyledbtnTextContainer = styled('div')(({ theme }) => ({
 	left: '0.5em',
 	flexDirection: 'column',
 	alignItems: 'flex-start',
-	width: '19em',
+	width: '15rem',
 	'&.true': {
 		display: 'flex',
 	},
@@ -122,7 +122,7 @@ const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day:
 				}}
 			>
 				<StyledshowText className={`${active}`}>{name}</StyledshowText>
-				<StyledtimelineBtn
+				<StyledTimelineBtn
 					className={`${active}`}
 					onClick={handleClick}
 					style={{
@@ -138,7 +138,7 @@ const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day:
 						<div>{stageName}</div>
 						<div>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</div>
 					</StyledbtnTextContainer>
-				</StyledtimelineBtn>
+				</StyledTimelineBtn>
 			</StyledtimelineBtnContainer>
 		</ClickAwayListener>
 	);

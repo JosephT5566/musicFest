@@ -7,6 +7,12 @@ body {
   background-color: #eaeaea;
 }
 
+@media screen and (max-width: 900px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 p {
   margin: 0;
 }

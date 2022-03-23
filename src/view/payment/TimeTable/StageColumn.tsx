@@ -1,25 +1,25 @@
 import React from 'react';
-import { useGetSelectedShow, useSelectShow } from 'providers/ShowsProvider';
-import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
-
+import moment, { Moment } from 'moment';
 import { styled } from '@mui/material/styles';
 
-import { palette } from 'styles/palette';
+import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
+import Button from '@mui/material/Button';
+
+import { useGetSelectedShow, useSelectShow } from 'providers/ShowsProvider';
 import { SCALE_UNIT } from 'constants/static';
-import moment, { Moment } from 'moment';
 import { IArtist, IStage } from 'types/show';
-import { height } from '@mui/system';
 
 const ColumnContainer = styled('div')(({ theme }) => ({
 	textAlign: 'center',
-	width: '7.4em',
+	width: '7.4rem',
 	[theme.breakpoints.down('md')]: {
-		width: '5.8em',
+		width: '5.8rem',
 	},
 	[theme.breakpoints.down('sm')]: {
-		width: '4.8em',
+		width: '4.8rem',
 	},
 }));
+
 const Styledhead = styled('div')(({ theme }) => ({
 	height: theme.layout.tableHeadHeight,
 	display: 'flex',
@@ -30,7 +30,7 @@ const Styledhead = styled('div')(({ theme }) => ({
 	letterSpacing: theme.layout.letterSpacing,
 }));
 
-const StyledShowButton = styled('button', {
+const StyledShowButton = styled(Button, {
 	shouldForwardProp: (prop) => prop !== 'background' && prop !== 'height',
 })<{
 	background: string;
@@ -42,6 +42,9 @@ const StyledShowButton = styled('button', {
 	borderRadius: '0.5em',
 	border: 'none',
 	letterSpacing: theme.layout.letterSpacing,
+	fontWeight: 'normal',
+	lineHeight: 'inherit',
+	textTransform: 'inherit',
 	background: theme.palette.background.paper,
 	color: theme.palette.text.primary,
 	'&.active': {
@@ -57,10 +60,8 @@ const StyledShowButton = styled('button', {
 	[theme.breakpoints.down('md')]: {
 		letterSpacing: '0',
 	},
-	[theme.breakpoints.down('sm')]: {
-		fontSize: '12px',
-	},
 }));
+
 const StyledFreeTimeScale = styled('div')(({ theme }) => ({
 	position: 'relative',
 	height: `${SCALE_UNIT}rem`,
