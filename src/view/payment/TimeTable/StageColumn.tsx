@@ -11,14 +11,15 @@ import { IArtist, IStage } from 'types/show';
 
 const ColumnContainer = styled('div')(({ theme }) => ({
 	textAlign: 'center',
-	width: '7.4em',
+	width: '7.4rem',
 	[theme.breakpoints.down('md')]: {
-		width: '5.8em',
+		width: '5.8rem',
 	},
 	[theme.breakpoints.down('sm')]: {
-		width: '4.8em',
+		width: '4.8rem',
 	},
 }));
+
 const Styledhead = styled('div')(({ theme }) => ({
 	height: theme.layout.tableHeadHeight,
 	display: 'flex',
@@ -41,6 +42,7 @@ const StyledShowButton = styled(Button, {
 	borderRadius: '0.5em',
 	border: 'none',
 	letterSpacing: theme.layout.letterSpacing,
+	fontWeight: 'normal',
 	lineHeight: 'inherit',
 	textTransform: 'inherit',
 	background: theme.palette.background.paper,
