@@ -2,7 +2,7 @@ import { IArtist, IPerfDay, IProgramList } from 'types/show';
 
 const day1: IPerfDay = {
 	dayStartTime: '2022-03-26T11:30',
-	dayEndTime: '2022-03-26T22:00',
+	dayEndTime: '2022-03-26T22:10',
 	stages: [
 		{
 			name: '南霸天',
