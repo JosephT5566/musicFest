@@ -39,13 +39,14 @@ const SelectorsContainer = styled('div')(({ theme }) => ({
 }));
 
 type PageProps = {
-	title: string;
+	headerTitle: string;
+    pageTitle: string;
 	mapRoute: string;
 	storageKey: string; // used to be root name
 	programList: IProgramList;
 };
 
-export default function Page({ title, mapRoute, storageKey, programList }: PageProps) {
+export default function Page({ headerTitle, pageTitle, mapRoute, storageKey, programList }: PageProps) {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
 	const router = useRouter();
@@ -68,10 +69,10 @@ export default function Page({ title, mapRoute, storageKey, programList }: PageP
 		<ShowsProvider storageKey={storageKey}>
 			<PageContainer>
 				<Head>
-					<title>{title}</title>
+					<title>{headerTitle}</title>
 				</Head>
 
-				<H1>{title}</H1>
+				<H1>{pageTitle}</H1>
 				<SelectorsContainer>
 					<DisplayModeSelector mode={mode} setMode={setMode} />
 					<DaySelector
