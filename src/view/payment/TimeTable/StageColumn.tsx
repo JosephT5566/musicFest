@@ -84,7 +84,7 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 	const { prevEndTime, startTime } = props;
 	// console.log(startTime.format('YYYY-MM-DD HH:mm:ss'))
 
-	const height = moment.duration(startTime.diff(prevEndTime)).asMinutes() / 10;
+	const height = Math.round(moment.duration(startTime.diff(prevEndTime)).asMinutes() / 10); // TODO: value 0.5 is going to ruin the algo
 	const prevEndTimeMin = prevEndTime.minutes();
 
 	if (height <= 0) {
