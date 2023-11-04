@@ -19,4 +19,8 @@ export const ROUTE = {
 		root: '/megaport2022',
 		map: '/megaport2022/map',
 	},
+	fireBall2023: {
+		root: '/fireBall2023',
+		map: '/fireBall2023/map',
+	},
 };

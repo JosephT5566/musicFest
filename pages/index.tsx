@@ -87,6 +87,12 @@ export default function Home() {
 					>
 						<H1>{'2022'}</H1>
 					</StyledAnchor>
+					<StyledAnchor
+						href={ROUTE.fireBall2023.root}
+						sx={{ backgroundImage: `url("${IMAGES.posters[2022]}")` }}
+					>
+						<H1>{'2023'}</H1>
+					</StyledAnchor>
 				</PostersContainer>
 			</PageContainer>
 		</HeroContainer>
