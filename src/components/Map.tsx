@@ -8,7 +8,6 @@ import { H1 } from 'components/base/Typography';
 import { ShadowIconButton } from 'components/base/Button';
 
 import { useRouter } from 'next/router';
-import { IMAGES } from 'constants/images';
 
 const ImageContainer = styled('div')({
 	width: '100%',
