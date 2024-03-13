@@ -26,7 +26,7 @@ const StyledmapImg = styled('img')(({ theme }) => ({
 type MapProps = {
 	headerTitle: string;
 	pageTitle: string;
-	imageSrc: string;
+	imageSrc?: string;
 	pageRoute: string;
 };
 
@@ -39,10 +39,12 @@ export default function Map({ headerTitle, pageTitle, imageSrc, pageRoute }: Map
 				<title>{headerTitle}</title>
 			</Head>
 
-			<H1>{pageTitle}</H1>
-			<ImageContainer>
-				<StyledmapImg src={imageSrc} alt="mega map" />
-			</ImageContainer>
+			<H1>{imageSrc ? pageTitle : 'COMING SOON...'}</H1>
+			{imageSrc && (
+				<ImageContainer>
+					<StyledmapImg src={imageSrc} alt="mega map" />
+				</ImageContainer>
+			)}
 			<FixedButtonsContainer>
 				<ShadowIconButton
 					size={'large'}
