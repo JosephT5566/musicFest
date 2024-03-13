@@ -48,9 +48,9 @@ const SaveButton = (props: { onOpenSnack: () => void }) => {
 	const handleClick = async () => {
 		const data = btoa(JSON.stringify(selectedShows));
 		try {
-			await navigator.clipboard.writeText(`${url.host}${url.pathname}#${data}`); // copy to clipboard
-			if (data !== '' || url.hash.substring(1) !== '') {
-				router.push(`${url.pathname}#${data}`);
+			await navigator.clipboard.writeText(`${url?.host}${url?.pathname}#${data}`); // copy to clipboard
+			if (data !== '' || url?.hash.substring(1) !== '') {
+				router.push(`${url?.pathname}#${data}`);
 			}
 			onOpenSnack();
 		} catch (error) {
