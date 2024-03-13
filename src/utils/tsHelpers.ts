@@ -38,7 +38,6 @@ export const formatDate = (perfDay: IPerfDay): IPerfDay => {
 		};
 	});
 
-	console.log('🚀', `${date}T${dayStartTime}`)
 	return {
 		...perfDay,
 		dayStartTime: `${date}T${dayStartTime}`,
