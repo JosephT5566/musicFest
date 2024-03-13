@@ -50,15 +50,13 @@ export default function TimeBackdrop(props: { dayStartTime: Moment; dayEndTime: 
 		};
 	}, []);
 
-	return (
-		isToday() && (
-			<StyledtimeBackdrop
-				sx={{
-					top: `${top * SCALE_UNIT}rem`,
-				}}
-			>
-				<StyledcurrentTime>{time.format('HH:mm')}</StyledcurrentTime>
-			</StyledtimeBackdrop>
-		)
-	);
+	return isToday() ? (
+		<StyledtimeBackdrop
+			sx={{
+				top: `${top * SCALE_UNIT}rem`,
+			}}
+		>
+			<StyledcurrentTime>{time.format('HH:mm')}</StyledcurrentTime>
+		</StyledtimeBackdrop>
+	) : null;
 }

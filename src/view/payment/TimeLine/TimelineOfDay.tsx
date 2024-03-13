@@ -165,7 +165,7 @@ export default function TimeLineOfDay(props: {
 		.map((stage, index) =>
 			stage.artists.map((artist) => ({
 				stageName: stage.name,
-				itemColor: palette.stage[index],
+				itemColor: palette.stage[index as keyof typeof palette.stage],
 				layer: 0,
 				...artist,
 			}))
