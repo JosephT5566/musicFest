@@ -27,7 +27,7 @@ export default function TableOfDay({ perfDay, day, selected }: props) {
 					dayStartTime={moment(perfDay.dayStartTime)}
 					dayEndTime={moment(perfDay.dayEndTime)}
 					key={index}
-					stageColor={stageColors[index]}
+					stageColor={stageColors[index as keyof typeof palette.stage]}
 					stage={stage}
 					day={day}
 				/>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import 'styles/globals.css';
 import theme from 'styles/theme';
@@ -10,7 +11,7 @@ import { ContentContainer } from 'components/base/Container';
 
 import { STORAGE_KEY } from 'constants/static';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
 	useEffect(() => {
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');
