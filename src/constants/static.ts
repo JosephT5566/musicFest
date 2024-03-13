@@ -19,4 +19,8 @@ export const ROUTE = {
 		root: '/megaport2022',
 		map: '/megaport2022/map',
 	},
+	megaport2024: {
+		root: '/megaport2024',
+		map: '/megaport2024/map',
+	},
 };
