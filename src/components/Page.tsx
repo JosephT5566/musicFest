@@ -41,13 +41,13 @@ const SelectorsContainer = styled('div')(({ theme }) => ({
 
 type PageProps = {
 	headerTitle: string;
-    pageTitle: string;
+	pageTitle: string;
 	mapRoute: string;
 	storageKey: string; // used to be root name
 	programList: IProgramList;
 };
 
-export default function Page({ headerTitle, pageTitle, mapRoute, storageKey, programList }: PageProps) {
+const Page = ({ headerTitle, pageTitle, mapRoute, programList }: Omit<PageProps, 'storageKey'>) => {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
 	const router = useRouter();
@@ -69,42 +69,46 @@ export default function Page({ headerTitle, pageTitle, mapRoute, storageKey, pro
 	};
 
 	return (
-		<ShowsProvider storageKey={storageKey}>
-			<PageContainer>
-				<Head>
-					<title>{headerTitle}</title>
-				</Head>
+		<PageContainer>
+			<Head>
+				<title>{headerTitle}</title>
+			</Head>
 
-				<H1>{pageTitle}</H1>
-				<SelectorsContainer>
-					<DisplayModeSelector mode={mode} setMode={setMode} />
-					<DaySelector
-						days={programList.perfDays.map((d) =>
-							moment(d.dayStartTime).format('MM/DD')
-						)}
-						selectedDay={selectedDay}
-						onClick={handleClick}
-					/>
-				</SelectorsContainer>
-				{mode === 'timetable' ? (
-					<TimeTable programList={programList} selectedDay={selectedDay} />
-				) : (
-					<TimeLine programList={programList} selectedDay={selectedDay} />
-				)}
-				<FixedButtonsContainer>
-					<NotificationButton />
-					<SaveButton onOpenSnack={handleOpenSnack} />
-					<ResetButton />
-					<ShadowIconButton
-						size={'large'}
-						onClick={() => {
-							router.push(mapRoute);
-						}}
-					>
-						{<MapIcon />}
-					</ShadowIconButton>
-				</FixedButtonsContainer>
-			</PageContainer>
+			<H1>{pageTitle}</H1>
+			<SelectorsContainer>
+				<DisplayModeSelector mode={mode} setMode={setMode} />
+				<DaySelector
+					days={programList.perfDays.map((d) => moment(d.dayStartTime).format('MM/DD'))}
+					selectedDay={selectedDay}
+					onClick={handleClick}
+				/>
+			</SelectorsContainer>
+			{mode === 'timetable' ? (
+				<TimeTable programList={programList} selectedDay={selectedDay} />
+			) : (
+				<TimeLine programList={programList} selectedDay={selectedDay} />
+			)}
+			<FixedButtonsContainer>
+				<NotificationButton />
+				<SaveButton onOpenSnack={handleOpenSnack} />
+				<ResetButton />
+				<ShadowIconButton
+					size={'large'}
+					onClick={() => {
+						router.push(mapRoute);
+					}}
+				>
+					{<MapIcon />}
+				</ShadowIconButton>
+			</FixedButtonsContainer>
+		</PageContainer>
+	);
+};
+
+export default function WrappedPage({ storageKey, ...otherPageProps }: PageProps) {
+	return (
+		<ShowsProvider storageKey={storageKey}>
+			<Page {...otherPageProps} />
 		</ShowsProvider>
 	);
 }
