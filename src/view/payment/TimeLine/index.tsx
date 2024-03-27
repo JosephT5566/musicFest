@@ -87,10 +87,10 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 	const dayStartTime = moment(programList.perfDays[selectedDay].dayStartTime);
 	const dayEndTime = moment(programList.perfDays[selectedDay].dayEndTime);
 
-	const filtedPerfDays = programList.perfDays.map((prefDay) => {
+	const filteredPerfDays = programList.perfDays.map((perfDay) => {
 		return {
-			...prefDay,
-			stages: prefDay.stages.map((stage) => {
+			...perfDay,
+			stages: perfDay.stages.map((stage) => {
 				return {
 					...stage,
 					artists: stage.artists.filter((artist) => selectedIds.includes(artist.id)),
@@ -103,7 +103,7 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 		<TimelineContainer>
 			<TimeBackdrop dayStartTime={dayStartTime} dayEndTime={dayEndTime} />
 			<BaseLine programList={programList} />
-			{filtedPerfDays.map((perfDay, index) => {
+			{filteredPerfDays.map((perfDay, index) => {
 				return (
 					<TimeLineOfDay
 						startTime={moment(perfDay.dayStartTime)}
