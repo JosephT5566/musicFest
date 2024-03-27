@@ -23,6 +23,7 @@ import Head from 'next/head';
 
 import ResetButton from './ResetButton';
 import SaveButton from './SaveButton';
+import NotificationButton from './NotificationButton';
 
 const SelectorsContainer = styled('div')(({ theme }) => ({
 	width: '100%',
@@ -54,6 +55,8 @@ export default function Page({ headerTitle, pageTitle, mapRoute, storageKey, pro
 
 	useEffect(() => {
 		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
+
+		Notification.requestPermission();
 	}, []);
 
 	const handleClick = (value: number) => {
@@ -89,6 +92,7 @@ export default function Page({ headerTitle, pageTitle, mapRoute, storageKey, pro
 					<TimeLine programList={programList} selectedDay={selectedDay} />
 				)}
 				<FixedButtonsContainer>
+					<NotificationButton />
 					<SaveButton onOpenSnack={handleOpenSnack} />
 					<ResetButton />
 					<ShadowIconButton
