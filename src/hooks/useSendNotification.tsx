@@ -4,6 +4,9 @@ import { IArtist } from 'types/show';
 
 const useSendNotification = (activeArtists: IArtist[], notificationKey: string) => {
 	useEffect(() => {
+		if (!('Notification' in window)) {
+			return;
+		}
 		const sentNotifications = JSON.parse(localStorage.getItem(notificationKey) ?? '{}') || {};
 
 		const interval = setInterval(() => {
