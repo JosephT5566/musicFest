@@ -6,36 +6,40 @@ import { ShadowIconButton } from 'components/base/Button';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
 
 const NotificationButton = () => {
-	const [permissionState, setPermissionState] =
-		useState<typeof Notification.permission>('default');
+	const [permissionState, setPermissionState] = useState('default');
+	const [isAvailable, setIsAvailable] = useState(false);
 
-    const openSnackbar = useOpenSnackbar();
+	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
-		Notification.requestPermission((status) => {
-			console.log(status);
-			setPermissionState(status);
-		});
+		if ('Notification' in window) {
+			setIsAvailable(true);
+
+			Notification.requestPermission((status) => {
+				console.log(status);
+				setPermissionState(status);
+			});
+		}
 	}, []);
 
 	const handleClick = () => {
 		switch (permissionState) {
 			case 'denied':
-                openSnackbar('warning', '通知未開啟，請至設定修改。')
+				openSnackbar('warning', '通知未開啟，請至設定修改。');
 				break;
-			case "granted":
-                openSnackbar('success', '通知已開啟，將在表演開始前30分鐘通知。')
+			case 'granted':
+				openSnackbar('success', '通知已開啟，將在表演開始前30分鐘通知。');
 				break;
 			default:
 				break;
 		}
 	};
 
-	return (
+	return isAvailable ? (
 		<ShadowIconButton aria-label="notification" onClick={handleClick}>
 			{permissionState === 'denied' ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
 		</ShadowIconButton>
-	);
+	) : null;
 };
 
 export default NotificationButton;
