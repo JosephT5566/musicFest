@@ -7,11 +7,14 @@ import { useOpenSnackbar } from 'providers/SnackbarProvider';
 
 const NotificationButton = () => {
 	const [permissionState, setPermissionState] = useState('default');
+	const [isAvailable, setIsAvailable] = useState(false);
 
 	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
 		if ('Notification' in window) {
+			setIsAvailable(true);
+
 			Notification.requestPermission((status) => {
 				console.log(status);
 				setPermissionState(status);
@@ -32,7 +35,7 @@ const NotificationButton = () => {
 		}
 	};
 
-	return 'Notification' in window ? (
+	return isAvailable ? (
 		<ShadowIconButton aria-label="notification" onClick={handleClick}>
 			{permissionState === 'denied' ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
 		</ShadowIconButton>
