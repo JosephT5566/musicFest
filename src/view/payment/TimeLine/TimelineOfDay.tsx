@@ -161,7 +161,7 @@ export default function TimeLineOfDay(props: {
 		layerHashRef.current = new Array(Math.floor(height)).fill(0);
 	});
 
-	const filtedStages: ShowItem[][] = stages
+	const filteredStages: ShowItem[][] = stages
 		.map((stage, index) =>
 			stage.artists.map((artist) => ({
 				stageName: stage.name,
@@ -201,7 +201,7 @@ export default function TimeLineOfDay(props: {
 				height: `${height * SCALE_UNIT}rem`,
 			}}
 		>
-			{filtedStages.map((stage) => {
+			{filteredStages.map((stage) => {
 				return stage.map((item) => (
 					<TimeLineButton
 						megaStartTime={startTime}

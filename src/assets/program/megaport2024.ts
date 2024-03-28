@@ -3,7 +3,7 @@ import { setArtistId, formatDate } from 'utils/tsHelpers';
 
 const day1: IPerfDay = {
 	dayIndex: 0,
-	date: '2024-03-30',
+	date: '2024-03-28',
 	dayStartTime: '12:40',
 	dayEndTime: '22:10',
 	stages: [
@@ -162,7 +162,7 @@ const day1: IPerfDay = {
 
 const day2: IPerfDay = {
 	dayIndex: 1,
-	date: '2024-03-31',
+	date: '2024-03-29',
 	dayStartTime: '12:40',
 	dayEndTime: '21:50',
 	stages: [
