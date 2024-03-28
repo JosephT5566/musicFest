@@ -8,6 +8,6 @@ export const IMAGES = {
 	maps: {
 		2021: '/images/maps/map2021.jpg',
 		2022: '/images/maps/map2022.png',
-		2024: undefined,
+		2024: '/images/maps/map2024.png',
 	},
 };
