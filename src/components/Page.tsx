@@ -12,7 +12,7 @@ import DisplayModeSelector from 'components/shared/DisplayModeSelector';
 import { FixedButtonsContainer } from 'components/base/Container';
 import { ShadowIconButton } from 'components/base/Button';
 
-import ShowsProvider from 'providers/ShowsProvider';
+import ShowsProvider, { useGetSelectedShow } from 'providers/ShowsProvider';
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
 import { IDisplayMode } from 'types/displayMode';
 import { IProgramList } from 'types/show';
@@ -24,6 +24,7 @@ import Head from 'next/head';
 import ResetButton from './ResetButton';
 import SaveButton from './SaveButton';
 import NotificationButton from './NotificationButton';
+import useSendNotification from 'hooks/useSendNotification';
 
 const SelectorsContainer = styled('div')(({ theme }) => ({
 	width: '100%',
@@ -39,6 +40,25 @@ const SelectorsContainer = styled('div')(({ theme }) => ({
 	},
 }));
 
+const getActiveShows = (programList: IProgramList, selectedShows: string[]) => {
+	const activeShows = programList.perfDays
+		.map((perfDay) => {
+			return {
+				stages: perfDay.stages.map((stage) => {
+					return {
+						artists: stage.artists.filter((artist) =>
+							selectedShows.includes(artist.id)
+						),
+					};
+				}),
+			};
+		})
+		.flatMap((stage) => stage.stages.flatMap((stage) => stage.artists))
+		.filter((artist) => artist.id !== undefined);
+
+	return activeShows;
+};
+
 type PageProps = {
 	headerTitle: string;
 	pageTitle: string;
@@ -47,11 +67,17 @@ type PageProps = {
 	programList: IProgramList;
 };
 
-const Page = ({ headerTitle, pageTitle, mapRoute, programList }: Omit<PageProps, 'storageKey'>) => {
+const Page = ({ headerTitle, pageTitle, mapRoute, programList, storageKey }: PageProps) => {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
+
 	const router = useRouter();
 	const openSnackbar = useOpenSnackbar();
+	const selectedShows = useGetSelectedShow();
+	const activeShows = getActiveShows(programList, selectedShows);
+	const notificationKey = `${storageKey}_${STORAGE_KEY.notification}`;
+
+	useSendNotification(activeShows, notificationKey);
 
 	useEffect(() => {
 		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
@@ -105,10 +131,10 @@ const Page = ({ headerTitle, pageTitle, mapRoute, programList }: Omit<PageProps,
 	);
 };
 
-export default function WrappedPage({ storageKey, ...otherPageProps }: PageProps) {
+export default function WrappedPage(pageProps: PageProps) {
 	return (
-		<ShowsProvider storageKey={storageKey}>
-			<Page {...otherPageProps} />
+		<ShowsProvider storageKey={pageProps.storageKey}>
+			<Page {...pageProps} />
 		</ShowsProvider>
 	);
 }
