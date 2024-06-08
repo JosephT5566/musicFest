@@ -8,7 +8,9 @@ export default class MyDocument extends Document {
 		return (
 			<Html lang="zh-TW">
 				<Head>
-					<link rel="icon" href="/favicon.ico" />
+					<link rel="icon" href="/favicon.ico" sizes="any" />
+					<link rel="icon" href="/icon.svg" type="image/svg+xml" />
+					<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 					{/* PWA primary color */}
 					<meta name="theme-color" content={theme.palette.primary.main} />
 					<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,13 +19,13 @@ export default class MyDocument extends Document {
 						href="https://fonts.googleapis.com/css2?family=Changa+One&family=Noto+Sans+TC:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
 						rel="stylesheet"
 					></link>
-					<meta property="og:title" content="大港開唱選擇器 Megaport Festival Selector" />
+					<meta property="og:title" content="Music Festival Timetable Manager" />
 					<meta property="og:description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
 					<meta property="og:type" content="website" />
 					<meta property="og:image" content="https://i.imgur.com/MKtF24C.png" />
 					<meta
 						property="og:site_name"
-						content="大港開唱選擇器 Megaport Festival Selector"
+						content="Music Festival Timetable Manager"
 					/>
 					<meta property="og:url" content="https://josepht5566.github.io/musicFest" />
 					<meta name="description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
