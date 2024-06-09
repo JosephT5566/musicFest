@@ -10,9 +10,6 @@ import { IMAGES } from 'constants/images';
 
 const HeroContainer = styled('div')({
 	minHeight: 'inherit',
-	backgroundImage: `url("${IMAGES.heroImage}")`,
-	backgroundPosition: 'center',
-	backgroundSize: 'cover',
 });
 
 const StyledAnchor = styled('a')(({ theme }) => ({

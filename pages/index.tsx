@@ -12,9 +12,6 @@ import { IMAGES, FEST_LOGO } from 'constants/images';
 
 const HeroContainer = styled('div')({
 	minHeight: 'inherit',
-	backgroundImage: `url("${IMAGES.heroImage}")`,
-	backgroundPosition: 'center',
-	backgroundSize: 'cover',
 });
 
 const pageTitle = `${APP_NAME}`;
