@@ -1,3 +1,8 @@
+export const FEST_LOGO = {
+	megaport: "/images/festivals/megaport.png",
+	fujirock: "/images/festivals/fujirock.png",
+}
+
 export const IMAGES = {
 	heroImage: '/images/hero_image1.jpg',
 	posters: {
