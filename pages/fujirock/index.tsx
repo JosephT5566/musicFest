@@ -8,10 +8,6 @@ import Head from 'next/head';
 import { H1 } from 'components/base/Typography';
 import { IMAGES } from 'constants/images';
 
-const HeroContainer = styled('div')({
-	minHeight: 'inherit',
-});
-
 const StyledAnchor = styled('a')(({ theme }) => ({
 	height: '20em',
 	width: '15em',
@@ -64,9 +60,9 @@ const PostersContainer = styled('div')({
 
 const pageTitle = `${APP_NAME} - ${FEST_NAME.FUJI_ROCK}`;
 
-export default function Home() {
+export default function Fujirock() {
 	return (
-		<HeroContainer>
+		<>
 			<Head>
 				<title>{pageTitle}</title>
 			</Head>
@@ -82,6 +78,6 @@ export default function Home() {
 					</StyledAnchor>
 				</PostersContainer>
 			</PageContainer>
-		</HeroContainer>
+		</>
 	);
 }

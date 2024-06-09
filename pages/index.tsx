@@ -1,6 +1,5 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
 
 import { PageContainer } from 'components/base/Container';
 
@@ -8,17 +7,13 @@ import { APP_NAME, FEST_NAME, ROUTE } from 'constants/static';
 import Head from 'next/head';
 import { H1 } from 'components/base/Typography';
 import FestCard from 'components/shared/FestCard';
-import { IMAGES, FEST_LOGO } from 'constants/images';
-
-const HeroContainer = styled('div')({
-	minHeight: 'inherit',
-});
+import { FEST_LOGO } from 'constants/images';
 
 const pageTitle = `${APP_NAME}`;
 
 export default function Home() {
 	return (
-		<HeroContainer>
+		<>
 			<Head>
 				<title>{pageTitle}</title>
 			</Head>
@@ -45,6 +40,6 @@ export default function Home() {
 					/>
 				</Box>
 			</PageContainer>
-		</HeroContainer>
+		</>
 	);
 }
