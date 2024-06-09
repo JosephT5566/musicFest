@@ -36,7 +36,7 @@ export default function Header() {
 	return (
 		<StyledHeader>
 			<a className={'logo'} href="/">
-				<Box height="100%" borderRadius={24} overflow="hidden">
+				<Box height="100%" borderRadius={24} overflow="hidden" sx={{ aspectRatio: '1' }}>
 					<Image
 						src={IMAGES.LOGO_SVG}
 						alt="FesTime"
