@@ -75,7 +75,7 @@ export default function Home() {
 			</Head>
 
 			<PageContainer>
-				<H1>{'大港開唱選擇器'}</H1>
+				<H1>{FEST_NAME.MEGAPORT}</H1>
 				<PostersContainer>
 					<StyledAnchor
 						href={ROUTE.megaport[2021].root}

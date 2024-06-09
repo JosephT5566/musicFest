@@ -20,7 +20,7 @@ import { useOpenSnackbar } from 'providers/SnackbarProvider';
 import { IDisplayMode } from 'types/displayMode';
 
 import programList from 'assets/program/megaport2022';
-import { APP_NAME, ROUTE, STORAGE_KEY } from 'constants/static';
+import { APP_NAME, ROUTE, FEST_NAME, STORAGE_KEY } from 'constants/static';
 import moment from 'moment';
 import Head from 'next/head';
 
@@ -82,6 +82,9 @@ const ResetButton = () => {
 	);
 };
 
+const headerTitle = `${APP_NAME} - ${FEST_NAME.MEGAPORT} - 2022`;
+const header = `${FEST_NAME.MEGAPORT} - 2022`;
+
 export default function Megaport2022() {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
@@ -105,10 +108,10 @@ export default function Megaport2022() {
 		<ShowsProvider storageKey={ROUTE.megaport[2022].root}>
 			<PageContainer>
 				<Head>
-					<title>{`${APP_NAME} | 2022`}</title>
+					<title>{headerTitle}</title>
 				</Head>
 
-				<H1>{'2022 MEGAPORT'}</H1>
+				<H1>{header}</H1>
 				<SelectorsContainer>
 					<DisplayModeSelector mode={mode} setMode={setMode} />
 					<DaySelector
