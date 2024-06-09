@@ -23,15 +23,15 @@ export const ROUTE = {
 		},
 		2021: {
 			root: '/megaport/2021',
-			map: '/megaport2021/map',
+			map: '/megaport/2021/map',
 		},
 		2022: {
 			root: '/megaport/2022',
-			map: '/megaport2022/map',
+			map: '/megaport/2022/map',
 		},
 		2024: {
 			root: '/megaport/2024',
-			map: '/megaport2024/map',
+			map: '/megaport/2024/map',
 		},
 	},
 	fujirock: {
@@ -41,17 +41,5 @@ export const ROUTE = {
 		2024: {
 			root: '/fujirock/2024',
 		},
-	},
-	megaport2021: {
-		root: '/megaport2021',
-		map: '/megaport2021/map',
-	},
-	megaport2022: {
-		root: '/megaport2022',
-		map: '/megaport2022/map',
-	},
-	megaport2024: {
-		root: '/megaport2024',
-		map: '/megaport2024/map',
 	},
 };

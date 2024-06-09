@@ -102,7 +102,7 @@ export default function Megaport2021() {
 	};
 
 	return (
-		<ShowsProvider storageKey={ROUTE.megaport2021.root}>
+		<ShowsProvider storageKey={ROUTE.megaport[2021].root}>
 			<PageContainer>
 				<Head>
 					<title>{`${APP_NAME} | 2021`}</title>
@@ -130,7 +130,7 @@ export default function Megaport2021() {
 					<ShadowIconButton
 						size={'large'}
 						onClick={() => {
-							router.push(ROUTE.megaport2021.map);
+							router.push(ROUTE.megaport[2021].map);
 						}}
 					>
 						{<MapIcon />}

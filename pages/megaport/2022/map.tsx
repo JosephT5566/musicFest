@@ -7,7 +7,7 @@ import { FixedButtonsContainer, PageContainer } from 'components/base/Container'
 import { H1 } from 'components/base/Typography';
 import { ShadowIconButton } from 'components/base/Button';
 
-import { APP_NAME, ROUTE } from 'constants/static';
+import { ROUTE, FEST_NAME } from 'constants/static';
 import { useRouter } from 'next/router';
 import { IMAGES } from 'constants/images';
 
@@ -25,16 +25,18 @@ const StyledmapImg = styled('img')(({ theme }) => ({
 	},
 }));
 
+const title = `${FEST_NAME.MEGAPORT} | 2022 | Map`;
+
 export default function Map() {
 	const router = useRouter();
 
 	return (
 		<PageContainer>
 			<Head>
-				<title>{`${APP_NAME} | 2022 | 地圖`}</title>
+				<title>{title}</title>
 			</Head>
 
-			<H1>{'2022 MEGAPORT'}</H1>
+			<H1>{title}</H1>
 			<ImageContainer>
 				<StyledmapImg src={IMAGES.maps[2022]} alt="mega map" />
 			</ImageContainer>
@@ -42,7 +44,7 @@ export default function Map() {
 				<ShadowIconButton
 					size={'large'}
 					onClick={() => {
-						router.push(ROUTE.megaport2022.root);
+						router.push(ROUTE.megaport[2022].root);
 					}}
 				>
 					<TableChartIcon />

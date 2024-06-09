@@ -1,15 +1,17 @@
 import React from 'react';
 import Map from 'components/Map';
 
-import { APP_NAME, ROUTE } from 'constants/static';
+import { ROUTE, FEST_NAME } from 'constants/static';
 import { IMAGES } from 'constants/images';
+
+const title = `${FEST_NAME.MEGAPORT} | 2024 | Map`;
 
 const Megaport2024Map = () => {
 	return (
 		<Map
-			headerTitle={`${APP_NAME} | 2024 | 地圖`}
-			pageTitle={'2024 MEGAPORT'}
-			pageRoute={ROUTE.megaport2024.root}
+			headerTitle={title}
+			pageTitle={title}
+			pageRoute={ROUTE.megaport[2024].root}
 			imageSrc={IMAGES.maps[2024]}
 		/>
 	);
