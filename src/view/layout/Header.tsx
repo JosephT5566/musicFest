@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Navigation from './Navigation';
+import { APP_NAME } from 'constants/static';
 
 const StyledHeader = styled('header')(({ theme }) => ({
 	height: theme.layout.header.height,
@@ -32,7 +33,7 @@ export default function Header() {
 		<StyledHeader>
 			<a className={'logo'} href="/">
 				<img src={'/mega_origin.png'} alt="mega_origin" />
-				<h2>Megaport Festival</h2>
+				<h2>{APP_NAME}</h2>
 			</a>
 			<Navigation />
 		</StyledHeader>
