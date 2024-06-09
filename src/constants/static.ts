@@ -1,6 +1,6 @@
 export const MIN = 60000; // 60 sec * 1000 milliseconds
 
-export const APP_NAME = 'Music Festival Timetable Selector';
+export const APP_NAME = 'FesTime';
 
 export const SCALE_UNIT = 1.3;
 
