@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 import { PageContainer } from 'components/base/Container';
 
-import { APP_NAME, ROUTE } from 'constants/static';
+import { APP_NAME, FEST_NAME, ROUTE } from 'constants/static';
 import Head from 'next/head';
 import { H1 } from 'components/base/Typography';
 import { IMAGES } from 'constants/images';
@@ -65,33 +65,29 @@ const PostersContainer = styled('div')({
 	justifyItems: 'center',
 });
 
+const pageTitle = `${APP_NAME}`;
+
 export default function Home() {
 	return (
 		<HeroContainer>
 			<Head>
-				<title>{`${APP_NAME}`}</title>
+				<title>{pageTitle}</title>
 			</Head>
 
 			<PageContainer>
-				<H1>{'大港開唱選擇器'}</H1>
+				<H1>{pageTitle}</H1>
 				<PostersContainer>
 					<StyledAnchor
-						href={ROUTE.megaport2021.root}
+						href={ROUTE.megaport.index.root}
 						sx={{ backgroundImage: `url("${IMAGES.posters[2021]}")` }}
 					>
-						<H1>{'2021'}</H1>
+						<H1>{FEST_NAME.MEGAPORT}</H1>
 					</StyledAnchor>
 					<StyledAnchor
-						href={ROUTE.megaport2022.root}
+						href={ROUTE.fujirock.index.root}
 						sx={{ backgroundImage: `url("${IMAGES.posters[2022]}")` }}
 					>
-						<H1>{'2022'}</H1>
-					</StyledAnchor>
-					<StyledAnchor
-						href={ROUTE.megaport2024.root}
-						sx={{ backgroundImage: `url("${IMAGES.posters[2024]}")` }}
-					>
-						<H1>{'2024'}</H1>
+						<H1>{FEST_NAME.FUJI_ROCK}</H1>
 					</StyledAnchor>
 				</PostersContainer>
 			</PageContainer>
