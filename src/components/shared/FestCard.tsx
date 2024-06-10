@@ -27,7 +27,7 @@ export default function FestCard({
 	image: string;
 }) {
 	return (
-		<Link width={'100%'} href={href}>
+		<Link className='fest-card' width={'100%'} href={href}>
 			<Paper elevation={4} sx={{ backgroundColor: 'white' }}>
 				<Box
 					className="image-container"
