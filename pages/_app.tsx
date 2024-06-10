@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<React.Fragment>
-			<title>大港開唱選擇器 Megaport Festival Selector</title>
+			<title>FesTime - A Music Festival Timetable Manager</title>
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<SnackbarProvider>
 				<ThemeProvider theme={theme}>

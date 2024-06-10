@@ -3,6 +3,8 @@ import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/do
 import { ServerStyleSheets } from '@material-ui/styles';
 import theme from 'styles/theme';
 
+const siteName = 'FestTime';
+
 export default class MyDocument extends Document {
 	render() {
 		return (
@@ -19,15 +21,15 @@ export default class MyDocument extends Document {
 						href="https://fonts.googleapis.com/css2?family=Changa+One&family=Noto+Sans+TC:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
 						rel="stylesheet"
 					></link>
-					<meta property="og:title" content="Music Festival Timetable Manager" />
+					<meta property="og:title" content={siteName} />
 					<meta property="og:description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
 					<meta property="og:type" content="website" />
 					<meta property="og:image" content="https://i.imgur.com/MKtF24C.png" />
 					<meta
 						property="og:site_name"
-						content="Music Festival Timetable Manager"
+						content={siteName}
 					/>
-					<meta property="og:url" content="https://josepht5566.github.io/musicFest" />
+					<meta property="og:url" content="https://musicfest.josephtseng-tw.com/" />
 					<meta name="description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
 					<link rel="manifest" href="/manifest.json" />
 				</Head>

@@ -20,7 +20,7 @@ import { useOpenSnackbar } from 'providers/SnackbarProvider';
 import { IDisplayMode } from 'types/displayMode';
 
 import programList from 'assets/program/megaport2021';
-import { APP_NAME, ROUTE, STORAGE_KEY } from 'constants/static';
+import { APP_NAME, ROUTE, FEST_NAME, STORAGE_KEY } from 'constants/static';
 import moment from 'moment';
 import Head from 'next/head';
 
@@ -82,6 +82,9 @@ const ResetButton = () => {
 	);
 };
 
+const headerTitle = `${APP_NAME} - ${FEST_NAME.MEGAPORT} - 2021`;
+const header = `${FEST_NAME.MEGAPORT} - 2021`;
+
 export default function Megaport2021() {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
@@ -102,13 +105,13 @@ export default function Megaport2021() {
 	};
 
 	return (
-		<ShowsProvider storageKey={ROUTE.megaport2021.root}>
+		<ShowsProvider storageKey={ROUTE.megaport[2021].root}>
 			<PageContainer>
 				<Head>
-					<title>{`${APP_NAME} | 2021`}</title>
+					<title>{headerTitle}</title>
 				</Head>
 
-				<H1>{'2021 MEGAPORT'}</H1>
+				<H1>{header}</H1>
 				<SelectorsContainer>
 					<DisplayModeSelector mode={mode} setMode={setMode} />
 					<DaySelector
@@ -130,7 +133,7 @@ export default function Megaport2021() {
 					<ShadowIconButton
 						size={'large'}
 						onClick={() => {
-							router.push(ROUTE.megaport2021.map);
+							router.push(ROUTE.megaport[2021].map);
 						}}
 					>
 						{<MapIcon />}

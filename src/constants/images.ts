@@ -1,9 +1,14 @@
+export const FEST_LOGO = {
+	megaport: "/images/festivals/megaport.png",
+	fujirock: "/images/festivals/fujirock.png",
+}
+
 export const IMAGES = {
-	heroImage: '/images/hero_image1.jpg',
+	LOGO_SVG: '/icon.svg',
 	posters: {
 		2021: '/images/posters/poster_2021.png',
 		2022: '/images/posters/poster_2022.png',
-		2024: '/images/posters/poster_2024.jpeg',
+		2024: '/images/posters/poster_2024.png',
 	},
 	maps: {
 		2021: '/images/maps/map2021.jpg',

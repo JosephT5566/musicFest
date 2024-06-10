@@ -1,6 +1,11 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import Image from 'next/image';
+import Box from '@mui/material/Box';
+
 import Navigation from './Navigation';
+import { APP_NAME } from 'constants/static';
+import { IMAGES } from 'constants/images';
 
 const StyledHeader = styled('header')(({ theme }) => ({
 	height: theme.layout.header.height,
@@ -31,8 +36,17 @@ export default function Header() {
 	return (
 		<StyledHeader>
 			<a className={'logo'} href="/">
-				<img src={'/mega_origin.png'} alt="mega_origin" />
-				<h2>Megaport Festival</h2>
+				<Box height="100%" borderRadius={24} overflow="hidden" sx={{ aspectRatio: '1' }}>
+					<Image
+						src={IMAGES.LOGO_SVG}
+						alt="FesTime"
+						aria-label="FesTime"
+						role="img"
+						height={48}
+						width={48}
+					/>
+				</Box>
+				<h2>{APP_NAME.toUpperCase()}</h2>
 			</a>
 			<Navigation />
 		</StyledHeader>
