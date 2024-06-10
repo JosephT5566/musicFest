@@ -54,7 +54,6 @@ export default function PosterCard({
 					sx={{ backgroundImage: `url("${image}")` }}
 					height="20em"
 					width="100%"
-					padding="1em 2em"
 					display="flex"
 					position="relative"
 					alignItems="center"
