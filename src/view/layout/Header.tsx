@@ -1,6 +1,5 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Image from 'next/image';
 import Box from '@mui/material/Box';
 
 import Navigation from './Navigation';
@@ -32,16 +31,19 @@ const StyledHeader = styled('header')(({ theme }) => ({
 	},
 }));
 
+const StyledIcon = styled('img')({
+	width: '100%',
+});
+
 export default function Header() {
 	return (
 		<StyledHeader>
 			<a className={'logo'} href="/">
 				<Box height="100%" borderRadius={24} overflow="hidden" sx={{ aspectRatio: '1' }}>
-					<Image
+					<StyledIcon
 						src={IMAGES.LOGO_SVG}
 						alt="FesTime"
 						aria-label="FesTime"
-						role="img"
 						height={48}
 						width={48}
 					/>
