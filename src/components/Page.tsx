@@ -81,6 +81,7 @@ const Page = ({ headerTitle, pageTitle, mapRoute, programList, storageKey }: Pag
 
 	useEffect(() => {
 		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
+
 		if ('Notification' in window) {
 			Notification.requestPermission();
 		}
