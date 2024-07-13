@@ -21,12 +21,23 @@ addEventListener('fetch', event => {
         }),
       )
     }
-    event.respondWith(new Response('Internal Error', { status: 500 }))
+    event.respondWith(new Response('Internal Error', { status: 500, statusText: e.message }))
   }
 })
 
 async function handleEvent(event) {
-  const url = new URL(event.request.url)
+  const { request } = event;
+  const url = new URL(request.url)
+
+  if (url.hostname === "musicfest.josephtseng-tw.com" && url.pathname.startsWith("/dev")) {
+    const auth = request.headers.get("Authorization")
+
+    // Check if the Authorization header is present and valid
+    if (!auth || !validateAuth(auth)) {
+      return Response.redirect("https://musicfest.josephtseng-tw.com/", 302)
+    }
+  }
+
   let options = {
     mapRequestToAsset: mapToAsset
   }
@@ -69,7 +80,7 @@ async function handleEvent(event) {
         })
 
         return new Response(notFoundResponse.body, { ...notFoundResponse, status: 404 })
-      } catch (e) {}
+      } catch (e) { }
     }
 
     return new Response(e.message || e.toString(), { status: 500 })
@@ -117,4 +128,20 @@ const mapToAsset = (request) => {
   const req = new Request(parsedUrl.toString(), request)
 
   return req
+}
+
+/**
+ * Validate the Basic Authentication header.
+ * @param {string} auth - The Authorization header value.
+ * @returns {boolean} - True if the credentials are valid, false otherwise.
+ */
+const validateAuth = (auth) => {
+  // Decode the Base64 encoded username:password string
+  const [authType, encoded] = auth.split(' ')
+  if (authType !== 'Basic') return false
+
+  const decoded = atob(encoded)
+  const [user, pass] = decoded.split(':')
+
+  return user === CF_AUTH_USERNAME && pass === CF_AUTH_PASSWORD
 }
