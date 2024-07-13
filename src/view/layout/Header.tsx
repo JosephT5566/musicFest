@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import Navigation from './Navigation';
 import { APP_NAME } from 'constants/static';
@@ -48,7 +49,7 @@ export default function Header() {
 						width={48}
 					/>
 				</Box>
-				<h2>{APP_NAME.toUpperCase()}</h2>
+				<Typography variant="h1" fontSize="2.5rem">{APP_NAME}</Typography>
 			</a>
 			<Navigation />
 		</StyledHeader>
