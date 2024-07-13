@@ -51,7 +51,9 @@ const NotificationPage = () => {
 				<title>{headerTitle}</title>
 			</Head>
 
-			{'Notification' in window && <p>{`Permission: ${Notification.permission}`}</p>}
+			{typeof window !== 'undefined' && 'Notification' in window && (
+				<p>{`Permission: ${Notification.permission}`}</p>
+			)}
 			<label htmlFor="time">Select Time:</label>
 			<input type="time" id="time" value={time} onChange={handleChange} />
 			<p>Selected Time: {time}</p>
