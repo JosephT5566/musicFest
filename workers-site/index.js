@@ -33,8 +33,16 @@ async function handleEvent(event) {
     const auth = request.headers.get("Authorization")
 
     // Check if the Authorization header is present and valid
+    // TODO: The HTTP auth is not expiry, we can use cookie for auth.
     if (!auth || !validateAuth(auth)) {
-      return Response.redirect("https://musicfest.josephtseng-tw.com/", 302)
+      return new Response("You need to login.", {
+        status: 401,
+        headers: {
+          // Prompts the user for credentials.
+          "WWW-Authenticate": 'Basic realm="my scope", charset="UTF-8"',
+        },
+      });
+      // return Response.redirect("http://localhost:8787/", 302)
     }
   }
 
@@ -143,5 +151,6 @@ const validateAuth = (auth) => {
   const decoded = atob(encoded)
   const [user, pass] = decoded.split(':')
 
+  // TODO: we can't use global value in dev
   return user === CF_AUTH_USERNAME && pass === CF_AUTH_PASSWORD
 }
