@@ -1,0 +1,11 @@
+{
+    "web_apps": [
+        {
+            "manifest": "https://musicfest.josephtseng-tw.com/manifest.json",
+            "details": {
+                "paths": ["/dev/*"],
+                "exclude_paths": []
+            }
+        }
+    ]
+}

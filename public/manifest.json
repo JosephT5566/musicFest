@@ -1,6 +1,6 @@
 {
   "name": "Music Festival Timetable Manager",
-  "short_name": "Music Fest Timetable",
+  "short_name": "FesTime",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -19,5 +19,8 @@
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "lang": "zh-Hant"
+  "lang": "zh-Hant",
+  "url_handlers": {
+    "origin": "https://musicfest.josephtseng-tw.com"
+  }
 }
