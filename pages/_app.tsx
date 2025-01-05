@@ -10,14 +10,11 @@ import Snackbar from 'components/shared/Snackbar';
 import { ContentContainer } from 'components/base/Container';
 
 import { STORAGE_KEY } from 'constants/static';
-import { isInApp } from 'utils/detect-inapp';
+import useIsInApp from 'hooks/useIsInApp';
 
 function MyApp({ Component, pageProps }: AppProps) {
+	const isInApp = useIsInApp();
 	useEffect(() => {
-		const useragent = navigator.userAgent || navigator.vendor;
-		const isInAppBrowser = isInApp(useragent);
-		console.log("isInAppBrowser: ", isInAppBrowser, useragent);
-
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');
 		if (jssStyles) {
