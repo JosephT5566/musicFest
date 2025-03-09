@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import 'styles/globals.css';
 import theme from 'styles/theme';
 import SnackbarProvider from 'providers/SnackbarProvider';
+import DialogProvider from 'providers/DialogProvider';
 
 import Header from 'view/layout/Header';
 import Snackbar from 'components/shared/Snackbar';
+import AlertDialog from 'components/shared/AlertDialog';
 import { ContentContainer } from 'components/base/Container';
-
-import { STORAGE_KEY } from 'constants/static';
 import useIsInApp from 'hooks/useIsInApp';
 
+import { STORAGE_KEY } from 'constants/static';
+
 function MyApp({ Component, pageProps }: AppProps) {
+	const [openDialog, setOpenDialog] = useState(false);
 	const isInApp = useIsInApp();
 	useEffect(() => {
 		// Remove the server-side injected CSS.
@@ -24,6 +27,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 			localStorage.setItem(STORAGE_KEY.day, '0');
 		}
 	}, []);
+
+	useEffect(() => {
+		setOpenDialog(isInApp);
+	}, [isInApp]);
 
 	return (
 		<React.Fragment>
@@ -37,6 +44,17 @@ function MyApp({ Component, pageProps }: AppProps) {
 					</ContentContainer>
 				</ThemeProvider>
 				<Snackbar />
+				<AlertDialog
+					open={openDialog}
+					title={'123'}
+					content={'456'}
+					onClick={() => {
+						console.log('open');
+					}}
+					handleClose={() => {
+						setOpenDialog(false);
+					}}
+				/>
 			</SnackbarProvider>
 		</React.Fragment>
 	);
