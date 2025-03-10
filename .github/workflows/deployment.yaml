@@ -115,7 +115,10 @@ jobs:
   cleanup:
     name: Cleanup
     needs: deploy
-    if: always()
+    if: |
+      success() && 
+      github.event_name == 'push' && 
+      github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Cleanup Old Caches
