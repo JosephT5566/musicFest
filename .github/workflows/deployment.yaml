@@ -108,17 +108,3 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_TOKEN }}
-
-  cleanup:
-    name: Cleanup
-    needs: deploy
-    if: |
-      success() && 
-      github.event_name == 'push' && 
-      github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cleanup Old Caches
-        uses: actions/cache/delete@v3
-        with:
-          key: cache-nextjs-
