@@ -114,7 +114,7 @@ jobs:
 
   cleanup:
     name: Cleanup
-    needs: [deploy]
+    needs: deploy
     if: always()
     runs-on: ubuntu-latest
     steps:
