@@ -73,9 +73,7 @@ jobs:
     name: Deploy to Cloudflare
     needs: build-and-test  # Only run after tests pass
     runs-on: ubuntu-latest
-    # Add environment protection
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    environment: production
 
     steps:
       - name: Checkout
@@ -110,7 +108,6 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_TOKEN }}
-          environment: production
 
   cleanup:
     name: Cleanup

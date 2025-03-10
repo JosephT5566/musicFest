@@ -5,19 +5,3 @@ workers_dev = true
 compatibility_date = "2024-01-01"
 main = "workers-site/index.js"
 site = { bucket = "./out" }
-
-# Add environment variables configuration
-[vars]
-ENVIRONMENT = "production"
-
-# Add custom build configuration
-[build]
-command = "yarn build && yarn export"
-watch_dir = "src"
-
-# Add environment specific configurations
-[env.production]
-routes = ['musicfest.josephtseng-tw.com/*']
-
-[env.staging]
-routes = ['staging.musicfest.josephtseng-tw.com/*']
