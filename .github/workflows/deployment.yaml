@@ -4,25 +4,124 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+  # Add manual trigger
+  workflow_dispatch:
 
 
 env:
   REACT_APP_MEASUREMENT_ID: ${{ secrets.MEASUREMENT_ID }}
+  NODE_VERSION: '18'  # Specify Node.js version
+  CACHE_KEY: cache-nextjs-${{ github.sha }}
 
 jobs:
-  build-and-deploy:
-    name: Setup, Build and Deploy
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      # Try to restore cache first
+      - name: Restore Next.js Build Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            .next/cache
+            out
+          key: ${{ env.CACHE_KEY }}
+          restore-keys: |
+            cache-nextjs-
+            
+      - name: Build with cache
+        run: |
+          echo "Cache contents before build:"
+          ls -la .next/cache || echo "No cache found"
+          
+          echo "Running build..."
+          yarn build
+          
+          echo "Cache contents after build:"
+          ls -la .next/cache
+          
+          echo "Running export..."
+          yarn export
+
+      # Save cache after successful build
+      - name: Save Next.js Build Cache
+        uses: actions/cache/save@v3
+        if: success()
+        with:
+          path: |
+            .next/cache
+            out
+          key: ${{ env.CACHE_KEY }}
+        
+  deploy:
+    name: Deploy to Cloudflare
+    needs: build-and-test  # Only run after tests pass
+    runs-on: ubuntu-latest
+    # Add environment protection
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      # Restore the cached build before deployment
+      - name: Restore Build Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            .next/cache
+            out
+          key: ${{ env.CACHE_KEY }}
+          restore-keys: |
+            cache-nextjs-
 
       - name: Build
         run: |
-          yarn install && yarn build && yarn export
+          yarn build
+          yarn export
 
       - name: Publish Website
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_TOKEN }}
+          environment: production
+
+  cleanup:
+    name: Cleanup
+    needs: deploy
+    if: |
+      success() && 
+      github.event_name == 'push' && 
+      github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup Old Caches
+        uses: actions/cache/delete@v3
+        with:
+          key: cache-nextjs-
