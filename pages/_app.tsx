@@ -17,6 +17,7 @@ import { STORAGE_KEY } from 'constants/static';
 function MyApp({ Component, pageProps }: AppProps) {
 	const [openDialog, setOpenDialog] = useState(false);
 	const isInApp = useIsInApp();
+
 	useEffect(() => {
 		// Remove the server-side injected CSS.
 		const jssStyles = document.querySelector('#jss-server-side');
@@ -46,10 +47,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<Snackbar />
 				<AlertDialog
 					open={openDialog}
-					title={'123'}
-					content={'456'}
+					title={'Browser Compatibility Notice'}
+					content={"For the best experience with FesTime, we recommend using your device's default browser (Chrome/Safari). Some features may not work correctly in in-app browsers."}
 					onClick={() => {
 						console.log('open');
+						// For iOS: window.location.href = URL
+          				// For Android: window.location.href = 'intent://YOUR_URL#Intent;scheme=https;package=com.android.chrome;end'
 					}}
 					handleClose={() => {
 						setOpenDialog(false);
