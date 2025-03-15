@@ -3,19 +3,30 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 
 type AlertDialogProps = {
 	open: boolean;
 	title: string;
 	content: string;
-	onClick?: () => void;
-    handleClose: () => void;
+	confirmButtonText?: string;
+	disagreeButtonText?: string;
+	hideDisagreeButton?: boolean;
+	handleConfirm?: () => void;
+	handleClose: () => void;
 };
 
 export default function AlertDialog(props: AlertDialogProps) {
-	const { open, title, content, onClick, handleClose } = props;
+	const {
+		open,
+		title,
+		content,
+		confirmButtonText = 'Confirm',
+		disagreeButtonText = 'Disagree',
+		hideDisagreeButton = false,
+		handleConfirm,
+		handleClose,
+	} = props;
 
 	return (
 		<MaterialDialog
@@ -29,9 +40,9 @@ export default function AlertDialog(props: AlertDialogProps) {
 				<DialogContentText id="alert-dialog-description">{content}</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleClose}>Disagree</Button>
-				<Button onClick={onClick} autoFocus>
-					Agree
+				{!hideDisagreeButton && <Button onClick={handleClose}>{disagreeButtonText}</Button>}
+				<Button onClick={handleConfirm} autoFocus>
+					{confirmButtonText}
 				</Button>
 			</DialogActions>
 		</MaterialDialog>
