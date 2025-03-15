@@ -8,7 +8,7 @@ const useIsInApp = () => {
 		const useragent = navigator.userAgent || navigator.vendor;
 		const isInAppBrowser = isInApp(useragent);
 		console.log("isInAppBrowser: ", isInAppBrowser, useragent);
-		setIsInAppBrowser(!isInAppBrowser);
+		setIsInAppBrowser(isInAppBrowser);
 	}, []);
 
 	return isInAppBrowser;
