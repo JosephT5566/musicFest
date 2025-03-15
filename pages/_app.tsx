@@ -13,6 +13,7 @@ import { ContentContainer } from 'components/base/Container';
 import useIsInApp from 'hooks/useIsInApp';
 
 import { STORAGE_KEY } from 'constants/static';
+import { openInDefaultBrowser } from 'utils/detect-inapp';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const [openDialog, setOpenDialog] = useState(false);
@@ -47,12 +48,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<Snackbar />
 				<AlertDialog
 					open={openDialog}
-					title={'Browser Compatibility Notice'}
-					content={"For the best experience with FesTime, we recommend using your device's default browser (Chrome/Safari). Some features may not work correctly in in-app browsers."}
+					title={'瀏覽器切換'}
+					content={"使用預設瀏覽器，以獲得較好體驗"}
 					onClick={() => {
 						console.log('open');
-						// For iOS: window.location.href = URL
-          				// For Android: window.location.href = 'intent://YOUR_URL#Intent;scheme=https;package=com.android.chrome;end'
+						openInDefaultBrowser();
 					}}
 					handleClose={() => {
 						setOpenDialog(false);
