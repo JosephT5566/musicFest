@@ -52,7 +52,7 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 	// Determine current value based on the path
 	const getNavValue = () => {
 		if (router.pathname.endsWith('/map')) return routes.map;
-		if (router.pathname.endsWith('/timetable')) return routes.lineup;
+		if (router.pathname.endsWith('/lineup')) return routes.lineup;
 		return routes.root;
 	};
 

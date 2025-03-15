@@ -8,6 +8,8 @@ import { H1 } from 'components/base/Typography';
 import { ShadowIconButton } from 'components/base/Button';
 
 import { useRouter } from 'next/router';
+import MobileBottomNav from './shared/MobileBottomNav';
+import { PageRoutes } from 'types/navigation';
 
 const ImageContainer = styled('div')({
 	width: '100%',
@@ -27,10 +29,10 @@ type MapProps = {
 	headerTitle: string;
 	pageTitle: string;
 	imageSrc?: string;
-	pageRoute: string;
+	pageRoutes: PageRoutes;
 };
 
-export default function Map({ headerTitle, pageTitle, imageSrc, pageRoute }: MapProps) {
+export default function Map({ headerTitle, pageTitle, imageSrc, pageRoutes }: MapProps) {
 	const router = useRouter();
 
 	return (
@@ -49,12 +51,13 @@ export default function Map({ headerTitle, pageTitle, imageSrc, pageRoute }: Map
 				<ShadowIconButton
 					size={'large'}
 					onClick={() => {
-						router.push(pageRoute);
+						router.push(pageRoutes.root);
 					}}
 				>
 					<TableChartIcon />
 				</ShadowIconButton>
 			</FixedButtonsContainer>
+			<MobileBottomNav routes={pageRoutes} />
 		</PageContainer>
 	);
 }
