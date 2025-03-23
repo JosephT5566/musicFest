@@ -71,7 +71,8 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
     
     // Calculate width based on overlapping events
     const width = 100 / overlappingCount;
-    const leftPosition = (layer * width);
+    // The left position is now based on the layer number (0, 1, 2, etc.)
+    const leftPosition = layer * width;
 
     return (
         <StyledTimelineBtnContainer
@@ -92,6 +93,7 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
                     <StyledBtnTitle>{name}</StyledBtnTitle>
                     <div>{stageName}</div>
                     <div>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</div>
+                    <div>Layer: {layer}, Total: {overlappingCount}</div>
                 </StyledBtnContent>
             </StyledTimelineBtn>
         </StyledTimelineBtnContainer>
@@ -109,11 +111,8 @@ interface TimeLineOfDayV2Props {
 export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
     const { startTime, endTime, stages, day, selectedDay } = props;
     const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
-    
-    // Create a map to track overlapping events
-    const timeSlotMap = new Map<number, Set<string>>();
-    
-    // Process stages and calculate overlapping events
+
+    // Initialize stages with basic info
     const processedStages: ShowItem[][] = stages
         .map((stage, index) =>
             stage.artists.map((artist) => ({
@@ -126,63 +125,67 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
         )
         .filter((items) => items.length > 0);
 
-    // First pass: Record all time slots
-    processedStages.forEach(stageArtists => {
-        stageArtists.forEach(artist => {
-            const startMinutes = moment(artist.startTime).diff(startTime, 'minutes') / 10;
-            const endMinutes = moment(artist.endTime).diff(startTime, 'minutes') / 10;
-            
-            for (let i = Math.floor(startMinutes); i <= Math.ceil(endMinutes); i++) {
-                if (!timeSlotMap.has(i)) {
-                    timeSlotMap.set(i, new Set());
-                }
-                timeSlotMap.get(i)?.add(artist.id);
+    // Flatten all artists into a single array
+    const allArtists = processedStages.flat();
+
+    // Function to check if two time ranges overlap
+    const isOverlapping = (event1: ShowItem, event2: ShowItem) => {
+        const start1 = moment(event1.startTime);
+        const end1 = moment(event1.endTime);
+        const start2 = moment(event2.startTime);
+        const end2 = moment(event2.endTime);
+        return start1 < end2 && start2 < end1;
+    };
+
+    // Find overlapping groups
+    const overlappingGroups: ShowItem[][] = [];
+    const processedIds = new Set<string>();
+
+    allArtists.forEach(artist => {
+        if (processedIds.has(artist.id)) return;
+
+        const overlappingGroup = [artist];
+        processedIds.add(artist.id);
+
+        // Find all artists that overlap with the current group
+        allArtists.forEach(otherArtist => {
+            if (processedIds.has(otherArtist.id)) return;
+
+            // Check if the other artist overlaps with any artist in the current group
+            const hasOverlap = overlappingGroup.some(groupArtist => 
+                isOverlapping(groupArtist, otherArtist)
+            );
+
+            if (hasOverlap) {
+                overlappingGroup.push(otherArtist);
+                processedIds.add(otherArtist.id);
             }
         });
-    });
 
-    // Second pass: Calculate overlapping counts and layers
-    const finalStages = processedStages.map(stageArtists => {
-        return stageArtists.map(artist => {
-            const startMinutes = moment(artist.startTime).diff(startTime, 'minutes') / 10;
-            const endMinutes = moment(artist.endTime).diff(startTime, 'minutes') / 10;
-            
-            let maxOverlap = 1;
-            let layer = 0;
-            const overlappingArtists = new Set<string>();
+        if (overlappingGroup.length > 0) {
+            // Sort by start time within group
+            overlappingGroup.sort((a, b) => 
+                moment(a.startTime).diff(moment(b.startTime))
+            );
 
-            // Find maximum overlap and collect overlapping artists
-            for (let i = Math.floor(startMinutes); i <= Math.ceil(endMinutes); i++) {
-                const slotArtists = timeSlotMap.get(i) || new Set();
-                if (slotArtists.size > maxOverlap) {
-                    maxOverlap = slotArtists.size;
-                }
-                slotArtists.forEach(id => {
-                    if (id !== artist.id) {
-                        overlappingArtists.add(id);
-                    }
-                });
-            }
-
-            // Assign layer based on existing layers of overlapping artists
-            const usedLayers = new Set<number>();
-            overlappingArtists.forEach(id => {
-                const existingArtist = processedStages.flat().find(a => a.id === id);
-                if (existingArtist) {
-                    usedLayers.add(existingArtist.layer);
-                }
+            // Assign layers and overlapping count
+            overlappingGroup.forEach((artist, index) => {
+                artist.layer = index;
+                artist.overlappingCount = overlappingGroup.length;
             });
 
-            while (usedLayers.has(layer)) {
-                layer++;
-            }
+            overlappingGroups.push(overlappingGroup);
+        }
+    });
 
-            return {
-                ...artist,
-                overlappingCount: maxOverlap,
-                layer
-            };
-        });
+    // Handle any remaining non-overlapping artists
+    allArtists.forEach(artist => {
+        if (!processedIds.has(artist.id)) {
+            artist.layer = 0;
+            artist.overlappingCount = 1;
+            overlappingGroups.push([artist]);
+            processedIds.add(artist.id);
+        }
     });
 
     return (
@@ -192,15 +195,13 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
                 height: `${height * SCALE_UNIT}rem`,
             }}
         >
-            {finalStages.map((stage) =>
-                stage.map((item) => (
-                    <TimeLineButton
-                        megaStartTime={startTime}
-                        key={item.id}
-                        showInfo={item}
-                    />
-                ))
-            )}
+            {allArtists.map((item) => (
+                <TimeLineButton
+                    megaStartTime={startTime}
+                    key={item.id}
+                    showInfo={item}
+                />
+            ))}
         </StyledTableOfDay>
     );
 }
