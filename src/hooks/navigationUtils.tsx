@@ -15,7 +15,7 @@ export const useIsMobileNavEnable = () => {
 
 	const router = useRouter();
 	const isMegaport = router.pathname.includes('/megaport');
-    
+
 	if (!isMegaport) {
 		return false;
 	}
