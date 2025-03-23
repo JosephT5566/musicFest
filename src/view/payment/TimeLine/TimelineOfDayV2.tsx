@@ -61,7 +61,7 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 
     const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
     const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
-    
+
     // Calculate width based on overlapping events
     const width = 100 / overlappingCount;
     // The left position is now based on the layer number (0, 1, 2, etc.)
@@ -85,19 +85,31 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
                 }}
             >
                 <BtnContent className="timeline-button-content">
-                    <Typography 
-                        variant="body1" 
+                    <Typography
+                        variant="body1"
                         color="text.secondary"
                         className="timeline-button-title"
                     >
                         {name}
                     </Typography>
-                    <Typography 
+                    <Typography
                         variant="body2"
                         className="timeline-button-stage-name"
                     >
                         {stageName}
                     </Typography>
+                    {/* <Typography
+                        variant="body2"
+                        className="timeline-button-time"
+                    >
+                        {startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        className="debug-info"
+                    >
+                        {`Layer: ${layer}, Total: ${overlappingCount}`}
+                    </Typography> */}
                 </BtnContent>
             </TimelineBtn>
         </TimelineBtnContainer>
@@ -146,29 +158,32 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
     const processedIds = new Set<string>();
 
     allArtists.forEach(artist => {
-        if (processedIds.has(artist.id)) return;
+        if (processedIds.has(artist.id)) {
+            return;
+        }
 
         const overlappingGroup = [artist];
         processedIds.add(artist.id);
 
         // Find all artists that overlap with the current group
         allArtists.forEach(otherArtist => {
-            if (processedIds.has(otherArtist.id)) return;
+            if (artist.id === otherArtist.id) {
+                return;
+            }
 
             // Check if the other artist overlaps with any artist in the current group
-            const hasOverlap = overlappingGroup.some(groupArtist => 
+            const hasOverlap = overlappingGroup.some(groupArtist =>
                 isOverlapping(groupArtist, otherArtist)
             );
 
-            if (hasOverlap) {
+            if (hasOverlap && !overlappingGroup.some(a => a.id === otherArtist.id)) {
                 overlappingGroup.push(otherArtist);
-                processedIds.add(otherArtist.id);
             }
         });
 
         if (overlappingGroup.length > 0) {
             // Sort by start time within group
-            overlappingGroup.sort((a, b) => 
+            overlappingGroup.sort((a, b) =>
                 moment(a.startTime).diff(moment(b.startTime))
             );
 
@@ -179,16 +194,6 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
             });
 
             overlappingGroups.push(overlappingGroup);
-        }
-    });
-
-    // Handle any remaining non-overlapping artists
-    allArtists.forEach(artist => {
-        if (!processedIds.has(artist.id)) {
-            artist.layer = 0;
-            artist.overlappingCount = 1;
-            overlappingGroups.push([artist]);
-            processedIds.add(artist.id);
         }
     });
 
