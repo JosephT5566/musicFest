@@ -56,12 +56,26 @@ export const PostersContainer = ({ children }: { children: React.ReactNode }) =>
 	);
 };
 
-export const FixedButtonsContainer = styled('div')({
-	display: 'flex',
-	flexDirection: 'column',
-	position: 'fixed',
-	gap: '0.5rem',
-	alignItems: 'end',
-	right: '2rem',
-	bottom: '2rem',
-});
+const StyledFixedButtonsContainer = styled('div')<{ hasMobileNav?: boolean }>(
+	({ hasMobileNav }) => ({
+		display: 'flex',
+		flexDirection: 'column',
+		position: 'fixed',
+		gap: '0.5rem',
+		alignItems: 'end',
+		right: '2rem',
+		bottom: hasMobileNav ? '5.5rem' : '2rem',
+	})
+);
+
+export const FixedButtonsContainer = ({ children }: { children: React.ReactNode }) => {
+	const isMobileNavEnable = useIsMobileNavEnable();
+	return (
+		<StyledFixedButtonsContainer
+			className="fixed-buttons-container"
+			hasMobileNav={isMobileNavEnable}
+		>
+			{children}
+		</StyledFixedButtonsContainer>
+	);
+};
