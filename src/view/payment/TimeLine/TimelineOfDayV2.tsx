@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { palette } from 'styles/palette';
@@ -43,11 +43,13 @@ const StyledBtnContent = styled('div')(({ theme }) => ({
     color: theme.palette.text.primary,
 }));
 
-const StyledBtnTitle = styled('div')({
-    fontWeight: 'bold',
-    fontSize: '16px',
+const StyledBtnTitle = styled('div')(({ theme }) => ({
+    color: theme.palette.text.secondary,
+    // fontWeight: 'bold',
+    // fontSize: '16px',
+    fontSize: '1rem',
     width: '100%',
-});
+}));
 
 interface ShowItem extends IArtist {
     stageName: string;
@@ -92,8 +94,8 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
                 <StyledBtnContent>
                     <StyledBtnTitle>{name}</StyledBtnTitle>
                     <div>{stageName}</div>
-                    <div>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</div>
-                    <div>Layer: {layer}, Total: {overlappingCount}</div>
+                    {/* <div>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</div> */}
+                    {/* <div>Layer: {layer}, Total: {overlappingCount}</div>  //for debugging */}
                 </StyledBtnContent>
             </StyledTimelineBtn>
         </StyledTimelineBtnContainer>
