@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { PageRoutes } from 'types/navigation';
+import { useIsMobileNavEnable } from 'hooks/navigationUtils';
 
 const StyledBottomNav = styled(BottomNavigation)(({ theme }) => ({
 	position: 'fixed',
@@ -38,12 +39,13 @@ interface MobileBottomNavProps {
 }
 
 const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
-	const theme = useTheme();
-	const isMobile = !useMediaQuery(theme.breakpoints.up('md'));
+	const isMobileNavEnable = useIsMobileNavEnable();
 	const router = useRouter();
 
 	// Only show on mobile and in Megaport pages
-	if (!isMobile || !router.pathname.includes('/megaport')) return null;
+	if (!isMobileNavEnable) {
+		return null;
+	}
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		router.push(newValue);
