@@ -62,12 +62,16 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 		<StyledBottomNav value={getNavValue()} onChange={handleChange} showLabels>
 			{routes.lineup && (
 				<StyledBottomNavAction
-					label="Timetable"
+					label="Lineup"
 					value={routes.lineup}
-					icon={<TableChartIcon />}
+					icon={<QueueMusicIcon />}
 				/>
 			)}
-			<StyledBottomNavAction label="Lineup" value={routes.root} icon={<QueueMusicIcon />} />
+			<StyledBottomNavAction
+				label="Timetable"
+				value={routes.root}
+				icon={<TableChartIcon />}
+			/>
 			<StyledBottomNavAction label="Map" value={routes.map} icon={<MapIcon />} />
 		</StyledBottomNav>
 	);
