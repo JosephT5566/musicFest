@@ -11,7 +11,7 @@ const Megaport2024Map = () => {
 		<Map
 			headerTitle={title}
 			pageTitle={title}
-			pageRoute={ROUTE.megaport[2024].root}
+			pageRoutes={ROUTE.megaport[2024]}
 			imageSrc={IMAGES.maps[2024]}
 		/>
 	);

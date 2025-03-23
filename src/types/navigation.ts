@@ -7,3 +7,9 @@ export class NavItem {
 		this.route = route;
 	}
 }
+
+export type PageRoutes = {
+	root: string;
+	map: string;
+	lineup?: string;
+};

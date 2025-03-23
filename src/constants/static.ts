@@ -33,6 +33,11 @@ export const ROUTE = {
 			root: '/megaport/2024',
 			map: '/megaport/2024/map',
 		},
+		2025: {
+			root: '/megaport/2025',
+			map: '/megaport/2025/map',
+			lineup: '/megaport/2025/lineup',
+		},
 	},
 	fujirock: {
 		index: {

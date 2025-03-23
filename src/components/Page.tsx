@@ -25,6 +25,9 @@ import ResetButton from './ResetButton';
 import SaveButton from './SaveButton';
 import NotificationButton from './NotificationButton';
 import useSendNotification from 'hooks/useSendNotification';
+import MobileBottomNav from './shared/MobileBottomNav';
+import { PageRoutes } from 'types/navigation';
+import { useIsMobileNavEnable } from 'hooks/navigationUtils';
 
 const SelectorsContainer = styled('div')(({ theme }) => ({
 	width: '100%',
@@ -62,14 +65,15 @@ const getActiveShows = (programList: IProgramList, selectedShows: string[]) => {
 type PageProps = {
 	headerTitle: string;
 	pageTitle: string;
-	mapRoute: string;
+	pageRoutes: PageRoutes;
 	storageKey: string; // used to be root name
 	programList: IProgramList;
 };
 
-const Page = ({ headerTitle, pageTitle, mapRoute, programList, storageKey }: PageProps) => {
+const Page = ({ headerTitle, pageTitle, pageRoutes, programList, storageKey }: PageProps) => {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
+	const isMobileNavEnable = useIsMobileNavEnable();
 
 	const router = useRouter();
 	const openSnackbar = useOpenSnackbar();
@@ -120,15 +124,18 @@ const Page = ({ headerTitle, pageTitle, mapRoute, programList, storageKey }: Pag
 				<NotificationButton />
 				<SaveButton onOpenSnack={handleOpenSnack} />
 				<ResetButton />
-				<ShadowIconButton
-					size={'large'}
-					onClick={() => {
-						router.push(mapRoute);
-					}}
-				>
-					{<MapIcon />}
-				</ShadowIconButton>
+				{!isMobileNavEnable && (
+					<ShadowIconButton
+						size={'large'}
+						onClick={() => {
+							router.push(pageRoutes.map);
+						}}
+					>
+						{<MapIcon />}
+					</ShadowIconButton>
+				)}
 			</FixedButtonsContainer>
+			<MobileBottomNav routes={pageRoutes} />
 		</PageContainer>
 	);
 };

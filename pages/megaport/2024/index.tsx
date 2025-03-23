@@ -13,7 +13,7 @@ const Megaport2024 = () => {
 		<Page
 			headerTitle={headerTitle}
 			pageTitle={pageTitle}
-			mapRoute={ROUTE.megaport[2024].map}
+			pageRoutes={ROUTE.megaport[2024]}
 			storageKey={ROUTE.megaport[2024].root}
 			programList={programList}
 		/>
