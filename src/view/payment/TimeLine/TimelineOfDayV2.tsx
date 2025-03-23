@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { palette } from 'styles/palette';
@@ -6,49 +7,39 @@ import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
 import moment, { Moment } from 'moment';
 
-const StyledTableOfDay = styled('div')({
+const TimelineContainer = styled(Box)(({ theme }) => ({
     width: `calc(100vw - 1em - 3.8em)`,
     display: 'flex',
     position: 'relative',
     flexDirection: 'column',
-});
+}));
 
-const StyledTimelineBtnContainer = styled('div')({
+const TimelineBtnContainer = styled(Box)({
     position: 'absolute',
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
 });
 
-const StyledTimelineBtn = styled('button')(({ theme }) => ({
+const TimelineBtn = styled(Button)(({ theme }) => ({
     position: 'absolute',
     border: 'none',
-    borderRadius: '0.5em',
-    padding: '0.5em',
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(1),
     zIndex: 1,
+    textTransform: 'none',
     '&:hover': {
         cursor: 'pointer',
         filter: 'brightness(0.95)',
     },
-    '&:focus': {
-        outline: '0',
-    },
 }));
 
-const StyledBtnContent = styled('div')(({ theme }) => ({
+const BtnContent = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: '0.25em',
+    alignItems: 'center',
+    gap: theme.spacing(0.5),
     color: theme.palette.text.primary,
-}));
-
-const StyledBtnTitle = styled('div')(({ theme }) => ({
-    color: theme.palette.text.secondary,
-    // fontWeight: 'bold',
-    // fontSize: '16px',
-    fontSize: '1rem',
-    width: '100%',
 }));
 
 interface ShowItem extends IArtist {
@@ -77,13 +68,15 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
     const leftPosition = layer * width;
 
     return (
-        <StyledTimelineBtnContainer
-            style={{
+        <TimelineBtnContainer
+            className="timeline-button-wrapper"
+            sx={{
                 top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
             }}
         >
-            <StyledTimelineBtn
-                style={{
+            <TimelineBtn
+                className={`timeline-button timeline-button-${name.toLowerCase().replace(/\s+/g, '-')}`}
+                sx={{
                     left: `${leftPosition}%`,
                     width: `${width}%`,
                     minHeight: `${height * SCALE_UNIT}rem`,
@@ -91,14 +84,23 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
                     backgroundColor: itemColor.main,
                 }}
             >
-                <StyledBtnContent>
-                    <StyledBtnTitle>{name}</StyledBtnTitle>
-                    <div>{stageName}</div>
-                    {/* <div>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</div> */}
-                    {/* <div>Layer: {layer}, Total: {overlappingCount}</div>  //for debugging */}
-                </StyledBtnContent>
-            </StyledTimelineBtn>
-        </StyledTimelineBtnContainer>
+                <BtnContent className="timeline-button-content">
+                    <Typography 
+                        variant="body1" 
+                        color="text.secondary"
+                        className="timeline-button-title"
+                    >
+                        {name}
+                    </Typography>
+                    <Typography 
+                        variant="body2"
+                        className="timeline-button-stage-name"
+                    >
+                        {stageName}
+                    </Typography>
+                </BtnContent>
+            </TimelineBtn>
+        </TimelineBtnContainer>
     );
 };
 
@@ -191,9 +193,10 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
     });
 
     return (
-        <StyledTableOfDay
-            style={{
-                display: day === selectedDay ? '' : 'none',
+        <TimelineContainer
+            className={`timeline-container timeline-day-${day}`}
+            sx={{
+                display: day === selectedDay ? 'flex' : 'none',
                 height: `${height * SCALE_UNIT}rem`,
             }}
         >
@@ -204,6 +207,6 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
                     showInfo={item}
                 />
             ))}
-        </StyledTableOfDay>
+        </TimelineContainer>
     );
 }
