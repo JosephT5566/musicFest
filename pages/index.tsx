@@ -33,11 +33,11 @@ export default function Home() {
 						href={ROUTE.megaport.index.root}
 						image={FEST_LOGO.megaport}
 					/>
-					<FestCard
+					{/* <FestCard
 						name={FEST_NAME.FUJI_ROCK}
 						href={ROUTE.fujirock.index.root}
 						image={FEST_LOGO.fujirock}
-					/>
+					/> */}
 				</Box>
 			</PageContainer>
 		</>
