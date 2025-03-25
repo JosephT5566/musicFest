@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import AdjustIcon from '@mui/icons-material/Adjust';
 import TimeBackdrop from './TimeBackdrop';
-import TimeLineOfDay from './TimelineOfDay';
+import TimeLineOfDayV2 from './TimelineOfDayV2';
 
 import { useGetSelectedShow } from 'providers/ShowsProvider';
 import { SCALE_UNIT } from 'constants/static';
@@ -105,7 +105,7 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 			<BaseLine programList={programList} />
 			{filteredPerfDays.map((perfDay, index) => {
 				return (
-					<TimeLineOfDay
+					<TimeLineOfDayV2
 						startTime={moment(perfDay.dayStartTime)}
 						endTime={moment(perfDay.dayEndTime)}
 						key={index}
