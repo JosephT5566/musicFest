@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
@@ -54,7 +55,19 @@ interface TimeLineButtonProps {
     showInfo: ShowItem;
 }
 
+const DrawerPuller = styled(Box)(({ theme }) => ({
+    width: 30,
+    height: 6,
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: 3,
+    position: 'absolute',
+    top: 8,
+    left: '50%',
+    transform: 'translateX(-50%)',
+}));
+
 const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo }) => {
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const { name, startTime, endTime, itemColor, stageName, layer, overlappingCount } = showInfo;
     const startMoment = moment(startTime);
     const endMoment = moment(endTime);
@@ -67,52 +80,103 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
     // The left position is now based on the layer number (0, 1, 2, etc.)
     const leftPosition = layer * width;
 
+    const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+        if (
+            event &&
+            event.type === 'keydown' &&
+            ((event as React.KeyboardEvent).key === 'Tab' ||
+                (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+            return;
+        }
+        setDrawerOpen(open);
+    };
+
     return (
-        <TimelineBtnContainer
-            className="timeline-button-wrapper"
-            sx={{
-                top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
-            }}
-        >
-            <TimelineBtn
-                className={`timeline-button timeline-button-${name.toLowerCase().replace(/\s+/g, '-')}`}
+        <>
+            <TimelineBtnContainer
+                className="timeline-button-wrapper"
                 sx={{
-                    left: `${leftPosition}%`,
-                    width: `${width}%`,
-                    minHeight: `${height * SCALE_UNIT}rem`,
-                    height: `${height * SCALE_UNIT}rem`,
-                    backgroundColor: itemColor.main,
+                    top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
                 }}
             >
-                <BtnContent className="timeline-button-content">
-                    <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        className="timeline-button-title"
-                    >
+                <TimelineBtn
+                    className={`timeline-button timeline-button-${name.toLowerCase().replace(/\s+/g, '-')}`}
+                    onClick={toggleDrawer(true)}
+                    sx={{
+                        left: `${leftPosition}%`,
+                        width: `${width}%`,
+                        minHeight: `${height * SCALE_UNIT}rem`,
+                        height: `${height * SCALE_UNIT}rem`,
+                        backgroundColor: itemColor.main,
+                    }}
+                >
+                    <BtnContent className="timeline-button-content">
+                        <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            className="timeline-button-title"
+                        >
+                            {name}
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            className="timeline-button-stage-name"
+                        >
+                            {stageName}
+                        </Typography>
+                        {/* <Typography
+                            variant="body2"
+                            className="timeline-button-time"
+                        >
+                            {startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            className="debug-info"
+                        >
+                            {`Layer: ${layer}, Total: ${overlappingCount}`}
+                        </Typography> */}
+                    </BtnContent>
+                </TimelineBtn>
+            </TimelineBtnContainer>
+            <SwipeableDrawer
+                anchor="bottom"
+                open={drawerOpen}
+                onClose={toggleDrawer(false)}
+                onOpen={toggleDrawer(true)}
+                PaperProps={{
+                    sx: {
+                        borderTopLeftRadius: 16,
+                        borderTopRightRadius: 16,
+                        backgroundColor: (theme) => theme.palette.background.default,
+                    }
+                }}
+            >
+                <Box
+                    sx={{
+                        padding: 2,
+                        minHeight: '30vh',
+                        borderTopLeftRadius: 16,
+                        borderTopRightRadius: 16,
+                        position: 'relative',
+                        paddingTop: 4, // Add more padding at top to accommodate the puller
+                    }}
+                >
+                    <DrawerPuller />
+                    <Typography variant="h6" gutterBottom textAlign="center">
                         {name}
                     </Typography>
-                    <Typography
-                        variant="body2"
-                        className="timeline-button-stage-name"
-                    >
+                    <Typography variant="body1">
+                        {startMoment.format('YYYY/M/D(ddd) HH:mm')} - {endMoment.format('HH:mm')}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom fontWeight="bold">
                         {stageName}
                     </Typography>
-                    {/* <Typography
-                        variant="body2"
-                        className="timeline-button-time"
-                    >
-                        {startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}
-                    </Typography>
-                    <Typography
-                        variant="body2"
-                        className="debug-info"
-                    >
-                        {`Layer: ${layer}, Total: ${overlappingCount}`}
-                    </Typography> */}
-                </BtnContent>
-            </TimelineBtn>
-        </TimelineBtnContainer>
+                    {/* Add more details here as needed */}
+                </Box>
+            </SwipeableDrawer>
+        </>
     );
 };
 
