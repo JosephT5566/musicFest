@@ -8,6 +8,8 @@ import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
 import moment, { Moment } from 'moment';
 
+import { useSelectShow } from 'providers/ShowsProvider';
+
 const TimelineContainer = styled(Box)(({ theme }) => ({
     width: `calc(100vw - 1em - 3.8em)`,
     display: 'flex',
@@ -53,6 +55,7 @@ interface ShowItem extends IArtist {
 interface TimeLineButtonProps {
     megaStartTime: Moment;
     showInfo: ShowItem;
+    id: string;
 }
 
 const DrawerPuller = styled(Box)(({ theme }) => ({
@@ -66,11 +69,13 @@ const DrawerPuller = styled(Box)(({ theme }) => ({
     transform: 'translateX(-50%)',
 }));
 
-const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo }) => {
+const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo, id }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const { name, startTime, endTime, itemColor, stageName, layer, overlappingCount } = showInfo;
     const startMoment = moment(startTime);
     const endMoment = moment(endTime);
+    const selectShow = useSelectShow();
+
 
     const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
     const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
@@ -173,7 +178,23 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
                     <Typography variant="subtitle1" gutterBottom fontWeight="bold">
                         {stageName}
                     </Typography>
-                    {/* Add more details here as needed */}
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: 16,
+                            left: 16,
+                        }}
+                    >
+                        <Button
+                            variant="outlined"
+                            onClick={() => {
+                                selectShow(id);
+                            }}
+                            color="error"
+                        >
+                            移除選擇
+                        </Button>
+                    </Box>
                 </Box>
             </SwipeableDrawer>
         </>
@@ -274,6 +295,7 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
                     megaStartTime={startTime}
                     key={item.id}
                     showInfo={item}
+                    id={item.id}
                 />
             ))}
         </TimelineContainer>
