@@ -27,7 +27,7 @@ const day1: IPerfDay = {
 			artists: [
 				new IArtist({
 					name: '再會陳一郎 相遇大港邊',
-					startTime: '13:20',
+					startTime: '13:10',
 					endTime: '13:50',
 				}),
 				new IArtist({
@@ -36,7 +36,7 @@ const day1: IPerfDay = {
 					endTime: '15:20',
 				}),
 				new IArtist({ name: 'EmptyORio', startTime: '16:00', endTime: '16:40' }),
-				new IArtist({ name: 'yangskinny [JP]', startTime: '15:20', endTime: '18:00' }),
+				new IArtist({ name: 'ヤングスキニー yangskinny [JP]', startTime: '17:20', endTime: '18:00' }),
 				new IArtist({ name: 'Crossfaith [JP]', startTime: '18:40', endTime: '19:20' }),
 				new IArtist({ name: "THAT'S MY SHHH", startTime: '20:10', endTime: '21:10' }),
 			],

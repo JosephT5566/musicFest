@@ -36,6 +36,11 @@ export default function Megaport() {
 						href={ROUTE.megaport[2024].root}
 						image={IMAGES.posters[2024]}
 					/>
+					<PosterCard
+						name="2025"
+						href={ROUTE.megaport[2025].root}
+						image={IMAGES.posters[2025]}
+					/>
 				</PostersContainer>
 			</PageContainer>
 		</>
