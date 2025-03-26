@@ -266,7 +266,7 @@ const day2: IPerfDay = {
 			artists: [
 				new IArtist({ name: 'DJ Rainbow aka 萬芳', startTime: '13:00', endTime: '14:00' }),
 				new IArtist({
-					name: 'DJ Violette aka 李芝芯 Siri Lee',
+					name: 'DJ Violette aka 李竺芯 Siri Lee',
 					startTime: '15:00',
 					endTime: '16:00',
 				}),
