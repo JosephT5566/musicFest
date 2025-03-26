@@ -10,7 +10,7 @@ const day1: IPerfDay = {
 		{
 			name: '南霸天',
 			artists: [
-				new IArtist({ name: '復心欲絕', startTime: '12:30', endTime: '13:10' }),
+				new IArtist({ name: '傷心欲絕', startTime: '12:30', endTime: '13:10' }),
 				new IArtist({
 					name: 'Megaport Wandering 溫蒂漫步大樂隊',
 					startTime: '14:10',
@@ -89,7 +89,7 @@ const day1: IPerfDay = {
 				new IArtist({ name: '塑膠Boy(s)', startTime: '13:50', endTime: '14:30' }),
 				new IArtist({ name: '壞蛋王·老五', startTime: '15:10', endTime: '15:50' }),
 				new IArtist({ name: '薄荷綠工廠', startTime: '16:30', endTime: '17:10' }),
-				new IArtist({ name: '憂憂yo-yo', startTime: '17:50', endTime: '18:30' }),
+				new IArtist({ name: '憂憂 yō-yō', startTime: '17:50', endTime: '18:30' }),
 			],
 		},
 		{
@@ -109,7 +109,7 @@ const day1: IPerfDay = {
 			artists: [
 				new IArtist({ name: '李竺芯 Siri Lee', startTime: '14:00', endTime: '14:40' }),
 				new IArtist({ name: '徐噴以煙', startTime: '15:20', endTime: '16:00' }),
-				new IArtist({ name: 'balazwolf x 盧嘉鴻', startTime: '16:40', endTime: '17:20' }),
+				new IArtist({ name: 'balazwolf x 唐嘉鴻', startTime: '16:40', endTime: '17:20' }),
 				new IArtist({
 					name: '黑狼 人本那卡西 [立志篇]',
 					startTime: '18:00',
@@ -122,7 +122,7 @@ const day1: IPerfDay = {
 			artists: [
 				new IArtist({ name: '公館青少年', startTime: '13:20', endTime: '14:00' }),
 				new IArtist({
-					name: '孫子王 ft. 黃筱雯 甘家威',
+					name: '孫子王 ft. 黃筱雯 甘家葳',
 					startTime: '14:40',
 					endTime: '15:20',
 				}),
@@ -201,14 +201,14 @@ const day2: IPerfDay = {
 		{
             name: '女神龍',
 			artists: [
-                new IArtist({ name: '淺堤 Shallow Levee', startTime: '12:40', endTime: '13:20' }),
+                new IArtist({ name: '淺堤 Shallow Levée', startTime: '12:40', endTime: '13:20' }),
                 new IArtist({
                     name: 'ゲシュタルト乙女 ft. SKARAOKE',
                     startTime: '14:00',
                     endTime: '14:40',
                 }),
                 new IArtist({ name: 'hue', startTime: '15:20', endTime: '16:00' }),
-                new IArtist({ name: 'Gummy B × 楊舒婷', startTime: '16:40', endTime: '17:20' }),
+                new IArtist({ name: 'Gummy B × 楊舒雅', startTime: '16:40', endTime: '17:20' }),
                 new IArtist({ name: 'Everydaze', startTime: '18:00', endTime: '18:40' }),
                 new IArtist({ name: 'deca joins', startTime: '19:30', endTime: '20:10' }),
                 new IArtist({ name: 'QURULI [JP]', startTime: '21:00', endTime: '21:40' }),
@@ -231,7 +231,7 @@ const day2: IPerfDay = {
                 new IArtist({ name: '昏鴉', startTime: '17:10', endTime: '17:50' }),
 				new IArtist({ name: '五五身', startTime: '18:40', endTime: '19:20' }),
 				new IArtist({
-                    name: 'Sonia Calico & 灣島聲后',
+                    name: 'Sonia Calico & 灣島皇后',
 					startTime: '20:10',
 					endTime: '21:40',
 				}),
@@ -246,7 +246,7 @@ const day2: IPerfDay = {
 				new IArtist({ name: '話梅鹿 [HK]', startTime: '17:00', endTime: '17:40' }),
 				new IArtist({ name: '少年白', startTime: '18:20', endTime: '19:00' }),
                 new IArtist({
-					name: '黑狼 人本那卡西 [望鄉區]',
+					name: '黑狼 人本那卡西 [望鄉篇]',
 					startTime: '19:40',
 					endTime: '20:20',
 				}),
