@@ -24,7 +24,7 @@ export const palette = {
     },
     stage: {
         0: {
-            main: '#8fc13d',
+            main: '#8cc73e',
             light: '#CBE3A5',
             dark: '#628032',
         },
@@ -72,6 +72,11 @@ export const palette = {
             main: '#9b8787',
             light: '#D3CACA',
             dark: '#5E4F4F',
+        },
+        10: {
+            main: '#00a74f',
+            light: '#b4ddc1',
+            dark: '#021510',
         },
     },
 }
