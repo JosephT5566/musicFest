@@ -7,6 +7,8 @@ export const SCALE_UNIT = 1.3;
 export const STORAGE_KEY = {
 	day: 'day',
 	notification: 'notification',
+	lastVisitedPath: 'lastVisitedPath',
+	ignoreDialog: 'ignoreDialog',
 };
 
 export const FEST_NAME = {
