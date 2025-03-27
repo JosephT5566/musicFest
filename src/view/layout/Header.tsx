@@ -51,7 +51,7 @@ export default function Header() {
 				</Box>
 				<Typography variant="h1" fontSize="2.5rem">{APP_NAME}</Typography>
 			</a>
-			<Navigation />
+			{/* <Navigation /> */}
 		</StyledHeader>
 	);
 }
