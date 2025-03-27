@@ -194,7 +194,7 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 								const formattedEndTime = toUTCFormat(endTime);
 
 								const calendarLink = generateGoogleCalendarLink({
-									title: name,
+									title: `${stageName} - ${name}`,
 									startDateTime: formattedStartTime,
 									endDateTime: formattedEndTime,
 									details: stageName,
