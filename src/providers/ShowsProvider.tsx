@@ -1,5 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { decodeData, isPakoCompressed } from 'utils/compressionUtils';
 
 interface showsProps {
 	selectedShows: string[];
@@ -28,8 +29,11 @@ export default function ShowsProvider({ storageKey, children }: Props) {
 
 		if (hash) {
 			try {
-				const dec = atob(hash.substring(1));
-				setSelectedShows(JSON.parse(dec));
+				const encodedShows = hash.substring(1);
+				const dec = isPakoCompressed(encodedShows)
+					? decodeData(encodedShows)
+					: JSON.parse(atob(encodedShows));
+				setSelectedShows(dec);
 			} catch (error) {
 				console.log('hash url decode err: ', error);
 			}
