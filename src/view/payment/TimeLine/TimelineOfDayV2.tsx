@@ -185,7 +185,7 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 						}}
 						display="flex"
                         flexDirection="column"
-                        gap={8}
+                        gap="8px"
 					>
 						<Button
 							variant="contained"
