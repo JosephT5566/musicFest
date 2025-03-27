@@ -122,7 +122,7 @@ const day1: IPerfDay = {
 			artists: [
 				new IArtist({ name: '公館青少年', startTime: '13:20', endTime: '14:00' }),
 				new IArtist({
-					name: '孫子王 ft. 黃筱雯 甘家葳',
+					name: '孩子王 ft. 黃筱雯 甘家葳',
 					startTime: '14:40',
 					endTime: '15:20',
 				}),
