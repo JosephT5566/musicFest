@@ -12,6 +12,7 @@ import Snackbar from 'components/shared/Snackbar';
 import AlertDialog from 'components/shared/AlertDialog';
 import { ContentContainer } from 'components/base/Container';
 import useIsInApp from 'hooks/useIsInApp';
+import { setLSWithExpiry, getLSWithExpiry } from 'utils/localStorageUtils';
 
 import { STORAGE_KEY } from 'constants/static';
 
@@ -32,7 +33,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 	}, []);
 
 	useEffect(() => {
-		setOpenDialog(isInApp);
+		const isIgnoreDialog = getLSWithExpiry(STORAGE_KEY.ignoreDialog) === 'true';
+		if (!isIgnoreDialog) {
+			setOpenDialog(isInApp);
+		}
 	}, [isInApp]);
 
 	useEffect(() => {
@@ -66,6 +70,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 		}
 	}, [router]);
 
+	const handleCloseDialog = () => {
+		const tenMinutesInMs = 10 * 60 * 1000;
+		setLSWithExpiry(STORAGE_KEY.ignoreDialog, 'true', tenMinutesInMs);
+
+		setOpenDialog(false);
+	};
+
 	return (
 		<React.Fragment>
 			<title>FesTime - A Music Festival Timetable Manager</title>
@@ -84,12 +95,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content={'使用預設瀏覽器開啟，以獲得較好體驗。'}
 					confirmButtonText={'關閉'}
 					hideDisagreeButton={true}
-					handleConfirm={() => {
-						setOpenDialog(false);
-					}}
-					handleClose={() => {
-						setOpenDialog(false);
-					}}
+					handleConfirm={handleCloseDialog}
+					handleClose={handleCloseDialog}
 				/>
 			</SnackbarProvider>
 		</React.Fragment>
