@@ -28,6 +28,21 @@ export const isInAndroid = (useragent) => {
     return Boolean(useragent.match(regex));
 };
 
+export const isInPWA = () => {
+    // Check if the app is running in standalone mode
+    if (window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: minimal-ui)').matches) {
+        return true;
+    }
+
+    // iOS standalone mode (older method, still works in some cases)
+    if ('standalone' in window.navigator && window.navigator.standalone) {
+        return true;
+    }
+
+    return false;
+};
+
 export const openInDefaultBrowser = (url) => {
     const ua = navigator.userAgent.toLowerCase();
 

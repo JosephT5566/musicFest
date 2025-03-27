@@ -8,6 +8,7 @@ import { H1 } from 'components/base/Typography';
 import { ShadowIconButton } from 'components/base/Button';
 
 import { useRouter } from 'next/router';
+import { useIsMobileNavEnable } from 'hooks/navigationUtils';
 import MobileBottomNav from './shared/MobileBottomNav';
 import { PageRoutes } from 'types/navigation';
 
@@ -34,6 +35,7 @@ type MapProps = {
 
 export default function Map({ headerTitle, pageTitle, imageSrc, pageRoutes }: MapProps) {
 	const router = useRouter();
+	const isMobileNavEnable = useIsMobileNavEnable();
 
 	return (
 		<PageContainer>
@@ -48,14 +50,16 @@ export default function Map({ headerTitle, pageTitle, imageSrc, pageRoutes }: Ma
 				</ImageContainer>
 			)}
 			<FixedButtonsContainer>
-				<ShadowIconButton
-					size={'large'}
-					onClick={() => {
-						router.push(pageRoutes.root);
-					}}
-				>
-					<TableChartIcon />
-				</ShadowIconButton>
+				{!isMobileNavEnable && (
+					<ShadowIconButton
+						size={'large'}
+						onClick={() => {
+							router.push(pageRoutes.root);
+						}}
+					>
+						<TableChartIcon />
+					</ShadowIconButton>
+				)}
 			</FixedButtonsContainer>
 			<MobileBottomNav routes={pageRoutes} />
 		</PageContainer>
