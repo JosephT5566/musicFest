@@ -5,6 +5,7 @@ import { useGetSelectedShow } from 'providers/ShowsProvider';
 
 import { ShadowIconButton } from 'components/base/Button';
 import ShareIcon from '@mui/icons-material/Share';
+import { encodeData } from 'utils/compressionUtils';
 
 const SaveButton = (props: { onOpenSnack: () => void }) => {
 	const { onOpenSnack } = props;
@@ -14,11 +15,12 @@ const SaveButton = (props: { onOpenSnack: () => void }) => {
 	const url = useLocation();
 
 	const handleClick = async () => {
-		const data = btoa(JSON.stringify(selectedShows));
+		const encodedShows = encodeData(selectedShows);
+
 		try {
-			await navigator.clipboard.writeText(`${url?.host}${url?.pathname}#${data}`); // copy to clipboard
-			if (data !== '' || url?.hash.substring(1) !== '') {
-				router.push(`${url?.pathname}#${data}`);
+			await navigator.clipboard.writeText(`${url?.host}${url?.pathname}#${encodedShows}`); // copy to clipboard
+			if (encodedShows !== '' || url?.hash.substring(1) !== '') {
+				router.push(`${url?.pathname}#${encodedShows}`);
 			}
 			onOpenSnack();
 		} catch (error) {
