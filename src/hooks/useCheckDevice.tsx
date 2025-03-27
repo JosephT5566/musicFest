@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react';
-import { isInApp } from 'utils/detect-inapp';
+import { isInApp, isInPWA } from 'utils/detect-inapp';
 
-const useIsInApp = () => {
+export const useIsInApp = () => {
 	const [isInAppBrowser, setIsInAppBrowser] = useState(false);
 
 	useEffect(() => {
 		const useragent = navigator.userAgent || navigator.vendor;
 		const isInAppBrowser = isInApp(useragent);
-		console.log("isInAppBrowser: ", isInAppBrowser, useragent);
 		setIsInAppBrowser(isInAppBrowser);
 	}, []);
 
 	return isInAppBrowser;
 };
 
-export default useIsInApp;
+export const useIsInPWA = () => {
+	const [isInPWABrowser, setIsInPWABrowser] = useState(false);
+
+	useEffect(() => {
+		setIsInPWABrowser(isInPWA());
+	}, []);
+
+	return isInPWABrowser;
+};

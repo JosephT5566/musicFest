@@ -11,7 +11,7 @@ import Header from 'view/layout/Header';
 import Snackbar from 'components/shared/Snackbar';
 import AlertDialog from 'components/shared/AlertDialog';
 import { ContentContainer } from 'components/base/Container';
-import useIsInApp from 'hooks/useIsInApp';
+import { useIsInApp } from 'hooks/useCheckDevice';
 import { setLSWithExpiry, getLSWithExpiry } from 'utils/localStorageUtils';
 
 import { STORAGE_KEY } from 'constants/static';
