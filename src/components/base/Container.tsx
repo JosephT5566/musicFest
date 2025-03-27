@@ -65,6 +65,7 @@ const StyledFixedButtonsContainer = styled('div')<{ hasMobileNav?: boolean }>(
 		alignItems: 'end',
 		right: '2rem',
 		bottom: hasMobileNav ? '5.5rem' : '2rem',
+		zIndex: 100,
 	})
 );
 
