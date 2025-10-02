@@ -19,7 +19,7 @@ export default function Home() {
 			</Head>
 
 			<PageContainer>
-				<H1>Festivals</H1>
+				<H1>FesTime 音樂祭時間表管理工具</H1>
 				<Box
 					width="100%"
 					paddingX={[4, 0]}
