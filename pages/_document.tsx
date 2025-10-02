@@ -3,7 +3,7 @@ import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/do
 import { ServerStyleSheets } from '@material-ui/styles';
 import theme from 'styles/theme';
 
-const siteName = 'FestTime';
+const siteName = 'FesTime | 音樂祭時間表管理工具 | 輕鬆規劃看團行程';
 
 export default class MyDocument extends Document {
 	render() {
@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
 						rel="stylesheet"
 					></link>
 					<meta property="og:title" content={siteName} />
-					<meta property="og:description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
+					<meta property="og:description" content="FesTime 是一款專為音樂祭愛好者設計的時間表管理工具，幫助您輕鬆規劃音樂祭行程，掌握樂團演出時間，不再錯過任何精彩瞬間。" />
 					<meta property="og:type" content="website" />
 					<meta property="og:image" content="https://i.imgur.com/MKtF24C.png" />
 					<meta
@@ -30,7 +30,7 @@ export default class MyDocument extends Document {
 						content={siteName}
 					/>
 					<meta property="og:url" content="https://musicfest.josephtseng-tw.com/" />
-					<meta name="description" content="音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！" />
+					<meta name="description" content="FesTime 是一款專為音樂祭愛好者設計的時間表管理工具，幫助您輕鬆規劃音樂祭行程，掌握樂團演出時間，不再錯過任何精彩瞬間。" />
 					<link rel="manifest" href="/manifest.json" />
 				</Head>
 				<body>
