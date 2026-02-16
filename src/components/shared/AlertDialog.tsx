@@ -1,9 +1,15 @@
-import MaterialDialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
+import {
+	AlertDialog as ShadcnAlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 type AlertDialogProps = {
 	open: boolean;
@@ -29,22 +35,23 @@ export default function AlertDialog(props: AlertDialogProps) {
 	} = props;
 
 	return (
-		<MaterialDialog
-			open={open}
-			onClose={handleClose}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		>
-			<DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description">{content}</DialogContentText>
-			</DialogContent>
-			<DialogActions>
-				{!hideDisagreeButton && <Button onClick={handleClose}>{disagreeButtonText}</Button>}
-				<Button onClick={handleConfirm} autoFocus>
-					{confirmButtonText}
-				</Button>
-			</DialogActions>
-		</MaterialDialog>
+		<ShadcnAlertDialog open={open} onOpenChange={handleClose}>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>{title}</AlertDialogTitle>
+					<AlertDialogDescription>{content}</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					{!hideDisagreeButton && (
+						<AlertDialogCancel asChild>
+							<Button onClick={handleClose} variant="outline">{disagreeButtonText}</Button>
+						</AlertDialogCancel>
+					)}
+					<AlertDialogAction asChild>
+						<Button onClick={handleConfirm} autoFocus>{confirmButtonText}</Button>
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</ShadcnAlertDialog>
 	);
 }

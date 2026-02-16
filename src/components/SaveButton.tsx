@@ -4,7 +4,7 @@ import useLocation from 'hooks/useLocation';
 import { useGetSelectedShow } from 'providers/ShowsProvider';
 
 import { ShadowIconButton } from 'components/base/Button';
-import ShareIcon from '@mui/icons-material/Share';
+import { Share } from 'lucide-react';
 import { encodeData } from 'utils/compressionUtils';
 
 const SaveButton = (props: { onOpenSnack: () => void }) => {
@@ -30,7 +30,7 @@ const SaveButton = (props: { onOpenSnack: () => void }) => {
 
 	return (
 		<ShadowIconButton aria-label="share" onClick={handleClick}>
-			<ShareIcon />
+			<Share />
 		</ShadowIconButton>
 	);
 };

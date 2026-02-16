@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@mui/material/Typography';
+import { H1 } from 'components/base/Typography';
 import { FEST_NAME } from 'constants/static';
 
 export const metadata = {
@@ -9,7 +9,7 @@ export const metadata = {
 export default function Fujirock() {
 	return (
 		<>
-			<Typography variant="h1">Coming Soon...</Typography>
+			<H1>Coming Soon...</H1>
 			{/* <PageContainer>
 				<H1>{FEST_NAME.FUJI_ROCK}</H1>
 				<PostersContainer>

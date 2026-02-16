@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import TableChartIcon from '@mui/icons-material/TableChart';
+import { Map as MapIcon } from 'lucide-react';
 
 import { FixedButtonsContainer, PageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
@@ -11,20 +10,6 @@ import { ROUTE, FEST_NAME } from 'constants/static';
 import { useRouter } from 'next/navigation';
 import { IMAGES } from 'constants/images';
 
-const ImageContainer = styled('div')({
-	width: '100%',
-	overflow: 'auto',
-});
-
-const StyledmapImg = styled('img')(({ theme }) => ({
-	[theme.breakpoints.up('md')]: {
-		width: '100%',
-	},
-	[theme.breakpoints.down('sm')]: {
-		width: '200%',
-	},
-}));
-
 const title = `${FEST_NAME.MEGAPORT} | 2022 | Map`;
 
 export default function Map() {
@@ -33,17 +18,22 @@ export default function Map() {
 	return (
 		<PageContainer>
 			<H1>{title}</H1>
-			<ImageContainer>
-				<StyledmapImg src={IMAGES.maps[2022]} alt="mega map" />
-			</ImageContainer>
+			<div className="w-full overflow-auto">
+				<img
+					src={IMAGES.maps[2022]}
+					alt="mega map"
+					className="w-[200%] md:w-full"
+				/>
+			</div>
 			<FixedButtonsContainer>
 				<ShadowIconButton
-					size={'large'}
+					size={'lg'}
 					onClick={() => {
 						router.push(ROUTE.megaport[2022].root);
 					}}
+					className="shadow-md"
 				>
-					<TableChartIcon />
+					<MapIcon />
 				</ShadowIconButton>
 			</FixedButtonsContainer>
 		</PageContainer>

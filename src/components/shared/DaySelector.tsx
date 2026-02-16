@@ -1,47 +1,5 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
-
-const StyledButtonsContainer = styled('div')(({ theme }) => ({
-	position: 'relative',
-	display: 'flex',
-	'&::after': {
-		content: `''`,
-		position: 'absolute',
-		backgroundColor: theme.palette.primary.main,
-		borderRadius: '1em',
-		width: '1em',
-		height: '4px',
-		bottom: '0',
-		transition: '500ms',
-	},
-	'&.day0::after': {
-		left: '0%',
-	},
-	'&.day1::after': {
-		left: '50%',
-	},
-}));
-
-const StyledDayBtn = styled('button')(({ theme }) => ({
-	fontFamily: theme.typography.fontFamily,
-	position: 'relative',
-	border: 'none',
-	fontSize: '1em',
-	backgroundColor: theme.palette.background.default,
-	borderRadius: '0.6em',
-	padding: '0.5em 0',
-	marginRight: '1.5em',
-	'&:hover': {
-		cursor: 'pointer',
-		color: theme.palette.primary.main,
-	},
-	'&:focus': {
-		// outline: '0',
-	},
-	'&.true': {
-		color: theme.palette.primary.main,
-	},
-}));
+import { Button } from '@/components/ui/button';
 
 interface Props {
 	days: string[];
@@ -51,20 +9,27 @@ interface Props {
 
 export default function DaySelector({ days, selectedDay, onClick }: Props) {
 	return (
-		<StyledButtonsContainer className={`${'day' + selectedDay}`}>
+		<div
+			className={`relative flex ${'day' + selectedDay} after:content-[''] after:absolute after:bg-primary-main after:rounded-xl after:w-4 after:h-1 after:bottom-0 after:transition-all after:duration-500
+				${selectedDay === 0 ? 'after:left-0' : ''}
+				${selectedDay === 1 ? 'after:left-1/2' : ''}
+			`}
+		>
 			{days.map((day, index) => (
-				<StyledDayBtn
+				<Button
 					value={index}
-					className={`${index === selectedDay}`}
+					className={`relative border-none text-base bg-background rounded-lg p-2 mr-6
+						hover:cursor-pointer hover:text-primary-main focus:outline-none
+						${index === selectedDay ? 'text-primary-main' : ''}
+					`}
 					onClick={(e) => {
-						// console.log(Number((e.target as HTMLButtonElement).value));
-						onClick(Number((e.target as HTMLButtonElement).value));
+						onClick(Number((e.currentTarget as HTMLButtonElement).value));
 					}}
 					key={index}
 				>
 					{day}
-				</StyledDayBtn>
+				</Button>
 			))}
-		</StyledButtonsContainer>
+		</div>
 	);
 }

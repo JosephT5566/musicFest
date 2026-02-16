@@ -1,5 +1,4 @@
 import React from 'react';
-import Box from '@mui/material/Box';
 
 import { PageContainer } from 'components/base/Container';
 
@@ -16,14 +15,7 @@ export default function Home() {
 	return (
 		<PageContainer>
 			<H1>Festivals</H1>
-			<Box
-				width="100%"
-				paddingX={[4, 0]}
-				display="grid"
-				gridTemplateColumns="repeat(auto-fill, minmax(15em, 1fr))"
-				gap="2rem"
-				justifyItems="center"
-			>
+			<div className="w-full px-8 sm:px-0 grid grid-cols-[repeat(auto-fill,minmax(15em,1fr))] gap-8 justify-items-center">
 				<FestCard
 					name={FEST_NAME.MEGAPORT}
 					href={ROUTE.megaport.index.root}
@@ -34,7 +26,7 @@ export default function Home() {
 					href={ROUTE.fujirock.index.root}
 					image={FEST_LOGO.fujirock}
 				/> */}
-			</Box>
+			</div>
 		</PageContainer>
 	);
 }

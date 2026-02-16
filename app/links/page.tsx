@@ -1,102 +1,9 @@
 'use client';
 import React from 'react';
-import { styled } from '@mui/material/styles';
-
-import GitHubIcon from '@mui/icons-material/GitHub';
+import { FaGithub } from 'react-icons/fa';
 import { PageContainer } from 'components/base/Container';
 import { H1, H2 } from 'components/base/Typography';
 import { palette } from 'styles/palette';
-
-const LinksSection = styled('section')(({ theme }) => ({
-	width: 'inherit',
-	paddingBottom: '1em',
-	marginBottom: '1em',
-	borderBottom: `solid 1px ${theme.palette.background.paper}`,
-	[theme.breakpoints.up('lg')]: {
-		paddingInline: '10em',
-	},
-}));
-
-const PreviewContainer = styled('div')({
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '1em',
-});
-
-const StyledGitHubIcon = styled(GitHubIcon)(({ theme }) => ({
-	color: theme.palette.primary.main,
-}));
-
-const StyledPreview = styled('a')(({ theme }) => ({
-	minHeight: '10em',
-	width: '100%',
-	display: 'flex',
-	flexDirection: 'row-reverse',
-	justifyContent: 'space-between',
-	color: theme.palette.secondary.main,
-	backgroundColor: theme.palette.background.paper,
-	borderRadius: '0.5em',
-	textDecoration: 'none',
-	[theme.breakpoints.down('sm')]: {
-		height: 'auto',
-		flexDirection: 'column',
-	},
-	'& .content': {
-		maxWidth: '70%',
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		gap: '0.5em',
-		padding: '1em',
-		borderRadius: '0.5em 0 0 0.5em',
-		[theme.breakpoints.down('sm')]: {
-			maxWidth: '100%',
-		},
-		'& .title': {
-			fontSize: '20px',
-			fontWeight: 'bold',
-			paddingBottom: '0.5em',
-			borderBottom: 'solid 1px black',
-		},
-		'& .description': {
-			color: theme.palette.secondary.light,
-		},
-		'& .icon': {
-			display: 'flex',
-			fontSize: '8px',
-			color: theme.palette.secondary.light,
-			'& img': {
-				height: '1rem',
-				width: '1rem',
-				marginRight: '0.5rem',
-			},
-			'& p': {
-				overflow: 'hidden',
-				textOverflow: 'ellipsis',
-			},
-		},
-	},
-	'& img': {
-		width: '30%',
-		objectFit: 'cover',
-		objectPosition: 'center',
-		borderRadius: '0 0.5em 0.5em 0',
-		[theme.breakpoints.down('sm')]: {
-			height: '15em',
-			width: '100%',
-			borderRadius: '0.5em 0.5em 0 0',
-		},
-	},
-}));
-
-const StyledLiveBlock = styled('a')(({ theme }) => ({
-	display: 'flex',
-	justifyContent: 'center',
-	flexGrow: 1,
-	color: theme.palette.common.white,
-	borderRadius: '0.5em',
-	padding: '1em',
-}));
 
 const PreviewLink = (props: {
 	url: string;
@@ -108,17 +15,26 @@ const PreviewLink = (props: {
 	const { url, title, description, image, icon } = props;
 
 	return (
-		<StyledPreview href={url} target="_blank" rel="noopener noreferrer">
-			<img src={image} alt={title} />
-			<div className="content">
-				<div className="title">{title}</div>
-				<div className="description">{description}</div>
-				<div className="icon">
-					{icon ? <img src={icon} alt="icon" /> : null}
-					<p>{url}</p>
+		<a
+			href={url}
+			target="_blank"
+			rel="noopener noreferrer"
+			className="min-h-[10em] w-full flex flex-col sm:flex-row-reverse justify-between text-secondary-main bg-paper rounded-md no-underline"
+		>
+			<img
+				src={image}
+				alt={title}
+				className="w-full sm:w-[30%] object-cover object-center rounded-t-md sm:rounded-none sm:rounded-r-md h-[15em] sm:h-auto"
+			/>
+			<div className="content max-w-full sm:max-w-[70%] flex flex-col justify-between gap-2 p-4 rounded-b-md sm:rounded-none sm:rounded-l-md">
+				<div className="title text-lg font-bold pb-2 border-b border-black">{title}</div>
+				<div className="description text-secondary-light">{description}</div>
+				<div className="icon flex text-xs text-secondary-light">
+					{icon ? <img src={icon} alt="icon" className="h-4 w-4 mr-2" /> : null}
+					<p className="overflow-hidden text-ellipsis">{url}</p>
 				</div>
 			</div>
-		</StyledPreview>
+		</a>
 	);
 };
 
@@ -126,24 +42,27 @@ const LiveBlock = (props: { url: string; label: string; color: string }) => {
 	const { url, label, color } = props;
 
 	return (
-		<StyledLiveBlock
+		<a
 			href={url}
-			sx={{ background: color }}
+			className="flex justify-center flex-grow text-white rounded-md p-4 font-bold text-h1"
+			style={{ backgroundColor: color }}
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			<H1 sx={{ fontWeight: 'bold' }}>{label}</H1>
-		</StyledLiveBlock>
+			{label}
+		</a>
 	);
 };
 
 export default function Links() {
 	return (
 		<PageContainer>
-			<H1 sx={{ fontWeight: 'bold' }}>{'外部連結'}</H1>
-			<LinksSection>
+			<H1 className="font-bold">{'外部連結'}</H1>
+			<div
+				className="w-full pb-4 mb-4 border-b border-background-paper lg:px-40"
+			>
 				<H2>{'官方連結'}</H2>
-				<PreviewContainer>
+				<div className="flex flex-col gap-4">
 					<PreviewLink
 						url={'https://www.megaportfest.com/index.php'}
 						image={
@@ -153,11 +72,13 @@ export default function Links() {
 						description={`即將邁入第十三屆的《大港開唱》，是每年於高雄舉辦的大型音樂祭典，近年已是台灣最具指標性的大型戶外音樂祭活動。2022大港開唱即將再度開催，3/26－27日於高雄駁二藝術特區，不見不散！`}
 						icon={'http://formoz.com/megaport/icon2.ico'}
 					/>
-				</PreviewContainer>
-			</LinksSection>
-			<LinksSection>
+				</div>
+			</div>
+			<div
+				className="w-full pb-4 mb-4 border-b border-background-paper lg:px-40"
+			>
 				<H2>{'LINE TODAY 直播'}</H2>
-				<PreviewContainer>
+				<div className="flex flex-col gap-4">
 					<PreviewLink
 						url={
 							'https://today.line.me/tw/v2/page/TOPIC-Megaportw?fbclid=IwAR2Cmpo7ci6jxfnfP4lpXIyohDo8Qaq8FH6G1qOXC3kbcvcnPBfR8Gwh2ac'
@@ -169,7 +90,7 @@ export default function Links() {
 						description={`一年一度的台灣音樂盛事「大港開唱」即將在3/26、3/27於高雄駁二藝術特區登場，多組獨家超強卡司，鎖定LINE TODAY直播，帶你臨場體驗最熱血的音樂祭！`}
 						icon={'https://today.line.me/dist/9449bd8b/static/meta/icon64.ico'}
 					/>
-					<div style={{ display: 'flex', gap: '1em' }}>
+					<div className="flex gap-4">
 						<LiveBlock
 							url={'https://today.line.me/tw/v2/article/60ZoG16'}
 							label={'南霸天'}
@@ -181,11 +102,13 @@ export default function Links() {
 							color={palette.stage[2].main}
 						/>
 					</div>
-				</PreviewContainer>
-			</LinksSection>
-			<LinksSection>
+				</div>
+			</div>
+			<div
+				className="w-full pb-4 mb-4 border-b border-background-paper lg:px-40"
+			>
 				<H2>{'其他文章'}</H2>
-				<PreviewContainer>
+				<div className="flex flex-col gap-4">
 					<PreviewLink
 						url={'https://everylittled.com/article/148696'}
 						image={
@@ -198,7 +121,7 @@ export default function Links() {
 					/>
 					<PreviewLink
 						url={
-							'https://www.biosmonthly.com/article_list/389?utm_source=Facebook&utm_medium=Social&utm_campaign=Kaoshung&utm_term=TheMedium&utm_content=20220222'
+							'https://www.biosmonthly.com/article_list/389?utm_source=Facebook&utm_medium=Social&utm_medium=Social&utm_campaign=Kaoshung&utm_term=TheMedium&utm_content=20220222'
 						}
 						image={
 							'https://www.biosmonthly.com/storage/upload/article/article_classCoverPhoto_20220210125749_txe.jpeg'
@@ -207,14 +130,14 @@ export default function Links() {
 						description={`南台灣水姑娘陳溫蒂 suckdidi、DJ 賴皮與小犬工作室的插畫家 Steffy 帶路，商圈美食、酒吧、鹽埕小吃，高雄夜晚三條景點路線，一網打盡。`}
 						icon={'https://www.biosmonthly.com/assets/images/favicon.ico'}
 					/>
-				</PreviewContainer>
-			</LinksSection>
+				</div>
+			</div>
 			<a
 				href="https://github.com/JosephT5566/musicFest"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<StyledGitHubIcon />
+				<FaGithub className="text-primary-main" />
 			</a>
 		</PageContainer>
 	);

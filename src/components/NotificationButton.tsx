@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
+import { Bell, BellOff} from 'lucide-react';
 import { ShadowIconButton } from 'components/base/Button';
 
 import { useOpenSnackbar } from 'providers/SnackbarProvider';
@@ -31,7 +30,7 @@ const NotificationButton = () => {
 
 	return (
 		<ShadowIconButton aria-label="notification" onClick={handleClick}>
-			{permissionState === 'denied' ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
+			{permissionState === 'denied' ? <BellOff /> : <Bell />}
 		</ShadowIconButton>
 	);
 };

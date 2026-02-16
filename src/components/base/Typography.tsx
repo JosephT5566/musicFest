@@ -1,22 +1,31 @@
 import React from 'react';
-import Typography, { TypographyProps } from '@mui/material/Typography';
 
-export function H1(props: TypographyProps) {
-	const { children, ...otherProps } = props;
+export function H1(props: React.HTMLAttributes<HTMLHeadingElement>) {
+	const { children, className, ...otherProps } = props;
 
 	return (
-		<Typography variant={'h1'} {...otherProps}>
+		<h1 className={`font-heading text-h1 ${className}`} {...otherProps}>
 			{children}
-		</Typography>
+		</h1>
 	);
 }
 
-export function H2(props: TypographyProps) {
-	const { children, ...otherProps } = props;
+export function H2(props: React.HTMLAttributes<HTMLHeadingElement>) {
+	const { children, className, ...otherProps } = props;
 
 	return (
-		<Typography variant={'h2'} {...otherProps}>
+		<h2 className={`font-heading text-h2 ${className}`} {...otherProps}>
 			{children}
-		</Typography>
+		</h2>
+	);
+}
+
+export function P(props: React.HTMLAttributes<HTMLParagraphElement>) {
+	const { children, className, ...otherProps } = props;
+
+	return (
+		<p className={`font-sans text-base ${className}`} {...otherProps}>
+			{children}
+		</p>
 	);
 }

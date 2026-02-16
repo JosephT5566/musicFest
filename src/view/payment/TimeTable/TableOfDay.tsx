@@ -1,15 +1,9 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import moment from 'moment';
 
 import StageColumn from 'view/payment/TimeTable/StageColumn';
 import { IPerfDay } from 'types/show';
 import { palette } from 'styles/palette';
-
-const TableOfDayContainer = styled('div')({
-	display: 'flex',
-	flexDirection: 'row',
-});
 
 interface props {
 	perfDay: IPerfDay;
@@ -21,7 +15,7 @@ export default function TableOfDay({ perfDay, day, selected }: props) {
 	const { stage: stageColors } = palette;
 
 	return (
-		<TableOfDayContainer sx={{ display: day === selected ? '' : 'none' }}>
+		<div className={`${day === selected ? 'flex' : 'hidden'} flex-row`}>
 			{perfDay.stages.map((stage, index) => (
 				<StageColumn
 					dayStartTime={moment(perfDay.dayStartTime)}
@@ -32,6 +26,6 @@ export default function TableOfDay({ perfDay, day, selected }: props) {
 					day={day}
 				/>
 			))}
-		</TableOfDayContainer>
+		</div>
 	);
 }

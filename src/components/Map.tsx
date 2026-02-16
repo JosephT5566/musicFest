@@ -1,30 +1,15 @@
 'use client';
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import TableChartIcon from '@mui/icons-material/TableChart';
+import { TableChart } from 'lucide-react';
 
 import { FixedButtonsContainer, PageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
-import { ShadowIconButton } from 'components/base/Button';
+import { Button } from '@/components/ui/button';
 
 import { useRouter } from 'next/navigation';
 import { useIsMobileNavEnable } from 'hooks/navigationUtils';
-import MobileBottomNav from './shared/MobileBottomNav';
+import MobileBottomNav from 'components/shared/MobileBottomNav';
 import { PageRoutes } from 'types/navigation';
-
-const ImageContainer = styled('div')({
-	width: '100%',
-	overflow: 'auto',
-});
-
-const StyledmapImg = styled('img')(({ theme }) => ({
-	[theme.breakpoints.up('md')]: {
-		width: '100%',
-	},
-	[theme.breakpoints.down('sm')]: {
-		width: '200%',
-	},
-}));
 
 type MapProps = {
 	headerTitle: string;
@@ -41,21 +26,25 @@ export default function Map({ headerTitle, pageTitle, imageSrc, pageRoutes }: Ma
 		<PageContainer>
 			<H1>{imageSrc ? pageTitle : 'COMING SOON...'}</H1>
 			{imageSrc && (
-				<ImageContainer>
-					<StyledmapImg src={imageSrc} alt="mega map" />
-				</ImageContainer>
+				<div className="w-full overflow-auto">
+					<img
+						src={imageSrc}
+						alt="mega map"
+						className="w-[200%] md:w-full"
+					/>
+				</div>
 			)}
 			<FixedButtonsContainer>
-				{!isMobileNavEnable && (
-					<ShadowIconButton
-						size={'large'}
-						onClick={() => {
-							router.push(pageRoutes.root);
-						}}
-					>
-						<TableChartIcon />
-					</ShadowIconButton>
-				)}
+				{/* The MobileBottomNav handles its own visibility */}
+				<Button
+					size={'lg'}
+					onClick={() => {
+						router.push(pageRoutes.root);
+					}}
+					className="shadow-md"
+				>
+					<TableChart />
+				</Button>
 			</FixedButtonsContainer>
 			<MobileBottomNav routes={pageRoutes} />
 		</PageContainer>

@@ -1,30 +1,8 @@
+'use client';
 import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
 
 import { SCALE_UNIT } from 'constants/static';
 import moment, { Moment } from 'moment';
-
-const StyledtimeBackdrop = styled('div')({
-	position: 'absolute',
-	top: '0',
-	marginTop: `${0.5 * SCALE_UNIT}rem`,
-	width: '100%',
-	height: '2px',
-	backgroundColor: 'black',
-	opacity: '0.3',
-	zIndex: 50,
-});
-
-const StyledcurrentTime = styled('div')(({ theme }) => ({
-	fontFamily: 'Playfair Display',
-	position: 'absolute',
-	bottom: '0.2em',
-	right: '0',
-	color: theme.palette.secondary.main,
-	opacity: '0.8',
-	fontSize: '50px',
-	fontWeight: 'bold',
-}));
 
 const INTERVAL = 1000 * 10; // 10 sec
 
@@ -51,12 +29,16 @@ export default function TimeBackdrop(props: { dayStartTime: Moment; dayEndTime: 
 	}, []);
 
 	return isToday() ? (
-		<StyledtimeBackdrop
-			sx={{
+		<div
+			style={{
 				top: `${top * SCALE_UNIT}rem`,
+				marginTop: `${0.5 * SCALE_UNIT}rem`,
 			}}
+			className="absolute w-full h-[2px] bg-black opacity-30 z-50"
 		>
-			<StyledcurrentTime>{time.format('HH:mm')}</StyledcurrentTime>
-		</StyledtimeBackdrop>
+			<div className="font-['Playfair_Display'] absolute bottom-[0.2em] right-0 text-secondary opacity-80 text-[50px] font-bold">
+				{time.format('HH:mm')}
+			</div>
+		</div>
 	) : null;
 }

@@ -1,8 +1,5 @@
+'use client';
 import React, { useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
@@ -10,46 +7,14 @@ import moment, { Moment } from 'moment';
 
 import { useSelectShow } from 'providers/ShowsProvider';
 import { generateGoogleCalendarLink, toUTCFormat } from 'utils/googleUtils';
-
-const TimelineContainer = styled(Box)(({ theme }) => ({
-	width: `calc(100vw - 1em - 3.8em)`,
-	display: 'flex',
-	position: 'relative',
-	flexDirection: 'column',
-}));
-
-const TimelineBtnContainer = styled(Box)({
-	position: 'absolute',
-	display: 'flex',
-	flexDirection: 'row',
-	width: '100%',
-});
-
-const TimelineBtn = styled(Button)(({ theme }) => ({
-	position: 'absolute',
-	border: 'none',
-	borderRadius: theme.shape.borderRadius,
-	padding: theme.spacing(1),
-	zIndex: 1,
-	textTransform: 'none',
-	'&:hover': {
-		cursor: 'pointer',
-		filter: 'brightness(0.95)',
-	},
-}));
-
-const BtnContent = styled(Box)(({ theme }) => ({
-	display: 'flex',
-	flexDirection: 'column',
-	alignItems: 'center',
-	gap: theme.spacing(0.5),
-	color: theme.palette.text.primary,
-}));
+import { H1, H2, P } from 'components/base/Typography';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 interface ShowItem extends IArtist {
 	stageName: string;
 	layer: number;
-	itemColor: SimplePaletteColorOptions;
+	itemColor: { main: string };
 	overlappingCount: number;
 }
 
@@ -58,17 +23,6 @@ interface TimeLineButtonProps {
 	showInfo: ShowItem;
 	id: string;
 }
-
-const DrawerPuller = styled(Box)(({ theme }) => ({
-	width: 30,
-	height: 6,
-	backgroundColor: theme.palette.secondary.main,
-	borderRadius: 3,
-	position: 'absolute',
-	top: 8,
-	left: '50%',
-	transform: 'translateX(-50%)',
-}));
 
 const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo, id }) => {
 	const [drawerOpen, setDrawerOpen] = useState(false);
@@ -99,18 +53,18 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 
 	return (
 		<>
-			<TimelineBtnContainer
-				className="timeline-button-wrapper"
-				sx={{
+			<div
+				className="timeline-button-wrapper absolute flex-row w-full"
+				style={{
 					top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
 				}}
 			>
-				<TimelineBtn
+				<Button
 					className={`timeline-button timeline-button-${name
 						.toLowerCase()
-						.replace(/\s+/g, '-')}`}
+						.replace(/\s+/g, '-')} absolute border-none rounded-sm p-1 z-10 normal-case hover:brightness-95`}
 					onClick={toggleDrawer(true)}
-					sx={{
+					style={{
 						left: `${leftPosition}%`,
 						width: `${width}%`,
 						minHeight: `${height * SCALE_UNIT}rem`,
@@ -118,77 +72,32 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 						backgroundColor: itemColor.main,
 					}}
 				>
-					<BtnContent className="timeline-button-content">
-						<Typography
-							variant="body1"
-							color="text.secondary"
-							className="timeline-button-title"
-						>
+					<div className="flex flex-col items-center gap-1 text-primary-foreground">
+						<P className="timeline-button-title text-secondary-foreground">
 							{name}
-						</Typography>
-						<Typography variant="body2" className="timeline-button-stage-name">
+						</P>
+						<P className="timeline-button-stage-name text-secondary-foreground">
 							{stageName}
-						</Typography>
-						{/* <Typography
-                            variant="body2"
-                            className="timeline-button-time"
-                        >
-                            {startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}
-                        </Typography>
-                        <Typography
-                            variant="body2"
-                            className="debug-info"
-                        >
-                            {`Layer: ${layer}, Total: ${overlappingCount}`}
-                        </Typography> */}
-					</BtnContent>
-				</TimelineBtn>
-			</TimelineBtnContainer>
-			<SwipeableDrawer
-				anchor="bottom"
-				open={drawerOpen}
-				onClose={toggleDrawer(false)}
-				onOpen={toggleDrawer(true)}
-				PaperProps={{
-					sx: {
-						borderTopLeftRadius: 16,
-						borderTopRightRadius: 16,
-						backgroundColor: (theme) => theme.palette.background.default,
-					},
-				}}
-			>
-				<Box
-					sx={{
-						padding: 2,
-						minHeight: '30vh',
-						borderTopLeftRadius: 16,
-						borderTopRightRadius: 16,
-						position: 'relative',
-						paddingTop: 4, // Add more padding at top to accommodate the puller
-					}}
-				>
-					<DrawerPuller />
-					<Typography variant="h6" gutterBottom textAlign="center">
+						</P>
+					</div>
+				</Button>
+			</div>
+			<Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
+				<SheetContent side="bottom" className="rounded-t-lg p-2 min-h-[30vh] relative pt-4">
+					<div className="w-30 h-6 bg-secondary-main rounded-md absolute top-2 left-1/2 -translate-x-1/2" />
+					<H2 className="text-center" >
 						{name}
-					</Typography>
-					<Typography variant="body1">
+					</H2>
+					<P>
 						{startMoment.format('YYYY/M/D(ddd) HH:mm')} - {endMoment.format('HH:mm')}
-					</Typography>
-					<Typography variant="subtitle1" gutterBottom fontWeight="bold">
+					</P>
+					<P className="font-bold">
 						{stageName}
-					</Typography>
-					<Box
-						sx={{
-							position: 'absolute',
-							bottom: 32,
-							left: 16,
-						}}
-						display="flex"
-                        flexDirection="column"
-                        gap="8px"
+					</P>
+					<div
+						className="absolute bottom-8 left-4 flex flex-col gap-2"
 					>
 						<Button
-							variant="contained"
 							onClick={() => {
 								const formattedStartTime = toUTCFormat(startTime);
 								const formattedEndTime = toUTCFormat(endTime);
@@ -202,22 +111,21 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 								});
 								window.open(calendarLink, '_blank');
 							}}
-							color="success"
+              variant="default"
 						>
 							新增到 Google 日曆
 						</Button>
 						<Button
-							variant="outlined"
 							onClick={() => {
 								selectShow(id);
 							}}
-							color="error"
+              variant="destructive"
 						>
 							移除選擇
 						</Button>
-					</Box>
-				</Box>
-			</SwipeableDrawer>
+					</div>
+				</SheetContent>
+			</Sheet>
 		</>
 	);
 };
@@ -302,12 +210,8 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 	});
 
 	return (
-		<TimelineContainer
-			className={`timeline-container timeline-day-${day}`}
-			sx={{
-				display: day === selectedDay ? 'flex' : 'none',
-				height: `${height * SCALE_UNIT}rem`,
-			}}
+		<div
+			className={`timeline-container timeline-day-${day} ${day === selectedDay ? 'flex' : 'hidden'} h-[${height * SCALE_UNIT}rem] w-[calc(100vw - 1em - 3.8em)] relative flex-col`}
 		>
 			{allArtists.map((item) => (
 				<TimeLineButton
@@ -317,6 +221,6 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 					id={item.id}
 				/>
 			))}
-		</TimelineContainer>
+		</div>
 	);
 }

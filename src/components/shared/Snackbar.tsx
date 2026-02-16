@@ -1,65 +1,53 @@
 'use client';
-import MaterialSnackbar from '@mui/material/Snackbar';
-import Slide from '@mui/material/Slide';
-import WarningIcon from '@mui/icons-material/Error';
-import CheckIcon from '@mui/icons-material/CheckCircle';
-import ErrorIcon from '@mui/icons-material/Cancel';
-import { styled } from '@mui/material/styles';
 import { useCloseSnackbar, useSnackbarProps } from 'providers/SnackbarProvider';
+import { AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import {
+	Toast,
+	ToastClose,
+	ToastDescription,
+	ToastProvider,
+	ToastTitle,
+	ToastViewport,
+} from 'components/ui/toast';
 
-const StyledSnackbar = styled(MaterialSnackbar)({
-	'& > div': {
-		borderRadius: '0.5em',
-	},
-});
-const StyledContent = styled('div')(({ theme }) => ({
-	display: 'flex',
-	alignItems: 'center',
-	width: '100%',
-	fontWeight: 'bold',
-	color: theme.palette.common.white,
-	backgroundColor: theme.palette.success.main,
-	padding: '1em',
-	'&.success': {
-		backgroundColor: theme.palette.success.main,
-	},
-	'&.warning': {
-		backgroundColor: theme.palette.warning.main,
-	},
-	'&.error': {
-		backgroundColor: theme.palette.error.main,
-	},
-}));
-
-export default function Snackbar() {
+export default function CustomSnackbar() {
 	const snackbarProps = useSnackbarProps();
 	const handleClose = useCloseSnackbar();
 
 	const Icon = () => {
 		switch (snackbarProps.severity) {
 			case 'success':
-				return <CheckIcon sx={{ marginRight: '0.5em' }} />;
+				return <CheckCircle className="mr-2 h-5 w-5" />;
 			case 'warning':
-				return <WarningIcon sx={{ marginRight: '0.5em' }} />;
+				return <AlertCircle className="mr-2 h-5 w-5" />;
 			case 'error':
-				return <ErrorIcon sx={{ marginRight: '0.5em' }} />;
+				return <XCircle className="mr-2 h-5 w-5" />;
 			default:
 				return null;
 		}
 	};
 
 	return (
-		<StyledSnackbar
-			anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-			open={snackbarProps.open}
-			onClose={handleClose}
-			autoHideDuration={1500}
-			TransitionComponent={Slide}
-		>
-			<StyledContent className={`${snackbarProps.severity}`}>
-				<Icon />
-				{snackbarProps.message}
-			</StyledContent>
-		</StyledSnackbar>
+		<ToastProvider>
+			<Toast
+				open={snackbarProps.open}
+				onOpenChange={handleClose}
+				duration={1500}
+				className="top-0 flex fixed inset-x-0 mx-auto w-fit md:top-4 md:right-4 md:left-auto md:max-w-md"
+			>
+				<div
+					className={`flex items-center w-full font-bold text-white p-4 rounded-md
+						${snackbarProps.severity === 'success' ? 'bg-green-500' : ''}
+						${snackbarProps.severity === 'warning' ? 'bg-orange-500' : ''}
+						${snackbarProps.severity === 'error' ? 'bg-red-500' : ''}
+					`}
+				>
+					<Icon />
+					<ToastTitle>{snackbarProps.message}</ToastTitle>
+					<ToastClose />
+				</div>
+			</Toast>
+			<ToastViewport />
+		</ToastProvider>
 	);
 }

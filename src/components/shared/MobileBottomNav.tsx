@@ -1,55 +1,20 @@
 'use client';
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import QueueMusicIcon from '@mui/icons-material/QueueMusic';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import MapIcon from '@mui/icons-material/Map';
+import { QueueMusic, TableChart, Map } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { PageRoutes } from 'types/navigation';
-import { useIsMobileNavEnable } from 'hooks/navigationUtils';
-
-const StyledBottomNav = styled(BottomNavigation)(({ theme }) => ({
-	position: 'fixed',
-	bottom: 0,
-	left: 0,
-	right: 0,
-	width: '100%',
-	height: '64px',
-	backgroundColor: theme.palette.secondary.dark,
-	borderTop: `1px solid ${theme.palette.divider}`,
-	zIndex: theme.zIndex.drawer,
-
-	[theme.breakpoints.up('md')]: {
-		display: 'none',
-	},
-}));
-
-const StyledBottomNavAction = styled(BottomNavigationAction)(({ theme }) => ({
-	color: theme.palette.grey[500],
-	'&.Mui-selected': {
-		color: theme.palette.primary.main,
-	},
-}));
+import { Button } from '@/components/ui/button';
+import clsx from 'clsx';
 
 interface MobileBottomNavProps {
 	routes: PageRoutes;
 }
 
 const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
-	const isMobileNavEnable = useIsMobileNavEnable();
 	const router = useRouter();
     const pathname = usePathname();
 
-	// Only show on mobile and in Megaport pages
-	if (!isMobileNavEnable) {
-		return null;
-	}
-
-	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+	const handleChange = (newValue: string) => {
 		router.push(newValue);
 	};
 
@@ -60,22 +25,45 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 		return routes.root;
 	};
 
+	const currentValue = getNavValue();
+
 	return (
-		<StyledBottomNav value={getNavValue()} onChange={handleChange} showLabels>
+		<nav
+            className="fixed bottom-0 left-0 right-0 w-full h-16 bg-secondary-dark border-t border-gray-700 z-drawer md:hidden flex justify-around items-center"
+        >
 			{routes.lineup && (
-				<StyledBottomNavAction
-					label="Lineup"
-					value={routes.lineup}
-					icon={<QueueMusicIcon />}
-				/>
+				<Button
+					variant="ghost"
+					className={clsx("flex flex-col items-center justify-center h-full text-gray-500", {
+						"text-primary-main": currentValue === routes.lineup
+					})}
+					onClick={() => handleChange(routes.lineup)}
+				>
+					<QueueMusic className="w-6 h-6" />
+					<span className="text-xs">Lineup</span>
+				</Button>
 			)}
-			<StyledBottomNavAction
-				label="Timetable"
-				value={routes.root}
-				icon={<TableChartIcon />}
-			/>
-			<StyledBottomNavAction label="Map" value={routes.map} icon={<MapIcon />} />
-		</StyledBottomNav>
+			<Button
+				variant="ghost"
+				className={clsx("flex flex-col items-center justify-center h-full text-gray-500", {
+					"text-primary-main": currentValue === routes.root
+				})}
+				onClick={() => handleChange(routes.root)}
+			>
+				<TableChart className="w-6 h-6" />
+				<span className="text-xs">Timetable</span>
+			</Button>
+			<Button
+				variant="ghost"
+				className={clsx("flex flex-col items-center justify-center h-full text-gray-500", {
+					"text-primary-main": currentValue === routes.map
+				})}
+				onClick={() => handleChange(routes.map)}
+			>
+				<Map className="w-6 h-6" />
+				<span className="text-xs">Map</span>
+			</Button>
+		</nav>
 	);
 };
 

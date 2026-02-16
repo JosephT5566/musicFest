@@ -1,10 +1,8 @@
 import React from 'react';
 import ThemeRegistry from './ThemeRegistry';
-import SnackbarProvider from 'providers/SnackbarProvider';
 import Header from 'view/layout/Header';
-import { ContentContainer } from 'components/base/Container';
-import Snackbar from 'components/shared/Snackbar';
 import AppInitializer from './AppInitializer';
+import { Toaster } from '@/components/ui/sonner';
 
 export const metadata = {
 	title: 'FesTime - A Music Festival Timetable Manager',
@@ -16,12 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="zh-TW">
 			<body>
 				<ThemeRegistry>
-					<SnackbarProvider>
-						<AppInitializer />
-						<Header />
-						<ContentContainer>{children}</ContentContainer>
-						<Snackbar />
-					</SnackbarProvider>
+					<AppInitializer />
+					<Header />
+					<div className="min-h-[calc(100vh_-_theme(spacing.16))]">{children}</div>
+					<Toaster />
 				</ThemeRegistry>
 			</body>
 		</html>

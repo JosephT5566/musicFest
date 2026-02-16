@@ -1,45 +1,28 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
 import useLocation from 'hooks/useLocation';
 import { useRouter } from 'next/navigation';
 
 import TimeTable from 'view/payment/TimeTable';
 import TimeLine from 'view/payment/TimeLine';
-import ShareIcon from '@mui/icons-material/Share';
-import ReplayIcon from '@mui/icons-material/Replay';
-import MapIcon from '@mui/icons-material/Map';
+import { Share, RotateCcw, Map } from 'lucide-react';
 import { PageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
 import DaySelector from 'components/shared/DaySelector';
 import DisplayModeSelector from 'components/shared/DisplayModeSelector';
 import { FixedButtonsContainer } from 'components/base/Container';
-import { ShadowIconButton } from 'components/base/Button';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 import ShowsProvider, { useGetSelectedShow, useResetShows } from 'providers/ShowsProvider';
-import { useOpenSnackbar } from 'providers/SnackbarProvider';
+
 import { IDisplayMode } from 'types/displayMode';
 
 import programList from 'assets/program/megaport2021';
 import { ROUTE, FEST_NAME, STORAGE_KEY } from 'constants/static';
 import moment from 'moment';
 
-const SelectorsContainer = styled('div')(({ theme }) => ({
-	width: '100%',
-	display: 'flex',
-	justifyContent: 'space-between',
-	paddingInline: '1rem',
-
-	[theme.breakpoints.down('md')]: {
-		flexDirection: 'column',
-		paddingInline: '0',
-		gap: '0.5rem',
-		alignItems: 'start',
-	},
-}));
-
-const SaveButton = (props: { onOpenSnack: () => void }) => {
-	const { onOpenSnack } = props;
+const SaveButton = () => {
 	const selectedShows = useGetSelectedShow();
 
 	const router = useRouter();
@@ -52,33 +35,35 @@ const SaveButton = (props: { onOpenSnack: () => void }) => {
 			if (data !== '' || url?.hash.substring(1) !== '') {
 				router.push(`${url?.pathname}#${data}`);
 			}
-			onOpenSnack();
+			toast.success('已複製網址',{
+				description: '可加到書籤儲存。',
+			});
 		} catch (error) {
 			console.error('Could not copy text: ', error);
+			toast.error('複製失敗', {
+				description: '請手動複製網址。',
+			});
 		}
 	};
 
 	return (
-		<ShadowIconButton aria-label="share" onClick={handleClick}>
-			<ShareIcon />
-		</ShadowIconButton>
+		<Button aria-label="share" onClick={handleClick} size="lg" className="shadow-md">
+			<Share />
+		</Button>
 	);
 };
 
 const ResetButton = () => {
 	const resetData = useResetShows();
-	// const url = useLocation();
 
 	const handleClick = () => {
 		resetData();
-		// window.history.pushState(null, '', `${url.pathname}`);
-		// window.location.reload();
 	};
 
 	return (
-		<ShadowIconButton aria-label="reset" onClick={handleClick}>
-			<ReplayIcon />
-		</ShadowIconButton>
+		<Button aria-label="reset" onClick={handleClick} size="lg" className="shadow-md">
+			<RotateCcw />
+		</Button>
 	);
 };
 
@@ -88,7 +73,6 @@ export default function Megaport2021() {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
 	const router = useRouter();
-	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
 		setSelectedDay(Number(localStorage.getItem(STORAGE_KEY.day)));
@@ -99,15 +83,13 @@ export default function Megaport2021() {
 		localStorage.setItem(STORAGE_KEY.day, value.toString());
 	};
 
-	const handleOpenSnack = () => {
-		openSnackbar('success', '已複製網址，可加到書籤儲存。');
-	};
-
 	return (
 		<ShowsProvider storageKey={ROUTE.megaport[2021].root}>
 			<PageContainer>
 				<H1>{header}</H1>
-				<SelectorsContainer>
+				<div
+					className="w-full flex justify-between px-4 flex-col md:flex-row gap-2 items-start"
+				>
 					<DisplayModeSelector mode={mode} setMode={setMode} />
 					<DaySelector
 						days={programList.perfDays.map((d) =>
@@ -116,23 +98,24 @@ export default function Megaport2021() {
 						selectedDay={selectedDay}
 						onClick={handleClick}
 					/>
-				</SelectorsContainer>
+				</div>
 				{mode === 'timetable' ? (
 					<TimeTable programList={programList} selectedDay={selectedDay} />
 				) : (
 					<TimeLine programList={programList} selectedDay={selectedDay} />
 				)}
 				<FixedButtonsContainer>
-					<SaveButton onOpenSnack={handleOpenSnack} />
+					<SaveButton />
 					<ResetButton />
-					<ShadowIconButton
-						size={'large'}
+					<Button
+						size={'lg'}
 						onClick={() => {
 							router.push(ROUTE.megaport[2021].map);
 						}}
+						className="shadow-md"
 					>
-						{<MapIcon />}
-					</ShadowIconButton>
+						<Map />
+					</Button>
 				</FixedButtonsContainer>
 			</PageContainer>
 		</ShowsProvider>
