@@ -1,5 +1,5 @@
+'use client';
 import React from 'react';
-import Head from 'next/head';
 import { styled } from '@mui/material/styles';
 import TableChartIcon from '@mui/icons-material/TableChart';
 
@@ -7,7 +7,7 @@ import { FixedButtonsContainer, PageContainer } from 'components/base/Container'
 import { H1 } from 'components/base/Typography';
 import { ShadowIconButton } from 'components/base/Button';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useIsMobileNavEnable } from 'hooks/navigationUtils';
 import MobileBottomNav from './shared/MobileBottomNav';
 import { PageRoutes } from 'types/navigation';
@@ -39,10 +39,6 @@ export default function Map({ headerTitle, pageTitle, imageSrc, pageRoutes }: Ma
 
 	return (
 		<PageContainer>
-			<Head>
-				<title>{headerTitle}</title>
-			</Head>
-
 			<H1>{imageSrc ? pageTitle : 'COMING SOON...'}</H1>
 			{imageSrc && (
 				<ImageContainer>

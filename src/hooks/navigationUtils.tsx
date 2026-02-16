@@ -1,5 +1,6 @@
+'use client';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 
 const useIsMobile = () => {
 	const theme = useTheme();
@@ -14,7 +15,8 @@ export const useIsMobileNavEnable = () => {
 	}
 
 	const router = useRouter();
-	const isMegaport = router.pathname.includes('/megaport');
+	const pathname = usePathname();
+	const isMegaport = pathname.includes('/megaport');
 
 	if (!isMegaport) {
 		return false;

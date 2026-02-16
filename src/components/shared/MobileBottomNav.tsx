@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -5,7 +6,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import MapIcon from '@mui/icons-material/Map';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { PageRoutes } from 'types/navigation';
@@ -41,6 +42,7 @@ interface MobileBottomNavProps {
 const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 	const isMobileNavEnable = useIsMobileNavEnable();
 	const router = useRouter();
+    const pathname = usePathname();
 
 	// Only show on mobile and in Megaport pages
 	if (!isMobileNavEnable) {
@@ -53,8 +55,8 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 
 	// Determine current value based on the path
 	const getNavValue = () => {
-		if (router.pathname.endsWith('/map')) return routes.map;
-		if (router.pathname.endsWith('/lineup')) return routes.lineup;
+		if (pathname.endsWith('/map')) return routes.map;
+		if (pathname.endsWith('/lineup')) return routes.lineup;
 		return routes.root;
 	};
 

@@ -1,5 +1,5 @@
+'use client';
 import React from 'react';
-import Head from 'next/head';
 import { styled } from '@mui/material/styles';
 import TableChartIcon from '@mui/icons-material/TableChart';
 
@@ -8,7 +8,7 @@ import { H1 } from 'components/base/Typography';
 import { ShadowIconButton } from 'components/base/Button';
 
 import { ROUTE, FEST_NAME } from 'constants/static';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { IMAGES } from 'constants/images';
 
 const ImageContainer = styled('div')({
@@ -32,10 +32,6 @@ export default function Map() {
 
 	return (
 		<PageContainer>
-			<Head>
-				<title>{title}</title>
-			</Head>
-
 			<H1>{title}</H1>
 			<ImageContainer>
 				<StyledmapImg src={IMAGES.maps[2022]} alt="mega map" />

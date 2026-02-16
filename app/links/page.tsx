@@ -1,11 +1,10 @@
+'use client';
 import React from 'react';
-import Head from 'next/head';
 import { styled } from '@mui/material/styles';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { PageContainer } from 'components/base/Container';
 import { H1, H2 } from 'components/base/Typography';
-import { APP_NAME } from 'constants/static';
 import { palette } from 'styles/palette';
 
 const LinksSection = styled('section')(({ theme }) => ({
@@ -141,10 +140,6 @@ const LiveBlock = (props: { url: string; label: string; color: string }) => {
 export default function Links() {
 	return (
 		<PageContainer>
-			<Head>
-				<title>{`${APP_NAME} | 外部連結`}</title>
-			</Head>
-
 			<H1 sx={{ fontWeight: 'bold' }}>{'外部連結'}</H1>
 			<LinksSection>
 				<H2>{'官方連結'}</H2>

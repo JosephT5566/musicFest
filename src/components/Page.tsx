@@ -1,6 +1,7 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import TimeTable from 'view/payment/TimeTable';
 import TimeLine from 'view/payment/TimeLine';
@@ -19,7 +20,6 @@ import { IProgramList } from 'types/show';
 
 import { STORAGE_KEY } from 'constants/static';
 import moment from 'moment';
-import Head from 'next/head';
 
 import ResetButton from './ResetButton';
 import SaveButton from './SaveButton';
@@ -102,10 +102,6 @@ const Page = ({ headerTitle, pageTitle, pageRoutes, programList, storageKey }: P
 
 	return (
 		<PageContainer>
-			<Head>
-				<title>{headerTitle}</title>
-			</Head>
-
 			<H1>{pageTitle}</H1>
 			<SelectorsContainer>
 				<DisplayModeSelector mode={mode} setMode={setMode} />

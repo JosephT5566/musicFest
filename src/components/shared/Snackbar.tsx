@@ -1,3 +1,4 @@
+'use client';
 import MaterialSnackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import WarningIcon from '@mui/icons-material/Error';

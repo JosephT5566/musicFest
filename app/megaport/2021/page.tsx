@@ -1,7 +1,8 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import useLocation from 'hooks/useLocation';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import TimeTable from 'view/payment/TimeTable';
 import TimeLine from 'view/payment/TimeLine';
@@ -20,9 +21,8 @@ import { useOpenSnackbar } from 'providers/SnackbarProvider';
 import { IDisplayMode } from 'types/displayMode';
 
 import programList from 'assets/program/megaport2021';
-import { APP_NAME, ROUTE, FEST_NAME, STORAGE_KEY } from 'constants/static';
+import { ROUTE, FEST_NAME, STORAGE_KEY } from 'constants/static';
 import moment from 'moment';
-import Head from 'next/head';
 
 const SelectorsContainer = styled('div')(({ theme }) => ({
 	width: '100%',
@@ -82,7 +82,6 @@ const ResetButton = () => {
 	);
 };
 
-const headerTitle = `${APP_NAME} - ${FEST_NAME.MEGAPORT} - 2021`;
 const header = `${FEST_NAME.MEGAPORT} - 2021`;
 
 export default function Megaport2021() {
@@ -107,10 +106,6 @@ export default function Megaport2021() {
 	return (
 		<ShowsProvider storageKey={ROUTE.megaport[2021].root}>
 			<PageContainer>
-				<Head>
-					<title>{headerTitle}</title>
-				</Head>
-
 				<H1>{header}</H1>
 				<SelectorsContainer>
 					<DisplayModeSelector mode={mode} setMode={setMode} />

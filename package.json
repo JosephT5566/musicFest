@@ -15,6 +15,7 @@
     "@mui/icons-material": "^7.3.8",
     "@mui/lab": "^7.0.1-beta.22",
     "@mui/material": "^7.3.8",
+    "@mui/material-nextjs": "^7.3.8",
     "@types/moment": "^2.13.0",
     "js-cookie": "^3.0.5",
     "moment": "^2.29.1",

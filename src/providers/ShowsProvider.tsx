@@ -1,5 +1,6 @@
+'use client';
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { decodeData, isPakoCompressed } from 'utils/compressionUtils';
 
 interface showsProps {
