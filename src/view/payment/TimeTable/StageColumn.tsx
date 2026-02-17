@@ -1,89 +1,14 @@
+'use client';
 import React from 'react';
 import moment, { Moment } from 'moment';
-import { styled } from '@mui/material/styles';
-
-import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
-import Button from '@mui/material/Button';
+import { Button } from '@/components/ui/button';
 
 import { useGetSelectedShow, useSelectShow } from 'providers/ShowsProvider';
 import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
 
-const ColumnContainer = styled('div')(({ theme }) => ({
-	textAlign: 'center',
-	width: '7.4rem',
-	[theme.breakpoints.down('md')]: {
-		width: '5.8rem',
-	},
-	[theme.breakpoints.down('sm')]: {
-		width: '4.8rem',
-	},
-}));
-
-const Styledhead = styled('div')(({ theme }) => ({
-	height: theme.layout.tableHeadHeight,
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-	fontWeight: 'bold',
-	marginBottom: theme.layout.tableHeadMarginBottom,
-	letterSpacing: theme.layout.letterSpacing,
-}));
-
-const StyledShowButton = styled(Button, {
-	shouldForwardProp: (prop) => prop !== 'background' && prop !== 'height',
-})<{
-	background: string;
-	height: string;
-}>(({ theme, background, height }) => ({
-	fontFamily: theme.typography.fontFamily,
-	width: '100%',
-	height: height,
-	borderRadius: '0.5em',
-	border: 'none',
-	letterSpacing: theme.layout.letterSpacing,
-	fontWeight: 'normal',
-	lineHeight: 'inherit',
-	textTransform: 'inherit',
-	background: theme.palette.background.paper,
-	color: theme.palette.text.primary,
-	'&.active': {
-		background: background,
-		color: theme.palette.text.secondary,
-	},
-	'&:hover': {
-		cursor: 'pointer',
-	},
-	'&:focus': {
-		outline: `2px solid ${theme.palette.grey[800]}`,
-	},
-	[theme.breakpoints.down('md')]: {
-		letterSpacing: '0',
-	},
-}));
-
-const StyledFreeTimeScale = styled('div')(({ theme }) => ({
-	position: 'relative',
-	height: `${SCALE_UNIT}rem`,
-	'&::after': {
-		content: `''`,
-		position: 'absolute',
-		background: theme.palette.background.paper,
-		height: '1px',
-		width: '90%',
-		bottom: '-0.5px',
-		left: '50%',
-		transform: 'translate(-50%, 0)',
-	},
-	'&.theHour::after': {
-		background: theme.palette.secondary.main,
-	},
-}));
-
 const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 	const { prevEndTime, startTime } = props;
-	// console.log(startTime.format('YYYY-MM-DD HH:mm:ss'))
-
 	const height = moment.duration(startTime.diff(prevEndTime)).asMinutes() / 10;
 	const prevEndTimeMin = prevEndTime.minutes();
 
@@ -96,7 +21,13 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 			{new Array(height).fill(undefined).map((_, index) => {
 				const theHour = (prevEndTimeMin + 10 + index * 10) % 60 === 0 ? 'theHour' : '';
 				return (
-					<StyledFreeTimeScale className={`${theHour}`} key={index}></StyledFreeTimeScale>
+					<div
+						key={index}
+						className={`gap-time relative after:content-[''] after:absolute after:h-[1px] after:w-[90%] after:bottom-[-0.5px] after:left-1/2 after:-translate-x-1/2 ${
+							theHour === 'theHour' ? 'after:bg-secondary' : 'after:bg-paper'
+						}`}
+						style={{ height: `${SCALE_UNIT}rem` }}
+					/>
 				);
 			})}
 		</>
@@ -105,25 +36,28 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 
 const ShowButton = (props: {
 	show: IArtist;
-	buttonColor: SimplePaletteColorOptions;
+	buttonColor: { main: string };
 	active: boolean;
 	onClick: () => void;
 }) => {
 	const { show, buttonColor, active, onClick } = props;
-
 	const startTime = moment(show.startTime);
 	const endTime = moment(show.endTime);
 	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
 
 	return (
-		<StyledShowButton
-			className={active ? 'active' : ''}
-			height={`${height * SCALE_UNIT}rem`}
-			background={buttonColor.main}
+		<Button
+			className={`font-sans w-full rounded-md border-none tracking-normal normal-case bg-paper hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-800 ${
+				active ? 'text-secondary-foreground' : 'text-foreground'
+			} text-xs sm:text-sm`}
+			style={{
+				height: `${height * SCALE_UNIT}rem`,
+				backgroundColor: active ? buttonColor.main : undefined,
+			}}
 			onClick={onClick}
 		>
 			{show.name}
-		</StyledShowButton>
+		</Button>
 	);
 };
 
@@ -131,7 +65,7 @@ export default function StageColumn(props: {
 	dayStartTime: Moment;
 	dayEndTime: Moment;
 	stage: IStage;
-	stageColor: SimplePaletteColorOptions;
+	stageColor: { main: string };
 	day: number;
 }) {
 	const { dayStartTime, dayEndTime, stage, stageColor, day } = props;
@@ -146,17 +80,14 @@ export default function StageColumn(props: {
 		selectShow(id);
 	};
 
-	// console.log(prevEndTimes.map((t) => t.format('MM/DD HH:mm:ss')));
-
 	return (
-		<ColumnContainer>
-			<Styledhead
-				sx={{
-					backgroundColor: `${stageColor.main}`,
-				}}
+		<div className="text-center w-[4.8rem] sm:w-[5.8rem] md:w-[7.4rem]">
+			<div
+				className="h-16 flex justify-center items-center font-bold mb-4 tracking-wider"
+				style={{ backgroundColor: stageColor.main }}
 			>
 				{stage.name}
-			</Styledhead>
+			</div>
 			{artists.map((artist, index) => {
 				const start = moment(artist.startTime);
 
@@ -178,6 +109,6 @@ export default function StageColumn(props: {
 				prevEndTime={moment(artists[artists.length - 1].endTime)}
 				startTime={finalEndTime}
 			/>
-		</ColumnContainer>
+		</div>
 	);
 }

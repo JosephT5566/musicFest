@@ -1,21 +1,5 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-
-const StyledImage = styled('img')(({ theme }) => ({
-	width: '100%',
-	height: '100%',
-	objectPosition: 'center',
-	objectFit: 'cover',
-	borderRadius: '4px 4px 0 0',
-	[theme.breakpoints.down('sm')]: {
-		aspectRatio: '1.3',
-	},
-	aspectRatio: '1',
-}));
+import { H2 } from '../base/Typography';
 
 export default function FestCard({
 	name,
@@ -27,30 +11,24 @@ export default function FestCard({
 	image: string;
 }) {
 	return (
-		<Link className='fest-card' width={'100%'} href={href}>
-			<Paper elevation={4} sx={{ backgroundColor: 'white' }}>
-				<Box
-					className="image-container"
-					position="relative"
-					sx={{ borderRadius: '4px 4px 0 0' }}
+		<a className='fest-card w-full' href={href}>
+			<div className="bg-white shadow-md rounded-md">
+				<div
+					className="image-container relative rounded-t-md"
 				>
-					<StyledImage src={`${image}`} alt={name} />
-					<Box
-						className="fade-to-white"
-						position="absolute"
-						bottom={0}
-						left={0}
-						width="100%"
-						height="30%"
-						sx={{
-							background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0), white)',
-						}}
+					<img
+                        src={`${image}`}
+                        alt={name}
+                        className="w-full h-full object-center object-cover rounded-t-md aspect-[1.3] sm:aspect-square"
+                    />
+					<div
+						className="fade-to-white absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-b from-transparent to-white"
 					/>
-				</Box>
-				<Typography variant="h2" p={2}>
+				</div>
+				<H2 className="p-2">
 					{name}
-				</Typography>
-			</Paper>
-		</Link>
+				</H2>
+			</div>
+		</a>
 	);
 }

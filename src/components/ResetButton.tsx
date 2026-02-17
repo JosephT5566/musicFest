@@ -1,6 +1,6 @@
 import { useResetShows } from 'providers/ShowsProvider';
 
-import ReplayIcon from '@mui/icons-material/Replay';
+import { RotateCcw } from 'lucide-react';
 import { ShadowIconButton } from 'components/base/Button';
 
 const ResetButton = () => {
@@ -15,7 +15,7 @@ const ResetButton = () => {
 
 	return (
 		<ShadowIconButton aria-label="reset" onClick={handleClick}>
-			<ReplayIcon />
+			<RotateCcw />
 		</ShadowIconButton>
 	);
 };

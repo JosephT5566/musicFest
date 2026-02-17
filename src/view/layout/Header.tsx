@@ -1,57 +1,32 @@
+'use client';
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
-import Navigation from './Navigation';
-import { APP_NAME } from 'constants/static';
-import { IMAGES } from 'constants/images';
-
-const StyledHeader = styled('header')(({ theme }) => ({
-	height: theme.layout.header.height,
-	backgroundColor: theme.palette.secondary.main,
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'space-between',
-	padding: '1em 2em',
-	paddingRight: '4em',
-
-	'& .logo': {
-		display: 'flex',
-		gap: '1em',
-		alignItems: 'center',
-		height: '100%',
-		textDecoration: 'none',
-		color: theme.palette.text.secondary,
-		'&:hover': {
-			color: theme.palette.primary.main,
-		},
-		'& img': {
-			height: '100%',
-		},
-	},
-}));
-
-const StyledIcon = styled('img')({
-	width: '100%',
-});
+import { H1 } from '../../components/base/Typography';
+import { APP_NAME } from '../../constants/static';
+import { IMAGES } from '../../constants/images';
 
 export default function Header() {
 	return (
-		<StyledHeader>
-			<a className={'logo'} href="/">
-				<Box height="100%" borderRadius={24} overflow="hidden" sx={{ aspectRatio: '1' }}>
-					<StyledIcon
+		<div
+			className="h-16 bg-secondary flex items-center justify-between px-4 md:px-8 border-b border-border"
+		>
+			<a
+				href="/"
+				className="flex gap-3 items-center h-full no-underline text-secondary-foreground hover:text-primary transition-colors"
+			>
+				<div className="h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden relative shrink-0">
+					<img
 						src={IMAGES.LOGO_SVG}
 						alt="FesTime"
 						aria-label="FesTime"
-						height={48}
-						width={48}
+						className="w-full h-full object-cover"
 					/>
-				</Box>
-				<Typography variant="h1" fontSize="2.5rem">{APP_NAME}</Typography>
+				</div>
+				<H1 className="text-xl md:text-2xl font-bold tracking-tight font-['Contrail_One']">
+					{APP_NAME}
+				</H1>
 			</a>
 			{/* <Navigation /> */}
-		</StyledHeader>
+		</div>
 	);
 }

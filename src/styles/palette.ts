@@ -1,5 +1,3 @@
-import { red } from '@mui/material/colors'
-
 export const palette = {
     primary: {
         main: '#f18301',
@@ -12,7 +10,7 @@ export const palette = {
         dark: '#0E0E0E',
     },
     error: {
-        main: red.A400,
+        main: '#ff1744',
     },
     background: {
         default: '#eaeaea',

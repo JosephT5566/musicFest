@@ -1,20 +1,7 @@
-import { styled } from '@mui/material/styles';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import TimelineIcon from '@mui/icons-material/Timeline';
-import Button from '@mui/material/Button';
+import { Button } from '@/components/ui/button';
+import { Sheet, ChartNetwork } from 'lucide-react';
 
 import { IDisplayMode } from 'types/displayMode';
-
-const StyledButton = styled(Button)(({ theme }) => ({
-	fontFamily: theme.typography.fontFamily,
-	fontWeight: 'bold',
-
-	'&.MuiButton-contained': {
-		color: theme.palette.common.white,
-		boxShadow: 'none',
-	},
-}));
 
 interface Props {
 	mode: IDisplayMode;
@@ -23,27 +10,29 @@ interface Props {
 
 export default function DisplayModeSelector({ mode, setMode }: Props) {
 	return (
-		<ButtonGroup>
-			<StyledButton
-				variant={mode === 'timetable' ? 'contained' : 'outlined'}
-				startIcon={<TableChartIcon />}
+		<div className="flex rounded-md shadow-sm" role="group">
+			<Button
+				variant={mode === 'timetable' ? 'default' : 'outline'}
+				className="rounded-r-none font-bold"
 				onClick={() => {
 					setMode('timetable');
 				}}
 				aria-label={'time table'}
 			>
+				<Sheet className="mr-2 h-4 w-4" />
 				{'時刻表'}
-			</StyledButton>
-			<StyledButton
-				variant={mode === 'timeline' ? 'contained' : 'outlined'}
-				startIcon={<TimelineIcon />}
+			</Button>
+			<Button
+				variant={mode === 'timeline' ? 'default' : 'outline'}
+				className="rounded-l-none font-bold"
 				onClick={() => {
 					setMode('timeline');
 				}}
 				aria-label={'time line'}
 			>
+				<ChartNetwork className="mr-2 h-4 w-4" />
 				{'時間軸'}
-			</StyledButton>
-		</ButtonGroup>
+			</Button>
+		</div>
 	);
 }

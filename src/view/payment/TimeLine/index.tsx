@@ -1,60 +1,14 @@
+'use client';
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import moment from 'moment';
+import { CircleSmall } from 'lucide-react';
 
-import AdjustIcon from '@mui/icons-material/Adjust';
 import TimeBackdrop from './TimeBackdrop';
 import TimeLineOfDayV2 from './TimelineOfDayV2';
 
 import { useGetSelectedShow } from 'providers/ShowsProvider';
 import { SCALE_UNIT } from 'constants/static';
 import { IProgramList } from 'types/show';
-
-const TimelineContainer = styled('div')({
-	width: '100%',
-	position: 'relative',
-	display: 'flex',
-});
-
-const BaseLineContainer = styled('div')({
-	width: '3.8em',
-	marginRight: '1em',
-});
-
-const Styledscale = styled('div')(({ theme }) => ({
-	position: 'relative',
-	width: '3.7em',
-	borderRight: `solid 2px ${theme.palette.secondary.main}`,
-	'&::after': {
-		content: `''`,
-		position: 'absolute',
-		top: '50%',
-		right: '0',
-		transform: 'translate(60%, 0)',
-		height: '1px',
-		width: '0.5em',
-		backgroundColor: theme.palette.secondary.main,
-	},
-}));
-
-const StyledscaleWithTime = styled('div')(({ theme }) => ({
-	position: 'relative',
-	display: 'flex',
-	alignItems: 'center',
-	width: '3.7em',
-	'& .text': {
-		color: theme.palette.secondary.main,
-		paddingRight: '0.5em',
-		[theme.breakpoints.down('xs')]: {
-			fontSize: '14px',
-		},
-	},
-	'& .icon': {
-		position: 'absolute',
-		right: '0',
-		transform: 'translate(54%, 0)',
-	},
-}));
 
 interface Props {
 	programList: IProgramList;
@@ -65,20 +19,30 @@ const BaseLine = (props: { programList: IProgramList }) => {
 	const { programList } = props;
 
 	return (
-		<BaseLineContainer>
+		<div className="w-[3.8em] mr-[1em]">
 			{new Array(63).fill(undefined).map((_, index) => {
 				const time = moment(programList.perfDays[0].dayStartTime).add(10 * index, 'm');
 				const mm = time.minute();
 				return mm === 0 ? (
-					<StyledscaleWithTime key={index} style={{ height: `${SCALE_UNIT}rem` }}>
-						<div className="text">{time.format('HH:mm')}</div>
-						<AdjustIcon className="icon" />
-					</StyledscaleWithTime>
+					<div
+						key={index}
+						style={{ height: `${SCALE_UNIT}rem` }}
+						className="relative flex items-center w-[3.7em]"
+					>
+						<div className="text-secondary pr-[0.5em] text-[14px] sm:text-inherit">
+							{time.format('HH:mm')}
+						</div>
+						<CircleSmall className="absolute right-0 translate-x-[54%]" />
+					</div>
 				) : (
-					<Styledscale key={index} style={{ height: `${SCALE_UNIT}rem` }}></Styledscale>
+					<div
+						key={index}
+						style={{ height: `${SCALE_UNIT}rem` }}
+						className="relative w-[3.7em] border-r-2 border-secondary after:content-[''] after:absolute after:top-1/2 after:right-0 after:translate-x-[60%] after:h-[1px] after:w-[0.5em] after:bg-secondary"
+					/>
 				);
 			})}
-		</BaseLineContainer>
+		</div>
 	);
 };
 
@@ -100,7 +64,7 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 	});
 
 	return (
-		<TimelineContainer>
+		<div className="w-full relative flex">
 			<TimeBackdrop dayStartTime={dayStartTime} dayEndTime={dayEndTime} />
 			<BaseLine programList={programList} />
 			{filteredPerfDays.map((perfDay, index) => {
@@ -115,6 +79,6 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 					/>
 				);
 			})}
-		</TimelineContainer>
+		</div>
 	);
 }

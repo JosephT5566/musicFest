@@ -20,4 +20,4 @@ export const layout = {
 	tableHeadHeight: '3em',
 	tableHeadMarginBottom: '1em',
 	letterSpacing: '2px',
-} as ILayout;
+};

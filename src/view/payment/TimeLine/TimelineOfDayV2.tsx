@@ -1,8 +1,5 @@
+'use client';
 import React, { useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
@@ -10,46 +7,21 @@ import moment, { Moment } from 'moment';
 
 import { useSelectShow } from 'providers/ShowsProvider';
 import { generateGoogleCalendarLink, toUTCFormat } from 'utils/googleUtils';
-
-const TimelineContainer = styled(Box)(({ theme }) => ({
-	width: `calc(100vw - 1em - 3.8em)`,
-	display: 'flex',
-	position: 'relative',
-	flexDirection: 'column',
-}));
-
-const TimelineBtnContainer = styled(Box)({
-	position: 'absolute',
-	display: 'flex',
-	flexDirection: 'row',
-	width: '100%',
-});
-
-const TimelineBtn = styled(Button)(({ theme }) => ({
-	position: 'absolute',
-	border: 'none',
-	borderRadius: theme.shape.borderRadius,
-	padding: theme.spacing(1),
-	zIndex: 1,
-	textTransform: 'none',
-	'&:hover': {
-		cursor: 'pointer',
-		filter: 'brightness(0.95)',
-	},
-}));
-
-const BtnContent = styled(Box)(({ theme }) => ({
-	display: 'flex',
-	flexDirection: 'column',
-	alignItems: 'center',
-	gap: theme.spacing(0.5),
-	color: theme.palette.text.primary,
-}));
+import { P } from 'components/base/Typography';
+import { Button } from '@/components/ui/button';
+import {
+	Drawer,
+	DrawerContent,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerDescription,
+	DrawerTrigger,
+} from '@/components/ui/drawer';
 
 interface ShowItem extends IArtist {
 	stageName: string;
 	layer: number;
-	itemColor: SimplePaletteColorOptions;
+	itemColor: { main: string };
 	overlappingCount: number;
 }
 
@@ -57,25 +29,18 @@ interface TimeLineButtonProps {
 	megaStartTime: Moment;
 	showInfo: ShowItem;
 	id: string;
+	onClick: (show: ShowItem) => void;
 }
 
-const DrawerPuller = styled(Box)(({ theme }) => ({
-	width: 30,
-	height: 6,
-	backgroundColor: theme.palette.secondary.main,
-	borderRadius: 3,
-	position: 'absolute',
-	top: 8,
-	left: '50%',
-	transform: 'translateX(-50%)',
-}));
-
-const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo, id }) => {
-	const [drawerOpen, setDrawerOpen] = useState(false);
+const TimeLineButton: React.FC<TimeLineButtonProps> = ({
+	megaStartTime,
+	showInfo,
+	id,
+	onClick,
+}) => {
 	const { name, startTime, endTime, itemColor, stageName, layer, overlappingCount } = showInfo;
 	const startMoment = moment(startTime);
 	const endMoment = moment(endTime);
-	const selectShow = useSelectShow();
 
 	const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
 	const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
@@ -85,32 +50,22 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 	// The left position is now based on the layer number (0, 1, 2, etc.)
 	const leftPosition = layer * width;
 
-	const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-		if (
-			event &&
-			event.type === 'keydown' &&
-			((event as React.KeyboardEvent).key === 'Tab' ||
-				(event as React.KeyboardEvent).key === 'Shift')
-		) {
-			return;
-		}
-		setDrawerOpen(open);
-	};
-
 	return (
-		<>
-			<TimelineBtnContainer
-				className="timeline-button-wrapper"
-				sx={{
-					top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
-				}}
-			>
-				<TimelineBtn
+		<div
+			className="timeline-button-wrapper absolute flex-row w-full"
+			style={{
+				top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
+			}}
+		>
+			<DrawerTrigger asChild onClick={() => onClick(showInfo)}>
+				<Button
 					className={`timeline-button timeline-button-${name
 						.toLowerCase()
-						.replace(/\s+/g, '-')}`}
-					onClick={toggleDrawer(true)}
-					sx={{
+						.replace(
+							/\s+/g,
+							'-',
+						)} absolute border-none rounded-sm p-1 z-10 normal-case hover:brightness-95`}
+					style={{
 						left: `${leftPosition}%`,
 						width: `${width}%`,
 						minHeight: `${height * SCALE_UNIT}rem`,
@@ -118,107 +73,17 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 						backgroundColor: itemColor.main,
 					}}
 				>
-					<BtnContent className="timeline-button-content">
-						<Typography
-							variant="body1"
-							color="text.secondary"
-							className="timeline-button-title"
-						>
+					<div className="flex flex-col items-center gap-0.5 w-full overflow-hidden">
+						<P className="timeline-button-title text-secondary-foreground text-xs font-bold w-full text-center">
 							{name}
-						</Typography>
-						<Typography variant="body2" className="timeline-button-stage-name">
+						</P>
+						<P className="timeline-button-stage-name text-secondary-foreground text-[10px] w-full text-center">
 							{stageName}
-						</Typography>
-						{/* <Typography
-                            variant="body2"
-                            className="timeline-button-time"
-                        >
-                            {startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}
-                        </Typography>
-                        <Typography
-                            variant="body2"
-                            className="debug-info"
-                        >
-                            {`Layer: ${layer}, Total: ${overlappingCount}`}
-                        </Typography> */}
-					</BtnContent>
-				</TimelineBtn>
-			</TimelineBtnContainer>
-			<SwipeableDrawer
-				anchor="bottom"
-				open={drawerOpen}
-				onClose={toggleDrawer(false)}
-				onOpen={toggleDrawer(true)}
-				PaperProps={{
-					sx: {
-						borderTopLeftRadius: 16,
-						borderTopRightRadius: 16,
-						backgroundColor: (theme) => theme.palette.background.default,
-					},
-				}}
-			>
-				<Box
-					sx={{
-						padding: 2,
-						minHeight: '30vh',
-						borderTopLeftRadius: 16,
-						borderTopRightRadius: 16,
-						position: 'relative',
-						paddingTop: 4, // Add more padding at top to accommodate the puller
-					}}
-				>
-					<DrawerPuller />
-					<Typography variant="h6" gutterBottom textAlign="center">
-						{name}
-					</Typography>
-					<Typography variant="body1">
-						{startMoment.format('YYYY/M/D(ddd) HH:mm')} - {endMoment.format('HH:mm')}
-					</Typography>
-					<Typography variant="subtitle1" gutterBottom fontWeight="bold">
-						{stageName}
-					</Typography>
-					<Box
-						sx={{
-							position: 'absolute',
-							bottom: 32,
-							left: 16,
-						}}
-						display="flex"
-                        flexDirection="column"
-                        gap="8px"
-					>
-						<Button
-							variant="contained"
-							onClick={() => {
-								const formattedStartTime = toUTCFormat(startTime);
-								const formattedEndTime = toUTCFormat(endTime);
-
-								const calendarLink = generateGoogleCalendarLink({
-									title: `${stageName} - ${name}`,
-									startDateTime: formattedStartTime,
-									endDateTime: formattedEndTime,
-									details: stageName,
-									location: '',
-								});
-								window.open(calendarLink, '_blank');
-							}}
-							color="success"
-						>
-							新增到 Google 日曆
-						</Button>
-						<Button
-							variant="outlined"
-							onClick={() => {
-								selectShow(id);
-							}}
-							color="error"
-						>
-							移除選擇
-						</Button>
-					</Box>
-				</Box>
-			</SwipeableDrawer>
-		</>
+						</P>
+					</div>
+				</Button>
+			</DrawerTrigger>
+		</div>
 	);
 };
 
@@ -233,6 +98,8 @@ interface TimeLineOfDayV2Props {
 export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 	const { startTime, endTime, stages, day, selectedDay } = props;
 	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
+	const [selectedShow, setSelectedShow] = useState<ShowItem | null>(null);
+	const selectShow = useSelectShow();
 
 	// Initialize stages with basic info
 	const processedStages: ShowItem[][] = stages
@@ -243,7 +110,7 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 				layer: 0,
 				overlappingCount: 1,
 				...artist,
-			}))
+			})),
 		)
 		.filter((items) => items.length > 0);
 
@@ -279,7 +146,7 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 
 			// Check if the other artist overlaps with any artist in the current group
 			const hasOverlap = overlappingGroup.some((groupArtist) =>
-				isOverlapping(groupArtist, otherArtist)
+				isOverlapping(groupArtist, otherArtist),
 			);
 
 			if (hasOverlap && !overlappingGroup.some((a) => a.id === otherArtist.id)) {
@@ -302,21 +169,66 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 	});
 
 	return (
-		<TimelineContainer
-			className={`timeline-container timeline-day-${day}`}
-			sx={{
-				display: day === selectedDay ? 'flex' : 'none',
-				height: `${height * SCALE_UNIT}rem`,
-			}}
-		>
-			{allArtists.map((item) => (
-				<TimeLineButton
-					megaStartTime={startTime}
-					key={item.id}
-					showInfo={item}
-					id={item.id}
-				/>
-			))}
-		</TimelineContainer>
+		<Drawer>
+			<div
+				className={`timeline-container timeline-day-${day} ${day === selectedDay ? 'flex' : 'hidden'} w-full relative flex-col`}
+				style={{ height: `${height * SCALE_UNIT}rem` }}
+			>
+				{allArtists.map((item) => (
+					<TimeLineButton
+						megaStartTime={startTime}
+						key={item.id}
+						showInfo={item}
+						id={item.id}
+						onClick={setSelectedShow}
+					/>
+				))}
+			</div>
+			<DrawerContent className='h-[30dvh]'>
+				{selectedShow && (
+					<>
+						<DrawerHeader>
+							<DrawerTitle className="text-center">
+								{selectedShow.name}
+							</DrawerTitle>
+							<DrawerDescription className="">
+								{moment(selectedShow.startTime).format('YYYY/M/D(ddd) HH:mm')} -{' '}
+								{moment(selectedShow.endTime).format('HH:mm')}
+							</DrawerDescription>
+						</DrawerHeader>
+						<P className="font-bold text-center">{selectedShow.stageName}</P>
+						<div className="absolute bottom-8 left-4 flex flex-col gap-2">
+							<Button
+								onClick={() => {
+									const formattedStartTime = toUTCFormat(selectedShow.startTime);
+									const formattedEndTime = toUTCFormat(selectedShow.endTime);
+
+									const calendarLink = generateGoogleCalendarLink({
+										title: `${selectedShow.stageName} - ${selectedShow.name}`,
+										startDateTime: formattedStartTime,
+										endDateTime: formattedEndTime,
+										details: selectedShow.stageName,
+										location: '',
+									});
+									window.open(calendarLink, '_blank');
+								}}
+								className='bg-green-600'
+							>
+								新增到 Google 日曆
+							</Button>
+							<Button
+								onClick={() => {
+									selectShow(selectedShow.id);
+								}}
+								variant="outline"
+								className="border-red-600 text-red-600"
+							>
+								移除選擇
+							</Button>
+						</div>
+					</>
+				)}
+			</DrawerContent>
+		</Drawer>
 	);
 }

@@ -1,99 +1,25 @@
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { styled } from '@mui/material/styles';
-import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+import moment, { Moment } from 'moment';
+
 import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
 import { IArtist, IStage } from 'types/show';
-import moment, { Moment } from 'moment';
-
-const StyledtableOfDay = styled('div')({
-	width: `calc(100vw - 1em - 3.8em)`,
-	display: 'flex',
-	position: 'relative',
-	flexDirection: 'column',
-});
-
-const StyledtimelineBtnContainer = styled('div')({
-	position: 'absolute',
-	display: 'flex',
-	flexDirection: 'row',
-	width: '100%',
-});
-
-const StyledTimelineBtn = styled('button')({
-	position: 'absolute',
-	border: 'none',
-	borderRadius: '0.5em',
-	transition: '500ms ease-out',
-	width: '1.2rem',
-	zIndex: 1,
-	'&:hover': {
-		cursor: 'pointer',
-	},
-	'&:focus': {
-		outline: '0',
-	},
-	'&.true': {
-		width: '15rem',
-		zIndex: 10,
-	},
-});
-
-const StyledshowText = styled('div')(({ theme }) => ({
-	marginLeft: '40%',
-	transition: '500ms',
-	display: 'flex',
-	flexDirection: 'column',
-	padding: '0 0.5em',
-	backgroundColor: theme.palette.background.default,
-	zIndex: 0,
-	'&.true': {
-		marginLeft: '0',
-		opacity: 0,
-	},
-	'&::after': {
-		content: `''`,
-		marginTop: '0.3em',
-		height: '3px',
-		width: '80%',
-		backgroundColor: theme.palette.primary.main,
-	},
-	[theme.breakpoints.down('sm')]: {
-		fontSize: '12px',
-	},
-}));
-
-const StyledbtnTextContainer = styled('div')(({ theme }) => ({
-	color: theme.palette.text.primary,
-	display: 'none',
-	position: 'absolute',
-	top: '0.5em',
-	left: '0.5em',
-	flexDirection: 'column',
-	alignItems: 'flex-start',
-	width: '15rem',
-	'&.true': {
-		display: 'flex',
-	},
-}));
-
-const StyledbtnTitle = styled('div')({
-	fontWeight: 'bold',
-	fontSize: '16px',
-	width: '100%',
-});
+import { Button } from '@/components/ui/button';
+import useClickOutside from 'hooks/useClickOutside';
+import { P } from 'components/base/Typography';
 
 type ShowItem = IArtist & {
 	stageName: string;
 	layer: number;
-	itemColor: SimplePaletteColorOptions;
+	itemColor: { main: string };
 };
 
 const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day: number }) => {
 	const { megaStartTime, showInfo, day } = props;
 	const [active, setActive] = useState(false);
+	const buttonRef = useRef(null);
 
 	const { text: textColor } = palette;
 	const { name, startTime, endTime, layer, itemColor, stageName } = showInfo;
@@ -114,33 +40,41 @@ const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day:
 		}
 	};
 
+	useClickOutside(buttonRef, handleClickAway);
+
 	return (
-		<ClickAwayListener onClickAway={handleClickAway}>
-			<StyledtimelineBtnContainer
-				style={{
-					top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
-				}}
+		<div
+			style={{
+				top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
+			}}
+			className="absolute flex flex-row w-full"
+			ref={buttonRef}
+		>
+			<div
+				className={`${active ? 'ml-0 opacity-0' : 'ml-[40%]'} transition-all duration-500 flex flex-col px-2 bg-background z-0 after:content-[''] after:mt-1 after:h-[3px] after:w-[80%] after:bg-primary-main text-xs sm:text-base`}
 			>
-				<StyledshowText className={`${active}`}>{name}</StyledshowText>
-				<StyledTimelineBtn
-					className={`${active}`}
-					onClick={handleClick}
-					style={{
-						left: `${left + left * 1}em`,
-						minHeight: `${height * SCALE_UNIT}rem`,
-						height: `${height * SCALE_UNIT}rem`,
-						backgroundColor: itemColor.main,
-						color: active ? textColor.primary : textColor.secondary,
-					}}
+				{name}
+			</div>
+			<Button
+				onClick={handleClick}
+				style={{
+					left: `${left + left * 1}em`,
+					minHeight: `${height * SCALE_UNIT}rem`,
+					height: `${height * SCALE_UNIT}rem`,
+					backgroundColor: itemColor.main,
+					color: active ? textColor.primary : textColor.secondary,
+				}}
+				className={`absolute border-none rounded-md transition-all duration-500 ease-out w-[1.2rem] z-10 hover:cursor-pointer focus:outline-none ${active ? 'w-60 z-20' : ''}`}
+			>
+				<div
+					className={`text-primary hidden absolute top-2 left-2 flex-col items-start w-60 ${active ? 'flex' : ''}`}
 				>
-					<StyledbtnTextContainer className={`${active}`}>
-						<StyledbtnTitle>{name}</StyledbtnTitle>
-						<div>{stageName}</div>
-						<div>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</div>
-					</StyledbtnTextContainer>
-				</StyledTimelineBtn>
-			</StyledtimelineBtnContainer>
-		</ClickAwayListener>
+					<P className="font-bold text-base w-full">{name}</P>
+					<P>{stageName}</P>
+					<P>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</P>
+				</div>
+			</Button>
+		</div>
 	);
 };
 
@@ -168,7 +102,7 @@ export default function TimeLineOfDay(props: {
 				itemColor: palette.stage[index as keyof typeof palette.stage],
 				layer: 0,
 				...artist,
-			}))
+			})),
 		)
 		.filter((item) => item.length !== 0)
 		.map((stages) => {
@@ -195,11 +129,12 @@ export default function TimeLineOfDay(props: {
 		});
 
 	return (
-		<StyledtableOfDay
+		<div
 			style={{
 				display: day === selectedDay ? '' : 'none',
 				height: `${height * SCALE_UNIT}rem`,
 			}}
+			className="w-[calc(100vw - 1em - 3.8em)] flex relative flex-col"
 		>
 			{filteredStages.map((stage) => {
 				return stage.map((item) => (
@@ -211,6 +146,6 @@ export default function TimeLineOfDay(props: {
 					/>
 				));
 			})}
-		</StyledtableOfDay>
+		</div>
 	);
 }

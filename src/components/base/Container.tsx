@@ -1,82 +1,56 @@
+'use client';
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import { useIsMobileNavEnable } from 'hooks/navigationUtils';
 
-export const ContentContainer = styled('div')(({ theme }) => ({
-	minHeight: `calc(100vh - ${theme.layout.header.height})`,
-}));
-
-const StyledPageContainer = styled(Container)<{ hasMobileNav?: boolean }>(
-	({ theme, hasMobileNav }) => ({
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-		position: 'relative',
-		gap: '1rem',
-		paddingBlock: '1rem',
-		...(hasMobileNav && { paddingBottom: '64px' }), // Add conditional padding
-		[theme.breakpoints.down('sm')]: {
-			paddingInline: '0.5rem',
-		},
-
-		'& > h1': {
-			fontWeight: 'bold',
-		},
-	})
+export const ContentContainer = (props: { children: React.ReactNode }) => (
+	<div
+		className="min-h-[calc(100vh_-_theme(spacing.16))]" // Assuming header height is 16 units (64px)
+		{...props}
+	/>
 );
 
-export const PageContainer = ({ children }: { children: React.ReactNode }) => {
+export const PageContainer = ({
+	children,
+	selectPage,
+}: {
+	children: React.ReactNode;
+	selectPage?: boolean;
+}) => {
 	const isMobileNavEnable = useIsMobileNavEnable();
 	return (
-		<StyledPageContainer className="page-container" hasMobileNav={isMobileNavEnable}>
+		<div
+			className={`flex flex-col items-center relative gap-4 py-4
+				${isMobileNavEnable ? 'pb-16' : 'pb-4'}
+				px-2 sm:px-4
+				${selectPage ? 'max-h-[calc(100vh_-_theme(spacing.16))] overflow-y-auto' : ''}
+			`}
+		>
 			{children}
-		</StyledPageContainer>
+		</div>
 	);
 };
 
-export const SelectPageContainer = styled(PageContainer)(({ theme }) => ({
-	maxHeight: `calc(100vh - ${theme.layout.header.height})`,
-}));
+export const SelectPageContainer = ({ children }: { children: React.ReactNode }) => (
+	<PageContainer selectPage>{children}</PageContainer>
+);
 
 export const PostersContainer = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<Box
-			className="poster-container"
-			display="grid"
-			width="100%"
-			gap={['1rem', '2rem']}
-			justifyItems="center"
-			gridTemplateColumns={['repeat(2, 1fr)', 'repeat(auto-fill, minmax(15em, 1fr))']}
-			paddingX={['1rem', undefined]}
-		>
+		<div className="poster-container grid w-full gap-4 sm:gap-8 justify-items-center grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(15em,1fr))] px-4 sm:px-0">
 			{children}
-		</Box>
+		</div>
 	);
 };
-
-const StyledFixedButtonsContainer = styled('div')<{ hasMobileNav?: boolean }>(
-	({ hasMobileNav }) => ({
-		display: 'flex',
-		flexDirection: 'column',
-		position: 'fixed',
-		gap: '0.5rem',
-		alignItems: 'end',
-		right: '2rem',
-		bottom: hasMobileNav ? '5.5rem' : '2rem',
-		zIndex: 100,
-	})
-);
 
 export const FixedButtonsContainer = ({ children }: { children: React.ReactNode }) => {
 	const isMobileNavEnable = useIsMobileNavEnable();
 	return (
-		<StyledFixedButtonsContainer
-			className="fixed-buttons-container"
-			hasMobileNav={isMobileNavEnable}
+		<div
+			className={`fixed-buttons-container fixed flex flex-col gap-2 items-end right-4 sm:right-8 z-50
+				${isMobileNavEnable ? 'bottom-20' : 'bottom-8'}
+			`}
 		>
 			{children}
-		</StyledFixedButtonsContainer>
+		</div>
 	);
 };
