@@ -7,9 +7,16 @@ import moment, { Moment } from 'moment';
 
 import { useSelectShow } from 'providers/ShowsProvider';
 import { generateGoogleCalendarLink, toUTCFormat } from 'utils/googleUtils';
-import { H1, H2, P } from 'components/base/Typography';
+import { P } from 'components/base/Typography';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import {
+	Drawer,
+	DrawerContent,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerDescription,
+	DrawerTrigger,
+} from '@/components/ui/drawer';
 
 interface ShowItem extends IArtist {
 	stageName: string;
@@ -22,14 +29,18 @@ interface TimeLineButtonProps {
 	megaStartTime: Moment;
 	showInfo: ShowItem;
 	id: string;
+	onClick: (show: ShowItem) => void;
 }
 
-const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo, id }) => {
-	const [drawerOpen, setDrawerOpen] = useState(false);
+const TimeLineButton: React.FC<TimeLineButtonProps> = ({
+	megaStartTime,
+	showInfo,
+	id,
+	onClick,
+}) => {
 	const { name, startTime, endTime, itemColor, stageName, layer, overlappingCount } = showInfo;
 	const startMoment = moment(startTime);
 	const endMoment = moment(endTime);
-	const selectShow = useSelectShow();
 
 	const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
 	const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
@@ -39,31 +50,21 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 	// The left position is now based on the layer number (0, 1, 2, etc.)
 	const leftPosition = layer * width;
 
-	const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-		if (
-			event &&
-			event.type === 'keydown' &&
-			((event as React.KeyboardEvent).key === 'Tab' ||
-				(event as React.KeyboardEvent).key === 'Shift')
-		) {
-			return;
-		}
-		setDrawerOpen(open);
-	};
-
 	return (
-		<>
-			<div
-				className="timeline-button-wrapper absolute flex-row w-full"
-				style={{
-					top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
-				}}
-			>
+		<div
+			className="timeline-button-wrapper absolute flex-row w-full"
+			style={{
+				top: `calc(${top * SCALE_UNIT}rem + 0.5rem)`,
+			}}
+		>
+			<DrawerTrigger asChild onClick={() => onClick(showInfo)}>
 				<Button
 					className={`timeline-button timeline-button-${name
 						.toLowerCase()
-						.replace(/\s+/g, '-')} absolute border-none rounded-sm p-1 z-10 normal-case hover:brightness-95`}
-					onClick={toggleDrawer(true)}
+						.replace(
+							/\s+/g,
+							'-',
+						)} absolute border-none rounded-sm p-1 z-10 normal-case hover:brightness-95`}
 					style={{
 						left: `${leftPosition}%`,
 						width: `${width}%`,
@@ -81,52 +82,8 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 						</P>
 					</div>
 				</Button>
-			</div>
-			<Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
-				<SheetContent side="bottom" className="rounded-t-lg p-6 min-h-[30vh] relative">
-					<div className="w-12 h-1.5 bg-muted rounded-full absolute top-3 left-1/2 -translate-x-1/2" />
-					<H2 className="text-center mb-2">
-						{name}
-					</H2>
-					<P>
-						{startMoment.format('YYYY/M/D(ddd) HH:mm')} - {endMoment.format('HH:mm')}
-					</P>
-					<P className="font-bold">
-						{stageName}
-					</P>
-					<div
-						className="absolute bottom-8 left-4 flex flex-col gap-2"
-					>
-						<Button
-							onClick={() => {
-								const formattedStartTime = toUTCFormat(startTime);
-								const formattedEndTime = toUTCFormat(endTime);
-
-								const calendarLink = generateGoogleCalendarLink({
-									title: `${stageName} - ${name}`,
-									startDateTime: formattedStartTime,
-									endDateTime: formattedEndTime,
-									details: stageName,
-									location: '',
-								});
-								window.open(calendarLink, '_blank');
-							}}
-              variant="default"
-						>
-							新增到 Google 日曆
-						</Button>
-						<Button
-							onClick={() => {
-								selectShow(id);
-							}}
-              variant="destructive"
-						>
-							移除選擇
-						</Button>
-					</div>
-				</SheetContent>
-			</Sheet>
-		</>
+			</DrawerTrigger>
+		</div>
 	);
 };
 
@@ -141,6 +98,8 @@ interface TimeLineOfDayV2Props {
 export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 	const { startTime, endTime, stages, day, selectedDay } = props;
 	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
+	const [selectedShow, setSelectedShow] = useState<ShowItem | null>(null);
+	const selectShow = useSelectShow();
 
 	// Initialize stages with basic info
 	const processedStages: ShowItem[][] = stages
@@ -151,7 +110,7 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 				layer: 0,
 				overlappingCount: 1,
 				...artist,
-			}))
+			})),
 		)
 		.filter((items) => items.length > 0);
 
@@ -187,7 +146,7 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 
 			// Check if the other artist overlaps with any artist in the current group
 			const hasOverlap = overlappingGroup.some((groupArtist) =>
-				isOverlapping(groupArtist, otherArtist)
+				isOverlapping(groupArtist, otherArtist),
 			);
 
 			if (hasOverlap && !overlappingGroup.some((a) => a.id === otherArtist.id)) {
@@ -210,18 +169,66 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 	});
 
 	return (
-		<div
-			className={`timeline-container timeline-day-${day} ${day === selectedDay ? 'flex' : 'hidden'} w-full relative flex-col`}
-			style={{ height: `${height * SCALE_UNIT}rem` }}
-		>
-			{allArtists.map((item) => (
-				<TimeLineButton
-					megaStartTime={startTime}
-					key={item.id}
-					showInfo={item}
-					id={item.id}
-				/>
-			))}
-		</div>
+		<Drawer>
+			<div
+				className={`timeline-container timeline-day-${day} ${day === selectedDay ? 'flex' : 'hidden'} w-full relative flex-col`}
+				style={{ height: `${height * SCALE_UNIT}rem` }}
+			>
+				{allArtists.map((item) => (
+					<TimeLineButton
+						megaStartTime={startTime}
+						key={item.id}
+						showInfo={item}
+						id={item.id}
+						onClick={setSelectedShow}
+					/>
+				))}
+			</div>
+			<DrawerContent className='h-[30dvh]'>
+				{selectedShow && (
+					<>
+						<DrawerHeader>
+							<DrawerTitle className="text-center">
+								{selectedShow.name}
+							</DrawerTitle>
+							<DrawerDescription className="">
+								{moment(selectedShow.startTime).format('YYYY/M/D(ddd) HH:mm')} -{' '}
+								{moment(selectedShow.endTime).format('HH:mm')}
+							</DrawerDescription>
+						</DrawerHeader>
+						<P className="font-bold text-center">{selectedShow.stageName}</P>
+						<div className="absolute bottom-8 left-4 flex flex-col gap-2">
+							<Button
+								onClick={() => {
+									const formattedStartTime = toUTCFormat(selectedShow.startTime);
+									const formattedEndTime = toUTCFormat(selectedShow.endTime);
+
+									const calendarLink = generateGoogleCalendarLink({
+										title: `${selectedShow.stageName} - ${selectedShow.name}`,
+										startDateTime: formattedStartTime,
+										endDateTime: formattedEndTime,
+										details: selectedShow.stageName,
+										location: '',
+									});
+									window.open(calendarLink, '_blank');
+								}}
+								className='bg-green-600'
+							>
+								新增到 Google 日曆
+							</Button>
+							<Button
+								onClick={() => {
+									selectShow(selectedShow.id);
+								}}
+								variant="outline"
+								className="border-red-600 text-red-600"
+							>
+								移除選擇
+							</Button>
+						</div>
+					</>
+				)}
+			</DrawerContent>
+		</Drawer>
 	);
 }

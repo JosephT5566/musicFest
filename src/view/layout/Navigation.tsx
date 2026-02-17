@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ROUTE } from 'constants/static';
 import { NavItem } from 'types/navigation';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from 'components/ui/sheet';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { MenuIcon } from 'lucide-react';
 
 const navItems = [new NavItem('外部連結', ROUTE.links)];
@@ -42,18 +42,18 @@ const NavigatorMd = () => {
     const [open, setOpen] = useState(false);
 
 	return (
-        <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
+        <Drawer open={open} onOpenChange={setOpen}>
+            <DrawerTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden text-primary-main bg-secondary-main/75 hover:bg-secondary-main/90 rounded-md p-2">
                     <MenuIcon className="h-6 w-6" />
                 </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[var(--navbar-width)] bg-secondary-dark flex flex-col pt-16">
-                <nav className="flex flex-col gap-4 px-4">
+            </DrawerTrigger>
+            <DrawerContent className="bg-secondary-dark">
+                <nav className="flex flex-col gap-4 p-4">
                     <NavItems navItems={navItems} className="text-xl" />
                 </nav>
-            </SheetContent>
-        </Sheet>
+            </DrawerContent>
+        </Drawer>
 	);
 };
 
