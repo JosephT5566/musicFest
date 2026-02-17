@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import useLocation from 'hooks/useLocation';
 import { useGetSelectedShow } from 'providers/ShowsProvider';

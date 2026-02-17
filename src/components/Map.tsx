@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import { TableChart } from 'lucide-react';
+import { Sheet } from 'lucide-react';
 
 import { FixedButtonsContainer, PageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
-import { Button } from '@/components/ui/button';
+import { ShadowIconButton } from 'components/base/Button';
 
 import { useRouter } from 'next/navigation';
 import { useIsMobileNavEnable } from 'hooks/navigationUtils';
@@ -30,21 +30,21 @@ export default function Map({ headerTitle, pageTitle, imageSrc, pageRoutes }: Ma
 					<img
 						src={imageSrc}
 						alt="mega map"
-						className="w-[200%] md:w-full"
+						className="w-[200%] md:w-full max-w-none"
 					/>
 				</div>
 			)}
 			<FixedButtonsContainer>
 				{/* The MobileBottomNav handles its own visibility */}
-				<Button
-					size={'lg'}
-					onClick={() => {
-						router.push(pageRoutes.root);
-					}}
-					className="shadow-md"
-				>
-					<TableChart />
-				</Button>
+				{!isMobileNavEnable && (
+					<ShadowIconButton
+						onClick={() => {
+							router.push(pageRoutes.root);
+						}}
+					>
+						<Sheet />
+					</ShadowIconButton>
+				)}
 			</FixedButtonsContainer>
 			<MobileBottomNav routes={pageRoutes} />
 		</PageContainer>

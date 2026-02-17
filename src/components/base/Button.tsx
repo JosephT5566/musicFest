@@ -8,9 +8,10 @@ export const ShadowIconButton = ({
 }: React.ComponentProps<typeof Button>) => (
 	<Button
 		{...props}
-		className={`bg-secondary text-primary shadow-[2px_2px_10px] focus:bg-secondary ${
+		className={`bg-secondary text-primary shadow-[2px_2px_10px] focus:bg-secondary rounded-full ${
 			className || ''
 		}`}
+		size={'icon'}
 	>
 		{children}
 	</Button>

@@ -22,7 +22,7 @@ export const PageContainer = ({
 			className={`flex flex-col items-center relative gap-4 py-4
 				${isMobileNavEnable ? 'pb-16' : 'pb-4'}
 				px-2 sm:px-4
-				${selectPage ? 'max-h-[calc(100vh_-_theme(spacing.16))]' : ''}
+				${selectPage ? 'max-h-[calc(100vh_-_theme(spacing.16))] overflow-y-auto' : ''}
 			`}
 		>
 			{children}
@@ -46,7 +46,7 @@ export const FixedButtonsContainer = ({ children }: { children: React.ReactNode 
 	const isMobileNavEnable = useIsMobileNavEnable();
 	return (
 		<div
-			className={`fixed-buttons-container flex flex-col gap-2 items-end right-8 z-50
+			className={`fixed-buttons-container fixed flex flex-col gap-2 items-end right-4 sm:right-8 z-50
 				${isMobileNavEnable ? 'bottom-20' : 'bottom-8'}
 			`}
 		>

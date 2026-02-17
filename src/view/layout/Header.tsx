@@ -8,23 +8,21 @@ import { IMAGES } from '../../constants/images';
 export default function Header() {
 	return (
 		<div
-			className="h-16 bg-secondary-main flex items-center justify-between px-8 pr-16"
+			className="h-16 bg-secondary flex items-center justify-between px-4 md:px-8 border-b border-border"
 		>
 			<a
 				href="/"
-				className="flex gap-4 items-center h-full no-underline text-secondary-foreground hover:text-primary-main"
+				className="flex gap-3 items-center h-full no-underline text-secondary-foreground hover:text-primary transition-colors"
 			>
-				<div className="h-full rounded-full overflow-hidden aspect-square">
+				<div className="h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden relative shrink-0">
 					<img
 						src={IMAGES.LOGO_SVG}
 						alt="FesTime"
 						aria-label="FesTime"
-						height={48}
-						width={48}
-						className="w-full"
+						className="w-full h-full object-cover"
 					/>
 				</div>
-				<H1 className="text-[2.5rem]">
+				<H1 className="text-xl md:text-2xl font-bold tracking-tight font-['Contrail_One']">
 					{APP_NAME}
 				</H1>
 			</a>

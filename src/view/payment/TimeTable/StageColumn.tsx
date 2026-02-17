@@ -23,9 +23,10 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 				return (
 					<div
 						key={index}
-						className={`relative h-[${SCALE_UNIT}rem] after:content-[''] after:absolute after:bg-paper after:h-[1px] after:w-[90%] after:bottom-[-0.5px] after:left-1/2 after:-translate-x-1/2
-							${theHour === 'theHour' ? 'after:bg-secondary-main' : ''}
-						`}
+						className={`gap-time relative after:content-[''] after:absolute after:h-[1px] after:w-[90%] after:bottom-[-0.5px] after:left-1/2 after:-translate-x-1/2 ${
+							theHour === 'theHour' ? 'after:bg-secondary' : 'after:bg-paper'
+						}`}
+						style={{ height: `${SCALE_UNIT}rem` }}
 					/>
 				);
 			})}
@@ -46,11 +47,13 @@ const ShowButton = (props: {
 
 	return (
 		<Button
-			className={`font-sans w-full h-[${height * SCALE_UNIT}rem] rounded-md border-none tracking-normal normal-case bg-paper text-primary
-				${active ? `bg-[${buttonColor.main}] text-secondary-foreground` : ''}
-				hover:cursor-pointer
-				focus:outline-none focus:ring-2 focus:ring-gray-800
-			`}
+			className={`font-sans w-full rounded-md border-none tracking-normal normal-case bg-paper hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-800 ${
+				active ? 'text-secondary-foreground' : 'text-foreground'
+			} text-xs sm:text-sm`}
+			style={{
+				height: `${height * SCALE_UNIT}rem`,
+				backgroundColor: active ? buttonColor.main : undefined,
+			}}
 			onClick={onClick}
 		>
 			{show.name}
@@ -78,11 +81,10 @@ export default function StageColumn(props: {
 	};
 
 	return (
-		<div
-			className="text-center w-[4.8rem] sm:w-[5.8rem] md:w-[7.4rem]"
-		>
+		<div className="text-center w-[4.8rem] sm:w-[5.8rem] md:w-[7.4rem]">
 			<div
-				className={`h-16 flex justify-center items-center font-bold mb-4 tracking-wider bg-[${stageColor.main}]`}
+				className="h-16 flex justify-center items-center font-bold mb-4 tracking-wider"
+				style={{ backgroundColor: stageColor.main }}
 			>
 				{stage.name}
 			</div>

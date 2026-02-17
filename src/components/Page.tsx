@@ -5,12 +5,10 @@ import { useRouter } from 'next/navigation';
 import TimeTable from 'view/payment/TimeTable';
 import TimeLine from 'view/payment/TimeLine';
 import { Map } from 'lucide-react';
-import { PageContainer } from 'components/base/Container';
+import { PageContainer, FixedButtonsContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
 import DaySelector from 'components/shared/DaySelector';
 import DisplayModeSelector from 'components/shared/DisplayModeSelector';
-import { FixedButtonsContainer } from 'components/base/Container';
-import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
 import ShowsProvider, { useGetSelectedShow } from 'providers/ShowsProvider';
@@ -20,6 +18,7 @@ import { IProgramList } from 'types/show';
 import { STORAGE_KEY } from 'constants/static';
 import moment from 'moment';
 
+import { ShadowIconButton } from 'components/base/Button';
 import ResetButton from 'components/ResetButton';
 import SaveButton from 'components/SaveButton';
 import NotificationButton from 'components/NotificationButton';
@@ -107,15 +106,16 @@ const Page = ({ headerTitle, pageTitle, pageRoutes, programList, storageKey }: P
 				<SaveButton onOpenSnack={handleOpenSnack} />
 				<ResetButton />
 				{/* The MobileBottomNav handles its own visibility */}
-				<Button
-					size={'lg'}
-					onClick={() => {
-						router.push(pageRoutes.map);
-					}}
-					className="shadow-md"
-				>
-					<Map />
-				</Button>
+				{!isMobileNavEnable && (
+					<ShadowIconButton
+						size={'lg'}
+						onClick={() => {
+							router.push(pageRoutes.map);
+						}}
+					>
+						<Map />
+					</ShadowIconButton>
+				)}
 			</FixedButtonsContainer>
 			<MobileBottomNav routes={pageRoutes} />
 		</PageContainer>

@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import { TableChart } from 'lucide-react';
+import { Sheet } from 'lucide-react';
 
 import { FixedButtonsContainer, PageContainer } from 'components/base/Container';
 import { H1 } from 'components/base/Typography';
-import { Button } from 'ui/button';
+import { Button } from '@/components/ui/button';
 
 import { ROUTE, FEST_NAME } from 'constants/static';
 import { useRouter } from 'next/navigation';
@@ -33,7 +33,7 @@ export default function Map() {
 					}}
 					className="shadow-md"
 				>
-					<TableChart />
+					<Sheet />
 				</Button>
 			</FixedButtonsContainer>
 		</PageContainer>

@@ -72,20 +72,20 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({ megaStartTime, showInfo
 						backgroundColor: itemColor.main,
 					}}
 				>
-					<div className="flex flex-col items-center gap-1 text-primary-foreground">
-						<P className="timeline-button-title text-secondary-foreground">
+					<div className="flex flex-col items-center gap-0.5 w-full overflow-hidden">
+						<P className="timeline-button-title text-secondary-foreground text-xs font-bold w-full text-center">
 							{name}
 						</P>
-						<P className="timeline-button-stage-name text-secondary-foreground">
+						<P className="timeline-button-stage-name text-secondary-foreground text-[10px] w-full text-center">
 							{stageName}
 						</P>
 					</div>
 				</Button>
 			</div>
 			<Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
-				<SheetContent side="bottom" className="rounded-t-lg p-2 min-h-[30vh] relative pt-4">
-					<div className="w-30 h-6 bg-secondary-main rounded-md absolute top-2 left-1/2 -translate-x-1/2" />
-					<H2 className="text-center" >
+				<SheetContent side="bottom" className="rounded-t-lg p-6 min-h-[30vh] relative">
+					<div className="w-12 h-1.5 bg-muted rounded-full absolute top-3 left-1/2 -translate-x-1/2" />
+					<H2 className="text-center mb-2">
 						{name}
 					</H2>
 					<P>
@@ -211,7 +211,8 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 
 	return (
 		<div
-			className={`timeline-container timeline-day-${day} ${day === selectedDay ? 'flex' : 'hidden'} h-[${height * SCALE_UNIT}rem] w-[calc(100vw - 1em - 3.8em)] relative flex-col`}
+			className={`timeline-container timeline-day-${day} ${day === selectedDay ? 'flex' : 'hidden'} w-full relative flex-col`}
+			style={{ height: `${height * SCALE_UNIT}rem` }}
 		>
 			{allArtists.map((item) => (
 				<TimeLineButton

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import moment from 'moment';
-import { Hexagon } from 'lucide-react';
+import { CircleSmall } from 'lucide-react';
 
 import TimeBackdrop from './TimeBackdrop';
 import TimeLineOfDayV2 from './TimelineOfDayV2';
@@ -32,7 +32,7 @@ const BaseLine = (props: { programList: IProgramList }) => {
 						<div className="text-secondary pr-[0.5em] text-[14px] sm:text-inherit">
 							{time.format('HH:mm')}
 						</div>
-						<Hexagon className="absolute right-0 translate-x-[54%]" />
+						<CircleSmall className="absolute right-0 translate-x-[54%]" />
 					</div>
 				) : (
 					<div
