@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Bell, BellOff} from 'lucide-react';
 import { ShadowIconButton } from 'components/base/Button';
-
-import { useOpenSnackbar } from 'providers/SnackbarProvider';
+import { toast } from 'sonner';
 
 const NotificationButton = () => {
 	const [permissionState, setPermissionState] = useState('default');
-
-	const openSnackbar = useOpenSnackbar();
 
 	useEffect(() => {
 		if ('Notification' in window) {
@@ -18,10 +15,10 @@ const NotificationButton = () => {
 	const handleClick = () => {
 		switch (permissionState) {
 			case 'denied':
-				openSnackbar('warning', '通知未開啟，請至設定修改。');
+				toast.warning('通知未開啟，請至設定修改。');
 				break;
 			case 'granted':
-				openSnackbar('success', '通知已開啟，將在表演開始前30分鐘通知。');
+				toast.success('通知已開啟，將在表演開始前30分鐘通知。');
 				break;
 			default:
 				break;
