@@ -13,7 +13,7 @@ on:
 
 env:
   REACT_APP_MEASUREMENT_ID: ${{ secrets.MEASUREMENT_ID }}
-  NODE_VERSION: '18'  # Specify Node.js version
+  NODE_VERSION: '20'  # Specify Node.js version
   CACHE_KEY: cache-nextjs-${{ github.sha }}
 
 jobs:
@@ -29,10 +29,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       # Try to restore cache first
       - name: Restore Next.js Build Cache
@@ -51,13 +51,13 @@ jobs:
           ls -la .next/cache || echo "No cache found"
           
           echo "Running build..."
-          yarn build
+          npm run build
           
           echo "Cache contents after build:"
           ls -la .next/cache
           
           echo "Running export..."
-          yarn export
+          npm run export
 
       # Save cache after successful build
       - name: Save Next.js Build Cache
@@ -83,10 +83,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       # Restore the cached build before deployment
       - name: Restore Build Cache
@@ -101,8 +101,8 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
-          yarn export
+          npm run build
+          npm run export
 
       - name: Publish Website
         uses: cloudflare/wrangler-action@v3
