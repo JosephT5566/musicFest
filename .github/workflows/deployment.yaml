@@ -33,76 +33,30 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-
-      # Try to restore cache first
-      - name: Restore Next.js Build Cache
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            .next/cache
-            out
-          key: ${{ env.CACHE_KEY }}
-          restore-keys: |
-            cache-nextjs-
             
-      - name: Build with cache
-        run: |
-          echo "Cache contents before build:"
-          ls -la .next/cache || echo "No cache found"
-          
-          echo "Running build..."
-          npm run build
-          
-          echo "Cache contents after build:"
-          ls -la .next/cache
-          
-          echo "Running export..."
-          npm run export
-
-      # Save cache after successful build
-      - name: Save Next.js Build Cache
-        uses: actions/cache/save@v3
-        if: success()
-        with:
-          path: |
-            .next/cache
-            out
-          key: ${{ env.CACHE_KEY }}
-        
-  deploy:
-    name: Deploy to Cloudflare
-    needs: build-and-test  # Only run after tests pass
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      # Restore the cached build before deployment
-      - name: Restore Build Cache
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            .next/cache
-            out
-          key: ${{ env.CACHE_KEY }}
-          restore-keys: |
-            cache-nextjs-
-
       - name: Build
         run: |
           npm run build
           npm run export
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-build
+          path: out
+        
+  deploy:
+    name: Deploy to Cloudflare
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pages-build
+          path: out
 
       - name: Publish Website
         uses: cloudflare/wrangler-action@v3
