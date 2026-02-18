@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
 import moment from 'moment';
-import { IArtist } from 'types/show';
+import { IArtist, IArtistV2 } from 'types/show';
 
-const useSendNotification = (activeArtists: IArtist[], notificationKey: string) => {
+const useSendNotification = (activeArtists: (IArtist | IArtistV2)[], notificationKey: string) => {
 	useEffect(() => {
 		if (!('Notification' in window)) {
 			return;
 		}
 		const sentNotifications = JSON.parse(localStorage.getItem(notificationKey) ?? '{}') || {};
+		const artistsWithTime = activeArtists.filter((a) => a.startTime);
 
 		const interval = setInterval(() => {
-			activeArtists.forEach((artist) => {
+			artistsWithTime.forEach((artist) => {
 				const currentTime = moment();
 				const startTime = moment(artist.startTime);
 				const notificationTime = moment(artist.startTime).subtract(30, 'minutes');

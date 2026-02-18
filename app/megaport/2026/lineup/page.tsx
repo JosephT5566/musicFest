@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ARTISTS_2026 } from 'assets/program/megaport2026';
-import { IArtist2 } from 'types/show';
+import { IArtistV2 } from 'types/show';
 import { useSelectShow, useGetSelectedShow } from 'providers/ShowsProvider';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -20,7 +20,7 @@ import { cn } from 'lib/utils';
 
 const ArtistCard = React.forwardRef<
 	HTMLDivElement,
-	{ artist: IArtist2 } & React.HTMLAttributes<HTMLDivElement>
+	{ artist: IArtistV2 } & React.HTMLAttributes<HTMLDivElement>
 >(({ artist, className, ...props }, ref) => {
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -47,7 +47,7 @@ const ArtistCard = React.forwardRef<
 ArtistCard.displayName = 'ArtistCard';
 
 export default function LineupPage() {
-	const [selectedArtist, setSelectedArtist] = useState<IArtist2 | null>(null);
+	const [selectedArtist, setSelectedArtist] = useState<IArtistV2 | null>(null);
 	const selectShow = useSelectShow();
 	const selectedShows = useGetSelectedShow();
 
