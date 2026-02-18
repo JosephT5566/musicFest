@@ -12,7 +12,7 @@ interface MobileBottomNavProps {
 
 const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 	const router = useRouter();
-    const pathname = usePathname();
+	const pathname = usePathname();
 
 	const handleChange = (newValue: string) => {
 		router.push(newValue);
@@ -28,16 +28,17 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 	const currentValue = getNavValue();
 
 	return (
-		<nav
-            className="fixed bottom-0 left-0 right-0 w-full h-16 bg-secondary border-t border-border z-50 md:hidden flex justify-around items-center"
-        >
+		<nav className="fixed bottom-0 left-0 right-0 w-full h-16 bg-secondary border-t border-border z-50 md:hidden flex justify-around items-center">
 			{routes.lineup && (
 				<Button
 					variant="ghost"
-					className={clsx("flex flex-col items-center justify-center h-full text-muted-foreground hover:text-primary", {
-						"text-primary": currentValue === routes.lineup
-					})}
-					// onClick={() => handleChange(routes.lineup)} // TODO: Add lineup page and uncomment this
+					className={clsx(
+						'flex flex-col items-center justify-center h-full text-muted-foreground hover:text-primary',
+						{
+							'text-primary': currentValue === routes.lineup,
+						},
+					)}
+					onClick={() => routes.lineup && handleChange(routes.lineup)}
 				>
 					<ScrollText className="w-6 h-6" />
 					<span className="text-xs">Lineup</span>
@@ -45,9 +46,12 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 			)}
 			<Button
 				variant="ghost"
-				className={clsx("flex flex-col items-center justify-center h-full text-muted-foreground hover:text-primary font-bold", {
-					"text-primary": currentValue === routes.root
-				})}
+				className={clsx(
+					'flex flex-col items-center justify-center h-full text-muted-foreground hover:text-primary font-bold',
+					{
+						'text-primary': currentValue === routes.root,
+					},
+				)}
 				onClick={() => handleChange(routes.root)}
 			>
 				<Sheet className="w-6 h-6" />
@@ -55,9 +59,12 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 			</Button>
 			<Button
 				variant="ghost"
-				className={clsx("flex flex-col items-center justify-center h-full text-muted-foreground hover:text-primary", {
-					"text-primary": currentValue === routes.map
-				})}
+				className={clsx(
+					'flex flex-col items-center justify-center h-full text-muted-foreground hover:text-primary',
+					{
+						'text-primary': currentValue === routes.map,
+					},
+				)}
 				onClick={() => handleChange(routes.map)}
 			>
 				<Map className="w-6 h-6" />

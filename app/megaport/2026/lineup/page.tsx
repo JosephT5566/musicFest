@@ -59,7 +59,7 @@ export default function LineupPage() {
 
 	return (
 		<Dialog onOpenChange={handleOpenChange}>
-			<div className="container mx-auto p-4">
+			<div className="container mx-auto p-4 pb-20 md:pb-4">
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 					{ARTISTS_2026.map((artist) => (
 						<DialogTrigger
