@@ -52,6 +52,9 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
