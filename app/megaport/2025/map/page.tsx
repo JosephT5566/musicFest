@@ -10,7 +10,6 @@ const title = `${FEST_NAME.MEGAPORT} | 2025 | Map`;
 const Megaport2025Map = () => {
 	return (
 		<Map
-			headerTitle={title}
 			pageTitle={title}
 			pageRoutes={ROUTE.megaport[2025]}
 			imageSrc={IMAGES.maps[2025]}

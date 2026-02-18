@@ -27,15 +27,13 @@ const getActiveShows = (artists: IArtistV2[], selectedShows: string[]): IArtistV
 };
 
 type PageProps = {
-	headerTitle: string;
-	pageTitle: string;
 	pageRoutes: PageRoutes;
 	storageKey: string; // used to be root name
 	schedule: ISchedule;
 	artists: IArtistV2[];
 };
 
-const Page = ({ headerTitle, pageTitle, schedule, artists, storageKey }: PageProps) => {
+const Page = ({ schedule, artists, storageKey }: PageProps) => {
 	const [selectedDay, setSelectedDay] = useState(0);
 	const [mode, setMode] = useState<IDisplayMode>('timetable');
 
@@ -66,7 +64,6 @@ const Page = ({ headerTitle, pageTitle, schedule, artists, storageKey }: PagePro
 
 	return (
 		<PageContainer>
-			<H1>{pageTitle}</H1>
 			<div className="w-full flex justify-between px-0 md:px-4 flex-col md:flex-row gap-2 items-start md:items-center">
 				<DisplayModeSelector mode={mode} setMode={setMode} />
 				<DaySelector
