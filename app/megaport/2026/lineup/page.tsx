@@ -23,11 +23,18 @@ const ArtistCard = React.forwardRef<
 	{ artist: IArtistV2 } & React.HTMLAttributes<HTMLDivElement>
 >(({ artist, className, ...props }, ref) => {
 	const [isLoading, setIsLoading] = useState(true);
+	const selectedShows = useGetSelectedShow();
+	const isSelected = selectedShows.includes(artist.id);
 
 	return (
 		<Card ref={ref} className={cn('cursor-pointer', className)} {...props}>
 			<CardContent className="p-0">
 				<div className="relative aspect-square">
+					{isSelected && (
+						<div className="absolute top-2 right-2 z-10">
+							<BookmarkCheck className="text-green-600" />
+						</div>
+					)}
 					{isLoading && <Skeleton className="absolute inset-0" />}
 					<img
 						src={artist.imgUrl || 'https://placehold.co/300x300/png'}
