@@ -197,32 +197,32 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 						</DrawerHeader>
 						<P className="font-bold text-center">{selectedShow.stageName}</P>
 						<div className="absolute bottom-8 left-4 flex flex-col gap-2">
-							<Button
-								onClick={() => {
-									if (
-										!selectedShow.stageName ||
-										!selectedShow.startTime ||
-										!selectedShow.endTime
-									) {
-										return;
-									}
+							{selectedShow.stageName &&
+								selectedShow.startTime &&
+								selectedShow.endTime && (
+									<Button
+										onClick={() => {
+											const formattedStartTime = toUTCFormat(
+												selectedShow.startTime!,
+											);
+											const formattedEndTime = toUTCFormat(
+												selectedShow.endTime!,
+											);
 
-									const formattedStartTime = toUTCFormat(selectedShow.startTime);
-									const formattedEndTime = toUTCFormat(selectedShow.endTime);
-
-									const calendarLink = generateGoogleCalendarLink({
-										title: `${selectedShow.stageName} - ${selectedShow.name}`,
-										startDateTime: formattedStartTime,
-										endDateTime: formattedEndTime,
-										details: selectedShow.stageName,
-										location: '',
-									});
-									window.open(calendarLink, '_blank');
-								}}
-								className="bg-green-600"
-							>
-								新增到 Google 日曆
-							</Button>
+											const calendarLink = generateGoogleCalendarLink({
+												title: `${selectedShow.stageName!} - ${selectedShow.name}`,
+												startDateTime: formattedStartTime,
+												endDateTime: formattedEndTime,
+												details: selectedShow.stageName!,
+												location: '',
+											});
+											window.open(calendarLink, '_blank');
+										}}
+										className="bg-green-600"
+									>
+										新增到 Google 日曆
+									</Button>
+								)}
 							<Button
 								onClick={() => {
 									selectShow(selectedShow.id);

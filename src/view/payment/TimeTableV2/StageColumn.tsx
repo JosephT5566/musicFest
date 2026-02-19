@@ -76,7 +76,13 @@ export default function StageColumn(props: {
 
 	const stageArtists = artistIds
 		.map((id) => artists.find((a) => a.id === id))
-		.filter((artist): artist is IArtistV2 => !!artist)
+		.filter((artist): artist is IArtistV2 => {
+			if (!artist || !artist.stageName || !artist.startTime || !artist.endTime) {
+				return false;
+			}
+			// Further check if startTime and endTime can be parsed into valid moment objects
+			return moment(artist.startTime).isValid() && moment(artist.endTime).isValid();
+		})
 		.sort((a, b) => moment(a.startTime).diff(moment(b.startTime)));
 
 	const finalEndTime = dayEndTime;

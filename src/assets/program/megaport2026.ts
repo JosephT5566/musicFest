@@ -10,9 +10,9 @@ export const ARTISTS_2026: IArtistV2[] = [
 		name: '傷心欲絕',
 		imgUrl: '',
 		description: '台北龐克樂團，以直白的歌詞和躁動的現場演出著稱，道出都市青年的焦慮與失落。',
-		startTime: `${DAY1}T12:30`,
-		endTime: `${DAY1}T13:10`,
-		stageName: '南霸天',
+		// startTime: `${DAY1}T12:30`,
+		// endTime: `${DAY1}T13:10`,
+		// stageName: '南霸天',
 	},
 	{
 		id: '2',

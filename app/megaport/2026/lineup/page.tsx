@@ -17,6 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from 'lib/utils';
+import moment from 'moment';
 
 const ArtistCard = React.forwardRef<
 	HTMLDivElement,
@@ -105,20 +106,27 @@ export default function LineupPage() {
 					</div>
 					<div className="p-3">
 						<DialogHeader>
-							<DialogTitle className='font-bold text-xl'>{selectedArtist.name}</DialogTitle>
+							<DialogTitle className="font-bold text-xl">
+								{selectedArtist.name}
+							</DialogTitle>
 						</DialogHeader>
 						<DialogDescription className="mt-3">
 							{selectedArtist.description}
 						</DialogDescription>
-						<div>
-							<p>
-								<strong>
-									{selectedArtist.startTime} - {selectedArtist.endTime}{' '}
-								</strong>
-							</p>
-							<p>
-								<strong> {selectedArtist.stageName}</strong>
-							</p>
+						<div className="pt-3">
+							{selectedArtist.stageName && (
+								<p>
+									<strong> {selectedArtist.stageName}</strong>
+								</p>
+							)}
+							{selectedArtist.startTime && selectedArtist.endTime && (
+								<p>
+									<strong>
+										{moment(selectedArtist.startTime).format('HH:mm')} -{' '}
+										{moment(selectedArtist.endTime).format('HH:mm')}{' '}
+									</strong>
+								</p>
+							)}
 						</div>
 					</div>
 				</DialogContent>
