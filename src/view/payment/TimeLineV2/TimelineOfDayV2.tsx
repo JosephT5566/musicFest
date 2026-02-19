@@ -105,7 +105,9 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 		stage.artistIds
 			.map((artistId) => {
 				const artist = artists.find((a) => a.id === artistId);
-				if (!artist || !artist.startTime || !artist.endTime) return null;
+				if (!artist || !artist.stageName || !artist.startTime || !artist.endTime) {
+					return null;
+				}
 
 				return {
 					...artist,
