@@ -12,6 +12,25 @@ export class IArtist {
 	}
 }
 
+export interface IStage {
+	name: string;
+	artists: IArtist[];
+}
+
+export interface IPerfDay {
+	dayIndex?: number;
+	date?: string;
+	dayStartTime: string;
+	dayEndTime: string;
+	stages: IStage[];
+}
+
+export interface IProgramList {
+	perfDays: IPerfDay[];
+}
+
+// Updated types, we should use the new types in the following changes.
+// TODO: deprecate the old types and update all related code to use the new types instead.
 export interface IArtistV2 {
 	id: string;
 	name: string;
@@ -23,22 +42,9 @@ export interface IArtistV2 {
 	stageName?: string;
 }
 
-export interface IStage {
-	name: string;
-	artists: IArtist[];
-}
-
 export interface IStageV2 {
 	name: string;
 	artistIds: string[];
-}
-
-export interface IPerfDay {
-	dayIndex?: number;
-	date?: string;
-	dayStartTime: string;
-	dayEndTime: string;
-	stages: IStage[];
 }
 
 export interface IPerfDayV2 {
@@ -47,10 +53,6 @@ export interface IPerfDayV2 {
 	dayStartTime: string;
 	dayEndTime: string;
 	stages: IStageV2[];
-}
-
-export interface IProgramList {
-	perfDays: IPerfDay[];
 }
 
 export type ISchedule = IPerfDayV2[];
