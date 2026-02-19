@@ -28,3 +28,31 @@ export interface IPerfDay {
 export interface IProgramList {
 	perfDays: IPerfDay[];
 }
+
+// Updated types, we should use the new types in the following changes.
+// TODO: deprecate the old types and update all related code to use the new types instead.
+export interface IArtistV2 {
+	id: string;
+	name: string;
+	description: string;
+	imgUrl: string;
+	date?: string;
+	startTime?: string;
+	endTime?: string;
+	stageName?: string;
+}
+
+export interface IStageV2 {
+	name: string;
+	artistIds: string[];
+}
+
+export interface IPerfDayV2 {
+	dayIndex?: number;
+	date?: string;
+	dayStartTime: string;
+	dayEndTime: string;
+	stages: IStageV2[];
+}
+
+export type ISchedule = IPerfDayV2[];

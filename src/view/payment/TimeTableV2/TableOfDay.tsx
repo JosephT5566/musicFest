@@ -2,16 +2,19 @@ import React from 'react';
 import moment from 'moment';
 
 import StageColumn from './StageColumn';
-import { IPerfDay } from 'types/show';
+
+import { IPerfDayV2, IArtistV2 } from 'types/show';
+
 import { palette } from 'styles/palette';
 
 interface props {
-	perfDay: IPerfDay;
+	perfDay: IPerfDayV2;
 	day: number;
 	selected: number;
+	artists: IArtistV2[];
 }
 
-export default function TableOfDay({ perfDay, day, selected }: props) {
+export default function TableOfDay({ perfDay, day, selected, artists }: props) {
 	const { stage: stageColors } = palette;
 
 	return (
@@ -24,6 +27,7 @@ export default function TableOfDay({ perfDay, day, selected }: props) {
 					stageColor={stageColors[index as keyof typeof palette.stage]}
 					stage={stage}
 					day={day}
+					artists={artists}
 				/>
 			))}
 		</div>
