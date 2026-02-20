@@ -100,27 +100,33 @@ export default function StageColumn(props: {
 			>
 				{stage.name}
 			</div>
-			{stageArtists.map((artist, index) => {
-				const start = moment(artist.startTime);
+			{stageArtists.length > 0 ? (
+				<>
+					{stageArtists.map((artist, index) => {
+						const start = moment(artist.startTime);
 
-				return (
-					<div key={index}>
-						<MovingTime prevEndTime={prevEndTimes[index]} startTime={start} />
-						<ShowButton
-							show={artist}
-							buttonColor={stageColor}
-							active={selectedIds.includes(artist.id)}
-							onClick={() => {
-								handleClickButton(artist.id);
-							}}
-						/>
-					</div>
-				);
-			})}
-			<MovingTime
-				prevEndTime={moment(stageArtists[stageArtists.length - 1].endTime)}
-				startTime={finalEndTime}
-			/>
+						return (
+							<div key={index}>
+								<MovingTime prevEndTime={prevEndTimes[index]} startTime={start} />
+								<ShowButton
+									show={artist}
+									buttonColor={stageColor}
+									active={selectedIds.includes(artist.id)}
+									onClick={() => {
+										handleClickButton(artist.id);
+									}}
+								/>
+							</div>
+						);
+					})}
+					<MovingTime
+						prevEndTime={moment(stageArtists[stageArtists.length - 1].endTime)}
+						startTime={finalEndTime}
+					/>
+				</>
+			) : (
+				<MovingTime prevEndTime={dayStartTime} startTime={dayEndTime} />
+			)}
 		</div>
 	);
 }
