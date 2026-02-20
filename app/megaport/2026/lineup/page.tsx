@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import Fuse from 'fuse.js';
 import { ARTISTS_2026 } from 'assets/program/megaport2026';
 import { IArtistV2 } from 'types/show';
 import { useSelectShow, useGetSelectedShow } from 'providers/ShowsProvider';
@@ -16,6 +17,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { cn } from 'lib/utils';
 import moment from 'moment';
 
@@ -58,6 +60,16 @@ export default function LineupPage() {
 	const [selectedArtist, setSelectedArtist] = useState<IArtistV2 | null>(null);
 	const selectShow = useSelectShow();
 	const selectedShows = useGetSelectedShow();
+	const [searchQuery, setSearchQuery] = useState('');
+
+	const fuse = useMemo(
+		() =>
+			new Fuse(ARTISTS_2026, {
+				keys: ['name'],
+				threshold: 0.3,
+			}),
+		[],
+	);
 
 	const handleOpenChange = (open: boolean) => {
 		if (!open) {
@@ -65,11 +77,25 @@ export default function LineupPage() {
 		}
 	};
 
+	const searchResults = useMemo(() => {
+		if (!searchQuery) {
+			return ARTISTS_2026;
+		}
+		return fuse.search(searchQuery).map((result) => result.item);
+	}, [searchQuery, fuse]);
+
 	return (
 		<Dialog onOpenChange={handleOpenChange}>
 			<div className="container mx-auto p-4 pb-20 md:pb-4">
+				<div className="mb-4">
+					<Input
+						placeholder="Search artists..."
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+					/>
+				</div>
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-					{ARTISTS_2026.map((artist) => (
+					{searchResults.map((artist) => (
 						<DialogTrigger
 							key={artist.id}
 							asChild
