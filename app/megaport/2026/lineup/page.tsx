@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ARTISTS_2026 } from 'assets/program/megaport2026';
 import { IArtistV2 } from 'types/show';
 import { useSelectShow, useGetSelectedShow } from 'providers/ShowsProvider';
@@ -16,6 +16,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ArtistSearchBar from 'components/shared/ArtistSearchBar';
 import { cn } from 'lib/utils';
 import moment from 'moment';
 
@@ -58,6 +59,9 @@ export default function LineupPage() {
 	const [selectedArtist, setSelectedArtist] = useState<IArtistV2 | null>(null);
 	const selectShow = useSelectShow();
 	const selectedShows = useGetSelectedShow();
+	const [filteredArtistIds, setFilteredArtistIds] = useState<string[] | null>(
+		null,
+	);
 
 	const handleOpenChange = (open: boolean) => {
 		if (!open) {
@@ -65,15 +69,39 @@ export default function LineupPage() {
 		}
 	};
 
+	const searchResults = useMemo(() => {
+		if (filteredArtistIds === null) {
+			return new Set(ARTISTS_2026.map((artist) => artist.id));
+		}
+		return new Set(filteredArtistIds);
+	}, [filteredArtistIds]);
+
+	const handleSearchResults = (results: string[]) => {
+		setFilteredArtistIds(results);
+	};
+
+	const handleClear = () => {
+		setFilteredArtistIds(null);
+	};
+
 	return (
 		<Dialog onOpenChange={handleOpenChange}>
-			<div className="container mx-auto p-4 pb-20 md:pb-4">
+			<div className="container mx-auto p-4 pt-0 pb-20 md:pb-4">
+				<div className="sticky top-0 z-20 mb-4 pt-4 flex justify-start">
+					<ArtistSearchBar
+                        className="w-full"
+						artists={ARTISTS_2026}
+						onSearchResults={handleSearchResults}
+						onClear={handleClear}
+					/>
+				</div>
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 					{ARTISTS_2026.map((artist) => (
 						<DialogTrigger
 							key={artist.id}
 							asChild
 							onClick={() => setSelectedArtist(artist)}
+							className={!searchResults.has(artist.id) ? 'hidden' : ''}
 						>
 							<ArtistCard artist={artist} />
 						</DialogTrigger>
@@ -127,7 +155,7 @@ export default function LineupPage() {
 						</div>
 						<DialogDescription className="mt-3 max-h-[40vh] overflow-auto" asChild>
 							<div
-							className='whitespace-pre-wrap'
+								className="whitespace-pre-wrap"
 								dangerouslySetInnerHTML={{
 									__html: selectedArtist.description || '',
 								}}
