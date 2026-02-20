@@ -83,11 +83,11 @@ export default function LineupPage() {
 			{selectedArtist && (
 				<DialogContent className="p-0">
 					<div className="relative">
-						<div className="relative aspect-video">
+						<div className="relative aspect-4/3">
 							<img
 								src={selectedArtist.imgUrl || 'https://placehold.co/600x400/png'}
 								alt={selectedArtist.name}
-								className="w-full h-full object-cover rounded-t-lg"
+								className="w-full h-full object-cover rounded-t-lg object-top"
 							/>
 						</div>
 						<div className="absolute top-2 right-2">
@@ -110,9 +110,6 @@ export default function LineupPage() {
 								{selectedArtist.name}
 							</DialogTitle>
 						</DialogHeader>
-						<DialogDescription className="mt-3">
-							{selectedArtist.description}
-						</DialogDescription>
 						<div className="pt-3">
 							{selectedArtist.stageName && (
 								<p>
@@ -128,6 +125,14 @@ export default function LineupPage() {
 								</p>
 							)}
 						</div>
+						<DialogDescription className="mt-3 max-h-[40vh] overflow-auto" asChild>
+							<div
+							className='whitespace-pre-wrap'
+								dangerouslySetInnerHTML={{
+									__html: selectedArtist.description || '',
+								}}
+							/>
+						</DialogDescription>
 					</div>
 				</DialogContent>
 			)}
