@@ -1,8 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
-import Fuse from 'fuse.js';
-import debounce from 'lodash/debounce';
+import React, { useState, useMemo } from 'react';
 import { ARTISTS_2026 } from 'assets/program/megaport2026';
 import { IArtistV2 } from 'types/show';
 import { useSelectShow, useGetSelectedShow } from 'providers/ShowsProvider';
@@ -16,9 +14,9 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Bookmark, BookmarkCheck, X } from 'lucide-react';
+import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import ArtistSearchBar from 'components/shared/ArtistSearchBar';
 import { cn } from 'lib/utils';
 import moment from 'moment';
 
@@ -61,35 +59,9 @@ export default function LineupPage() {
 	const [selectedArtist, setSelectedArtist] = useState<IArtistV2 | null>(null);
 	const selectShow = useSelectShow();
 	const selectedShows = useGetSelectedShow();
-	const [searchQuery, setSearchQuery] = useState('');
-	const [inputValue, setInputValue] = useState('');
-
-	const fuse = useMemo(
-		() =>
-			new Fuse(ARTISTS_2026, {
-				keys: ['name'],
-				threshold: 0.3,
-			}),
-		[],
+	const [filteredArtistIds, setFilteredArtistIds] = useState<string[] | null>(
+		null,
 	);
-
-	const debouncedSetSearchQuery = useCallback(
-		debounce((value) => {
-			setSearchQuery(value);
-		}, 700),
-		[],
-	);
-
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		setInputValue(value);
-		debouncedSetSearchQuery(value);
-	};
-
-	const handleClear = () => {
-		setInputValue('');
-		setSearchQuery('');
-	};
 
 	const handleOpenChange = (open: boolean) => {
 		if (!open) {
@@ -98,33 +70,30 @@ export default function LineupPage() {
 	};
 
 	const searchResults = useMemo(() => {
-		if (!searchQuery) {
+		if (filteredArtistIds === null) {
 			return new Set(ARTISTS_2026.map((artist) => artist.id));
 		}
-		return new Set(fuse.search(searchQuery).map((result) => result.item.id));
-	}, [searchQuery, fuse]);
+		return new Set(filteredArtistIds);
+	}, [filteredArtistIds]);
+
+	const handleSearchResults = (results: string[]) => {
+		setFilteredArtistIds(results);
+	};
+
+	const handleClear = () => {
+		setFilteredArtistIds(null);
+	};
 
 	return (
 		<Dialog onOpenChange={handleOpenChange}>
-			<div className="container mx-auto p-4 pb-20 md:pb-4">
-				<div className="sticky top-0 z-20 bg-background py-4 mb-4">
-					<div className="relative">
-						<Input
-							placeholder="Search artists..."
-							value={inputValue}
-							onChange={handleInputChange}
-						/>
-						{inputValue && (
-							<Button
-								variant="ghost"
-								size="icon"
-								className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
-								onClick={handleClear}
-							>
-								<X className="h-4 w-4" />
-							</Button>
-						)}
-					</div>
+			<div className="container mx-auto p-4 pt-0 pb-20 md:pb-4">
+				<div className="sticky top-0 z-20 mb-4 pt-4 flex justify-start">
+					<ArtistSearchBar
+                        className="w-full"
+						artists={ARTISTS_2026}
+						onSearchResults={handleSearchResults}
+						onClear={handleClear}
+					/>
 				</div>
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 					{ARTISTS_2026.map((artist) => (
@@ -186,7 +155,7 @@ export default function LineupPage() {
 						</div>
 						<DialogDescription className="mt-3 max-h-[40vh] overflow-auto" asChild>
 							<div
-							className='whitespace-pre-wrap'
+								className="whitespace-pre-wrap"
 								dangerouslySetInnerHTML={{
 									__html: selectedArtist.description || '',
 								}}
