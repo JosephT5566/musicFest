@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Fuse from 'fuse.js';
+import debounce from 'lodash/debounce';
 import { ARTISTS_2026 } from 'assets/program/megaport2026';
 import { IArtistV2 } from 'types/show';
 import { useSelectShow, useGetSelectedShow } from 'providers/ShowsProvider';
@@ -15,7 +16,7 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { Bookmark, BookmarkCheck, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from 'lib/utils';
@@ -61,6 +62,7 @@ export default function LineupPage() {
 	const selectShow = useSelectShow();
 	const selectedShows = useGetSelectedShow();
 	const [searchQuery, setSearchQuery] = useState('');
+	const [inputValue, setInputValue] = useState('');
 
 	const fuse = useMemo(
 		() =>
@@ -71,6 +73,24 @@ export default function LineupPage() {
 		[],
 	);
 
+	const debouncedSetSearchQuery = useCallback(
+		debounce((value) => {
+			setSearchQuery(value);
+		}, 700),
+		[],
+	);
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		setInputValue(value);
+		debouncedSetSearchQuery(value);
+	};
+
+	const handleClear = () => {
+		setInputValue('');
+		setSearchQuery('');
+	};
+
 	const handleOpenChange = (open: boolean) => {
 		if (!open) {
 			setSelectedArtist(null);
@@ -79,27 +99,40 @@ export default function LineupPage() {
 
 	const searchResults = useMemo(() => {
 		if (!searchQuery) {
-			return ARTISTS_2026;
+			return new Set(ARTISTS_2026.map((artist) => artist.id));
 		}
-		return fuse.search(searchQuery).map((result) => result.item);
+		return new Set(fuse.search(searchQuery).map((result) => result.item.id));
 	}, [searchQuery, fuse]);
 
 	return (
 		<Dialog onOpenChange={handleOpenChange}>
 			<div className="container mx-auto p-4 pb-20 md:pb-4">
-				<div className="mb-4">
-					<Input
-						placeholder="Search artists..."
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-					/>
+				<div className="sticky top-0 z-20 bg-background py-4 mb-4">
+					<div className="relative">
+						<Input
+							placeholder="Search artists..."
+							value={inputValue}
+							onChange={handleInputChange}
+						/>
+						{inputValue && (
+							<Button
+								variant="ghost"
+								size="icon"
+								className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
+								onClick={handleClear}
+							>
+								<X className="h-4 w-4" />
+							</Button>
+						)}
+					</div>
 				</div>
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-					{searchResults.map((artist) => (
+					{ARTISTS_2026.map((artist) => (
 						<DialogTrigger
 							key={artist.id}
 							asChild
 							onClick={() => setSelectedArtist(artist)}
+							className={!searchResults.has(artist.id) ? 'hidden' : ''}
 						>
 							<ArtistCard artist={artist} />
 						</DialogTrigger>
