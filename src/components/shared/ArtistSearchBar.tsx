@@ -25,8 +25,10 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 }) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [inputValue, setInputValue] = useState('');
+	const [isFocused, setIsFocused] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const searchContainerRef = useRef<HTMLDivElement>(null);
+	const focusScrollY = useRef(0);
 
 	const fuse = useMemo(
 		() =>
@@ -45,15 +47,21 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 
 	useEffect(() => {
 		const handleScroll = () => {
-			if (isExpanded && inputValue === '') {
-				setIsExpanded(false);
+			if (
+				isFocused &&
+				inputValue === '' &&
+				Math.abs(window.scrollY - focusScrollY.current) > 100 // detect large scroll distance
+			) {
+				inputRef.current?.blur();
 			}
 		};
+
 		window.addEventListener('scroll', handleScroll, { passive: true });
+
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
 		};
-	}, [isExpanded, inputValue]);
+	}, [isFocused, inputValue]);
 
 	const debouncedSearch = useMemo(
 		() =>
@@ -84,10 +92,16 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		setIsExpanded(true);
 	};
 
+	const handleFocus = () => {
+		setIsFocused(true);
+		focusScrollY.current = window.scrollY;
+	};
+
 	const handleBlur = () => {
 		if (inputValue === '') {
 			setIsExpanded(false);
 		}
+		setIsFocused(false);
 	};
 
 	return (
@@ -111,6 +125,7 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 								type="text"
 								value={inputValue}
 								onChange={handleInputChange}
+								onFocus={handleFocus}
 								onBlur={handleBlur}
 								placeholder="Search artists..."
 								className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
