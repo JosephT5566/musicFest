@@ -43,6 +43,18 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		}
 	}, [isExpanded]);
 
+	useEffect(() => {
+		const handleScroll = () => {
+			if (isExpanded && inputValue === '') {
+				setIsExpanded(false);
+			}
+		};
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, [isExpanded, inputValue]);
+
 	const debouncedSearch = useMemo(
 		() =>
 			debounce((query: string) => {
@@ -101,7 +113,7 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 								onChange={handleInputChange}
 								onBlur={handleBlur}
 								placeholder="Search artists..."
-								className="transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
+								className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
 							/>
 							{inputValue && (
 								<Button
@@ -122,7 +134,7 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 							exit={{ opacity: 0 }}
 						>
 							<Button
-								className="bg-white border border-gray-300 rounded-full"
+								className="bg-white p-6 border border-gray-300 rounded-full"
 								variant="outline"
 								size="icon"
 								onClick={handleExpand}
