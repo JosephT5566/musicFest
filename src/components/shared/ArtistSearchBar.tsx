@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { AnimatePresence, m, LazyMotion, domAnimation } from 'framer-motion';
-import { Search, X } from 'lucide-react';
+import { Search, SearchX, X } from 'lucide-react';
 import Fuse from 'fuse.js';
 import debounce from 'lodash/debounce';
 import { Button } from '@/components/ui/button';
@@ -14,14 +14,14 @@ interface ArtistSearchBarProps {
 	artists: IArtistV2[];
 	onSearchResults: (results: string[]) => void;
 	onClear: () => void;
-    className?: string;
+	className?: string;
 }
 
 const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 	artists,
 	onSearchResults,
 	onClear,
-    className
+	className,
 }) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [inputValue, setInputValue] = useState('');
@@ -68,11 +68,26 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		inputRef.current?.focus();
 	};
 
-	const handleExpand = () => {
-		setIsExpanded(true);
+	const handleToggleExpand = () => {
+		setIsExpanded((prevIsExpanded) => {
+			if (prevIsExpanded) {
+				setInputValue('');
+				onClear();
+				return false;
+			} else {
+				return true;
+			}
+		});
 	};
 
-	const handleBlur = () => {
+	const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+		// Prevent collapsing when focus moves to another element within the search component
+		if (
+			searchContainerRef.current &&
+			searchContainerRef.current.contains(event.relatedTarget as Node)
+		) {
+			return;
+		}
 		if (inputValue === '') {
 			setIsExpanded(false);
 		}
@@ -82,17 +97,26 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		<LazyMotion features={domAnimation}>
 			<div
 				ref={searchContainerRef}
-				className={cn("relative flex items-center justify-start w-full", className)}
+				className={cn('relative flex items-center w-full', className)}
 			>
+				<Button
+					className="bg-white p-6 border border-gray-300 rounded-full z-10 flex-shrink-0"
+					variant="outline"
+					size="icon"
+					onClick={handleToggleExpand}
+				>
+					{isExpanded ? <SearchX /> : <Search />}
+				</Button>
+
 				<AnimatePresence>
-					{isExpanded ? (
+					{isExpanded && ( // Animated input field
 						<m.div
 							key="search-input"
-							initial={{ width: '44px' }}
-							animate={{ width: '100%' }}
-							exit={{ width: '44px' }}
+							initial={{ width: '0%', opacity: 0, marginLeft: '0px' }}
+							animate={{ width: 'calc(100% - 60px)', opacity: 1, marginLeft: '8px' }}
+							exit={{ width: '0%', opacity: 0, marginLeft: '0px' }}
 							transition={{ duration: 0.3, ease: 'easeInOut' }}
-							className="relative w-full flex items-center"
+							className="relative flex items-center flex-grow"
 						>
 							<Input
 								ref={inputRef}
@@ -103,7 +127,7 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 								placeholder="Search artists..."
 								className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
 							/>
-							{inputValue && ( // This is the clear input button
+							{inputValue && ( // Clear input button
 								<Button
 									variant="ghost"
 									size="icon"
@@ -113,33 +137,6 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 									<X className="h-4 w-4" />
 								</Button>
 							)}
-							<Button // This is the close search bar button
-								variant="ghost"
-								size="icon"
-								className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
-								onClick={() => {
-									setIsExpanded(false);
-									onClear();
-								}}
-							>
-								<X className="h-4 w-4" />
-							</Button>
-						</m.div>
-					) : (
-						<m.div
-							key="search-button"
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-						>
-							<Button
-								className="bg-white p-6 border border-gray-300 rounded-full"
-								variant="outline"
-								size="icon"
-								onClick={handleExpand}
-							>
-								<Search />
-							</Button>
 						</m.div>
 					)}
 				</AnimatePresence>
