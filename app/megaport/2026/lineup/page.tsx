@@ -12,9 +12,10 @@ import {
 	DialogTitle,
 	DialogDescription,
 	DialogTrigger,
+	DialogClose,
 } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { Bookmark, BookmarkCheck, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ArtistSearchBar from 'components/shared/ArtistSearchBar';
 import { cn } from 'lib/utils';
@@ -33,8 +34,8 @@ const ArtistCard = React.forwardRef<
 			<CardContent className="p-0">
 				<div className="relative aspect-square">
 					{isSelected && (
-						<div className="absolute top-2 right-2 z-10">
-							<BookmarkCheck className="text-green-600" />
+						<div className="absolute top-2 right-2 z-10 backdrop-blur-sm bg-white/40 rounded-full p-2">
+							<BookmarkCheck className="text-green-600 h-4 w-4" />
 						</div>
 					)}
 					{isLoading && <Skeleton className="absolute inset-0" />}
@@ -59,9 +60,7 @@ export default function LineupPage() {
 	const [selectedArtist, setSelectedArtist] = useState<IArtistV2 | null>(null);
 	const selectShow = useSelectShow();
 	const selectedShows = useGetSelectedShow();
-	const [filteredArtistIds, setFilteredArtistIds] = useState<string[] | null>(
-		null,
-	);
+	const [filteredArtistIds, setFilteredArtistIds] = useState<string[] | null>(null);
 
 	const handleOpenChange = (open: boolean) => {
 		if (!open) {
@@ -89,7 +88,7 @@ export default function LineupPage() {
 			<div className="container mx-auto p-4 pt-0 pb-20 md:pb-4">
 				<div className="sticky top-0 z-20 mb-4 pt-4 flex justify-start">
 					<ArtistSearchBar
-                        className="w-full"
+						className="w-full"
 						artists={ARTISTS_2026}
 						onSearchResults={handleSearchResults}
 						onClear={handleClear}
@@ -109,7 +108,7 @@ export default function LineupPage() {
 				</div>
 			</div>
 			{selectedArtist && (
-				<DialogContent className="p-0">
+				<DialogContent className="p-0 max-h-[80dvh] overflow-y-auto gap-0">
 					<div className="relative">
 						<div className="relative aspect-4/3">
 							<img
@@ -118,27 +117,12 @@ export default function LineupPage() {
 								className="w-full h-full object-cover rounded-t-lg object-top"
 							/>
 						</div>
-						<div className="absolute top-2 right-2">
-							<Button
-								onClick={() => selectShow(selectedArtist.id)}
-								variant="outline"
-								size="icon"
-							>
-								{selectedShows.includes(selectedArtist.id) ? (
-									<BookmarkCheck className="text-green-600" />
-								) : (
-									<Bookmark />
-								)}
-							</Button>
-						</div>
+						<DialogClose className="absolute top-2 right-2">
+							<X className="h-6 w-6 bg-white rounded-full p-1"></X>
+						</DialogClose>
 					</div>
-					<div className="p-3">
-						<DialogHeader>
-							<DialogTitle className="font-bold text-xl">
-								{selectedArtist.name}
-							</DialogTitle>
-						</DialogHeader>
-						<div className="pt-3">
+					<div className="p-3 sticky top-0 z-10 flex justify-between items-center">
+						<div className="px-1 shadow-md bg-background rounded">
 							{selectedArtist.stageName && (
 								<p>
 									<strong> {selectedArtist.stageName}</strong>
@@ -153,7 +137,25 @@ export default function LineupPage() {
 								</p>
 							)}
 						</div>
-						<DialogDescription className="mt-3 max-h-[40vh] overflow-auto" asChild>
+						<Button
+							onClick={() => selectShow(selectedArtist.id)}
+							variant="outline"
+							size="icon"
+						>
+							{selectedShows.includes(selectedArtist.id) ? (
+								<BookmarkCheck className="text-green-600" />
+							) : (
+								<Bookmark />
+							)}
+						</Button>
+					</div>
+					<div className="p-3">
+						<DialogHeader>
+							<DialogTitle className="font-bold text-xl">
+								{selectedArtist.name}
+							</DialogTitle>
+						</DialogHeader>
+						<DialogDescription className="mt-3" asChild>
 							<div
 								className="whitespace-pre-wrap"
 								dangerouslySetInnerHTML={{
