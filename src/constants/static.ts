@@ -22,7 +22,6 @@ export const ROUTE = {
 		index: {
 			root: '/megaport',
 		},
-		history: '/megaport/history',
 		2021: {
 			root: '/megaport/2021',
 			map: '/megaport/2021/map',
