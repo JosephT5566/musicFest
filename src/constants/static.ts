@@ -13,7 +13,6 @@ export const STORAGE_KEY = {
 
 export const FEST_NAME = {
 	MEGAPORT: 'Megaport',
-	FUJI_ROCK: 'Fuji Rock',
 };
 
 export const ROUTE = {
@@ -44,14 +43,6 @@ export const ROUTE = {
 			root: '/megaport/2026',
 			map: '/megaport/2026/map',
 			lineup: '/megaport/2026/lineup',
-		},
-	},
-	fujirock: {
-		index: {
-			root: '/fujirock',
-		},
-		2024: {
-			root: '/fujirock/2024',
 		},
 	},
 };
