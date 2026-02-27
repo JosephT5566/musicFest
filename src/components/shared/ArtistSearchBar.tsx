@@ -49,8 +49,9 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 	const debouncedSearch = useMemo(
 		() =>
 			debounce((query: string) => {
-				if (query) {
-					const results = fuse.search(query);
+				const trimmedQuery = query.trim();
+				if (trimmedQuery) {
+					const results = fuse.search(trimmedQuery);
 					onSearchResults(results.map((result) => result.item.id));
 				} else {
 					onClear();
@@ -65,12 +66,6 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		debouncedSearch(query);
 	};
 
-	const handleClear = () => {
-		setInputValue('');
-		onClear();
-		inputRef.current?.focus();
-	};
-
 	const handleConfirmSearch = () => {
 		setIsOverlayVisible(false);
 		inputRef.current?.blur();
@@ -80,6 +75,11 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		if (event.key === 'Enter') {
 			handleConfirmSearch();
 		}
+	};
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		handleConfirmSearch();
 	};
 
 	const handleToggleExpand = () => {
@@ -125,79 +125,81 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 					onClick={() => setIsOverlayVisible(false)}
 				/>
 			)}
+
 			<LazyMotion features={domAnimation}>
-				<div
-					ref={searchContainerRef}
+				<form
+					onSubmit={handleSubmit}
 					className={cn('relative flex items-center w-full z-10', className)}
 				>
-					<Button
-						className="bg-white p-6 border border-gray-300 rounded-full z-10 flex-shrink-0"
-						variant="outline"
-						size="icon"
-						onClick={handleToggleExpand}
+					<div
+						ref={searchContainerRef}
+						className={cn('relative flex items-center w-full', className)}
 					>
-						{isExpanded ? <SearchX /> : <Search />}
-					</Button>
+						<Button
+							type="button"
+							className="bg-white p-6 border border-gray-300 rounded-full z-10 flex-shrink-0"
+							variant="outline"
+							size="icon"
+							onClick={handleToggleExpand}
+						>
+							{isExpanded ? <SearchX /> : <Search />}
+						</Button>
 
-					<AnimatePresence>
-						{isExpanded && ( // Animated input field
-							<m.div
-								key="search-input"
-								initial={{ width: '0%', opacity: 0, marginLeft: '0px' }}
-								animate={{
-									width: `calc(100% - 60px ${inputValue && isOverlayVisible ? '- 60px' : ''})`,
-									opacity: 1,
-									marginLeft: '8px',
-								}}
-								exit={{ width: '0%', opacity: 0, marginLeft: '0px' }}
-								transition={{ duration: 0.3, ease: 'easeInOut' }}
-								className="relative flex items-center flex-grow"
-							>
-								<Input
-									ref={inputRef}
-									type="text"
-									value={inputValue}
-									onChange={handleInputChange}
-									onFocus={handleFocus}
-									onBlur={handleBlur}
-									onKeyDown={handleKeyDown}
-									placeholder="Search artists..."
-									className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
-								/>
-								{inputValue && ( // Clear input button
-									<Button
-										variant="ghost"
-										size="icon"
-										className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
-										onClick={handleClear}
-									>
-										<X className="h-4 w-4" />
-									</Button>
-								)}
-							</m.div>
-						)}
-					</AnimatePresence>
-					<AnimatePresence>
-						{isExpanded && inputValue && isOverlayVisible && (
-							<m.div
-								key="check-button"
-								initial={{ opacity: 0, scale: 0.5 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.5 }}
-								className="ml-2"
-							>
-								<Button
-									variant="outline"
-									size="icon"
-									className="bg-white p-6 border border-gray-300 rounded-full"
-									onClick={handleConfirmSearch}
+						<AnimatePresence>
+							{isExpanded && ( // Animated input field
+								<m.div
+									key="search-input"
+									initial={{ width: '0%', opacity: 0, marginLeft: '0px' }}
+									animate={{
+										width: `calc(100% - 60px ${
+											inputValue && isOverlayVisible ? '- 60px' : ''
+										})`,
+										opacity: 1,
+										marginLeft: '8px',
+									}}
+									exit={{ width: '0%', opacity: 0, marginLeft: '0px' }}
+									transition={{ duration: 0.3, ease: 'easeInOut' }}
+									className="relative flex items-center flex-grow"
 								>
-									<Check className="h-4 w-4" />
-								</Button>
-							</m.div>
-						)}
-					</AnimatePresence>
-				</div>
+									<Input
+										ref={inputRef}
+										type="search"
+										value={inputValue}
+										onChange={handleInputChange}
+										onFocus={handleFocus}
+										onBlur={handleBlur}
+										onKeyDown={handleKeyDown}
+										placeholder="搜尋演出"
+										aria-label="Search artists"
+										className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
+									/>
+								</m.div>
+							)}
+						</AnimatePresence>
+
+						<AnimatePresence>
+							{isExpanded && inputValue && isOverlayVisible && (
+								<m.div
+									key="check-button"
+									initial={{ opacity: 0, scale: 0.5 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.5 }}
+									className="ml-2"
+								>
+									<Button
+										type="button"
+										variant="outline"
+										size="icon"
+										className="bg-white p-6 border border-gray-300 rounded-full"
+										onClick={handleConfirmSearch}
+									>
+										<Check className="h-4 w-4" />
+									</Button>
+								</m.div>
+							)}
+						</AnimatePresence>
+					</div>
+				</form>
 			</LazyMotion>
 		</>
 	);
