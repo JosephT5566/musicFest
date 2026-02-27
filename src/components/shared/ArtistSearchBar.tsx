@@ -49,8 +49,9 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 	const debouncedSearch = useMemo(
 		() =>
 			debounce((query: string) => {
-				if (query) {
-					const results = fuse.search(query);
+				const trimmedQuery = query.trim();
+				if (trimmedQuery) {
+					const results = fuse.search(trimmedQuery);
 					onSearchResults(results.map((result) => result.item.id));
 				} else {
 					onClear();
@@ -63,12 +64,6 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		const query = event.target.value;
 		setInputValue(query);
 		debouncedSearch(query);
-	};
-
-	const handleClear = () => {
-		setInputValue('');
-		onClear();
-		inputRef.current?.focus();
 	};
 
 	const handleConfirmSearch = () => {
