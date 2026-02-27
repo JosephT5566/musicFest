@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useLockBodyScroll } from 'react-use';
 import { AnimatePresence, m, LazyMotion, domAnimation } from 'framer-motion';
-import { Search, SearchX, X } from 'lucide-react';
+import { Search, SearchX, X, Check } from 'lucide-react';
 import Fuse from 'fuse.js';
 import debounce from 'lodash/debounce';
 import { Button } from '@/components/ui/button';
@@ -71,6 +71,17 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		inputRef.current?.focus();
 	};
 
+	const handleConfirmSearch = () => {
+		setIsOverlayVisible(false);
+		inputRef.current?.blur();
+	};
+
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === 'Enter') {
+			handleConfirmSearch();
+		}
+	};
+
 	const handleToggleExpand = () => {
 		if (!isExpanded) {
 			// open the search.
@@ -134,7 +145,7 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 								key="search-input"
 								initial={{ width: '0%', opacity: 0, marginLeft: '0px' }}
 								animate={{
-									width: 'calc(100% - 60px)',
+									width: `calc(100% - 60px ${inputValue && isOverlayVisible ? '- 60px' : ''})`,
 									opacity: 1,
 									marginLeft: '8px',
 								}}
@@ -149,6 +160,7 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 									onChange={handleInputChange}
 									onFocus={handleFocus}
 									onBlur={handleBlur}
+									onKeyDown={handleKeyDown}
 									placeholder="Search artists..."
 									className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
 								/>
@@ -162,6 +174,26 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 										<X className="h-4 w-4" />
 									</Button>
 								)}
+							</m.div>
+						)}
+					</AnimatePresence>
+					<AnimatePresence>
+						{isExpanded && inputValue && isOverlayVisible && (
+							<m.div
+								key="check-button"
+								initial={{ opacity: 0, scale: 0.5 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.5 }}
+								className="ml-2"
+							>
+								<Button
+									variant="outline"
+									size="icon"
+									className="bg-white p-6 border border-gray-300 rounded-full"
+									onClick={handleConfirmSearch}
+								>
+									<Check className="h-4 w-4" />
+								</Button>
 							</m.div>
 						)}
 					</AnimatePresence>
