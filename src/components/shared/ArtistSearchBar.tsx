@@ -68,7 +68,11 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		inputRef.current?.focus();
 	};
 
-	const handleToggleExpand = () => {
+	const handleToggleExpand = (e?: React.PointerEvent) => {
+		if (e) {
+			e.preventDefault();
+		}
+
 		setIsExpanded((prevIsExpanded) => {
 			if (prevIsExpanded) {
 				setInputValue('');
@@ -103,7 +107,7 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 					className="bg-white p-6 border border-gray-300 rounded-full z-10 flex-shrink-0"
 					variant="outline"
 					size="icon"
-					onClick={handleToggleExpand}
+					onPointerDown={handleToggleExpand}
 				>
 					{isExpanded ? <SearchX /> : <Search />}
 				</Button>
