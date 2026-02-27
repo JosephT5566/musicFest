@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useLockBodyScroll } from 'react-use';
 import { AnimatePresence, m, LazyMotion, domAnimation } from 'framer-motion';
 import { Search, SearchX, X } from 'lucide-react';
 import Fuse from 'fuse.js';
@@ -25,8 +26,10 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 }) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [inputValue, setInputValue] = useState('');
+	const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const searchContainerRef = useRef<HTMLDivElement>(null);
+	useLockBodyScroll(isOverlayVisible);
 
 	const fuse = useMemo(
 		() =>
@@ -68,20 +71,22 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		inputRef.current?.focus();
 	};
 
-	const handleToggleExpand = (e?: React.PointerEvent) => {
-		if (e) {
-			e.preventDefault();
+	const handleToggleExpand = () => {
+		if (!isExpanded) {
+			// open the search.
+			setIsExpanded(true);
+		} else {
+			// close the search.
+			setInputValue('');
+			onClear();
+			inputRef.current?.focus();
+			setIsExpanded(false);
+			setIsOverlayVisible(false);
 		}
+	};
 
-		setIsExpanded((prevIsExpanded) => {
-			if (prevIsExpanded) {
-				setInputValue('');
-				onClear();
-				return false;
-			} else {
-				return true;
-			}
-		});
+	const handleFocus = () => {
+		setIsOverlayVisible(true);
 	};
 
 	const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -92,60 +97,77 @@ const ArtistSearchBar: React.FC<ArtistSearchBarProps> = ({
 		) {
 			return;
 		}
+
+		setIsOverlayVisible(false); // Always hide overlay on blur
+
+		// Collapse the search bar only if the input is empty
 		if (inputValue === '') {
 			setIsExpanded(false);
 		}
 	};
 
 	return (
-		<LazyMotion features={domAnimation}>
-			<div
-				ref={searchContainerRef}
-				className={cn('relative flex items-center w-full', className)}
-			>
-				<Button
-					className="bg-white p-6 border border-gray-300 rounded-full z-10 flex-shrink-0"
-					variant="outline"
-					size="icon"
-					onPointerDown={handleToggleExpand}
+		<>
+			{isOverlayVisible && (
+				<div
+					className="fixed inset-0 bg-black/30 backdrop-blur-sm z-5"
+					onClick={() => setIsOverlayVisible(false)}
+				/>
+			)}
+			<LazyMotion features={domAnimation}>
+				<div
+					ref={searchContainerRef}
+					className={cn('relative flex items-center w-full z-10', className)}
 				>
-					{isExpanded ? <SearchX /> : <Search />}
-				</Button>
+					<Button
+						className="bg-white p-6 border border-gray-300 rounded-full z-10 flex-shrink-0"
+						variant="outline"
+						size="icon"
+						onClick={handleToggleExpand}
+					>
+						{isExpanded ? <SearchX /> : <Search />}
+					</Button>
 
-				<AnimatePresence>
-					{isExpanded && ( // Animated input field
-						<m.div
-							key="search-input"
-							initial={{ width: '0%', opacity: 0, marginLeft: '0px' }}
-							animate={{ width: 'calc(100% - 60px)', opacity: 1, marginLeft: '8px' }}
-							exit={{ width: '0%', opacity: 0, marginLeft: '0px' }}
-							transition={{ duration: 0.3, ease: 'easeInOut' }}
-							className="relative flex items-center flex-grow"
-						>
-							<Input
-								ref={inputRef}
-								type="text"
-								value={inputValue}
-								onChange={handleInputChange}
-								onBlur={handleBlur}
-								placeholder="Search artists..."
-								className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
-							/>
-							{inputValue && ( // Clear input button
-								<Button
-									variant="ghost"
-									size="icon"
-									className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
-									onClick={handleClear}
-								>
-									<X className="h-4 w-4" />
-								</Button>
-							)}
-						</m.div>
-					)}
-				</AnimatePresence>
-			</div>
-		</LazyMotion>
+					<AnimatePresence>
+						{isExpanded && ( // Animated input field
+							<m.div
+								key="search-input"
+								initial={{ width: '0%', opacity: 0, marginLeft: '0px' }}
+								animate={{
+									width: 'calc(100% - 60px)',
+									opacity: 1,
+									marginLeft: '8px',
+								}}
+								exit={{ width: '0%', opacity: 0, marginLeft: '0px' }}
+								transition={{ duration: 0.3, ease: 'easeInOut' }}
+								className="relative flex items-center flex-grow"
+							>
+								<Input
+									ref={inputRef}
+									type="text"
+									value={inputValue}
+									onChange={handleInputChange}
+									onFocus={handleFocus}
+									onBlur={handleBlur}
+									placeholder="Search artists..."
+									className="p-6 transition-all duration-300 ease-in-out w-full bg-white border border-gray-300 rounded-full focus-visible:ring-gray-600"
+								/>
+								{inputValue && ( // Clear input button
+									<Button
+										variant="ghost"
+										size="icon"
+										className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
+										onClick={handleClear}
+									>
+										<X className="h-4 w-4" />
+									</Button>
+								)}
+							</m.div>
+						)}
+					</AnimatePresence>
+				</div>
+			</LazyMotion>
+		</>
 	);
 };
 
