@@ -47,9 +47,9 @@ const ShowButton = (props: {
 
 	return (
 		<Button
-			className={`font-sans w-full rounded-md border-none tracking-normal normal-case bg-paper hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-800 ${
+			className={`font-sans px-2 w-full rounded-md border-none tracking-normal normal-case bg-paper hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-800 ${
 				active ? 'text-secondary-foreground' : 'text-foreground'
-			} text-xs sm:text-sm`}
+			} text-xs sm:text-sm whitespace-pre-wrap`}
 			style={{
 				height: `${height * SCALE_UNIT}rem`,
 				backgroundColor: active ? buttonColor.main : undefined,
