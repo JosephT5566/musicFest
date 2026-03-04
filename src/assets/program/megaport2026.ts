@@ -74,8 +74,8 @@ export const ARTISTS_2026: IArtistV2[] = [
 		name: 'Aooo [JP]',
 		imgUrl: '',
 		description: ``,
-		startTime: `${DAY1}15:50:00`,
-		endTime: `${DAY1}16:30:00`,
+		startTime: `${DAY1}T15:50:00`,
+		endTime: `${DAY1}T16:30:00`,
 		stageName: `南霸天`,
 	},
 	{
