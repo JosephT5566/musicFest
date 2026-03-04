@@ -34,6 +34,7 @@ export interface IProgramList {
 export interface IArtistV2 {
 	id: string;
 	name: string;
+	subtitle?: string;
 	description: string;
 	imgUrl: string;
 	date?: string;
