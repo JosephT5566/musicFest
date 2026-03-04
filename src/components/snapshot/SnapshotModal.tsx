@@ -52,7 +52,7 @@ export default function SnapshotModal({
 				</DialogHeader>
 				<div className="overflow-auto">
 					<TimeTableSnapshot
-						programList={schedule}
+						schedule={schedule}
 						selectedDay={selectedDay}
 						artists={artists}
 						captureRef={captureRef}
