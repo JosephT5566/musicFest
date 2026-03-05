@@ -41,7 +41,7 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 					onClick={() => routes.lineup && handleChange(routes.lineup)}
 				>
 					<ScrollText className="w-6 h-6" />
-					<span className="text-xs">Lineup</span>
+					<span className="text-xs">演出列表</span>
 				</Button>
 			)}
 			<Button
@@ -55,7 +55,7 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 				onClick={() => handleChange(routes.root)}
 			>
 				<Sheet className="w-6 h-6" />
-				<span className="text-xs">Timetable</span>
+				<span className="text-xs">時間表</span>
 			</Button>
 			<Button
 				variant="ghost"
@@ -68,7 +68,7 @@ const MobileBottomNav = ({ routes }: MobileBottomNavProps) => {
 				onClick={() => handleChange(routes.map)}
 			>
 				<Map className="w-6 h-6" />
-				<span className="text-xs">Map</span>
+				<span className="text-xs">地圖</span>
 			</Button>
 		</nav>
 	);
