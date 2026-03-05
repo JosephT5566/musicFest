@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
-import { Camera, X } from 'lucide-react';
+import { Download, X } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -33,7 +33,7 @@ export default function SnapshotModal({
 		if (captureRef.current) {
 			html2canvas(captureRef.current, { scale: 2 }).then((canvas) => {
 				const link = document.createElement('a');
-				link.download = 'timetable.png';
+				link.download = 'megaport-2026-timetable.png';
 				link.href = canvas.toDataURL('image/png');
 				link.click();
 			});
@@ -45,7 +45,7 @@ export default function SnapshotModal({
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent className="w-[90vw] h-[90vh] max-w-full p-2">
 				<DialogHeader>
-					<DialogTitle>全畫面預覽</DialogTitle>
+					<DialogTitle>單頁檢視</DialogTitle>
 					<DialogClose className="absolute top-2 right-2">
 						<X className="h-6 w-6 bg-white rounded-full p-1"></X>
 					</DialogClose>
@@ -64,7 +64,7 @@ export default function SnapshotModal({
 					size="icon"
 					className="absolute bottom-4 right-4"
 				>
-					<Camera />
+					<Download />
 				</Button>
 			</DialogContent>
 		</Dialog>

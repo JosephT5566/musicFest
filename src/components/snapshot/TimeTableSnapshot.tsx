@@ -244,8 +244,11 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 			ref={captureRef}
 			className="w-[100vw] h-[100vh] px-4 pb-4 relative flex flex-col mb-[1em] overflow-y-hidden bg-background"
 		>
-			<div className="h-1/3 flex items-center justify-center">
-				<h1 className="text-5xl font-bold text-center tracking-widest">Megaport 2026</h1>
+			<div className="h-1/3 flex pb-10 items-end justify-center font-['Contrail_One'] font-bold whitespace-pre-wrap">
+				<h1 className="text-5xl font-bold text-center tracking-widest">
+					{`Megaport
+2026`}
+				</h1>
 			</div>
 			<div className="h-2/3 flex flex-col w-full gap-3">
 				<div

@@ -71,8 +71,9 @@ const Page = ({ schedule, artists, storageKey }: PageProps) => {
 				<div className="flex items-center gap-2">
 					<DisplayModeSelector mode={mode} setMode={setMode} />
 					<SnapshotModal schedule={schedule} artists={artists} selectedDay={selectedDay}>
-						<Button variant="outline" size="icon">
+						<Button variant="outline">
 							<Maximize />
+							{'單頁檢視'}
 						</Button>
 					</SnapshotModal>
 				</div>
