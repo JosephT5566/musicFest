@@ -43,7 +43,7 @@ export default function SnapshotModal({
 	return (
 		<Dialog>
 			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent className="w-[90vw] h-[90vh] max-w-full p-2">
+			<DialogContent className="w-[90dvw] h-[90dvh] max-w-full p-2">
 				<DialogHeader>
 					<DialogTitle>單頁檢視</DialogTitle>
 					<DialogClose className="absolute top-2 right-2">
