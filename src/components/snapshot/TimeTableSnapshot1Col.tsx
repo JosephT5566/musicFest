@@ -17,7 +17,7 @@ import { useGetSelectedShow } from 'providers/ShowsProvider';
 import { palette } from 'styles/palette';
 import { ISchedule, IArtistV2 } from 'types/show';
 
-const SCALE_UNIT = 1.1;
+const SCALE_UNIT = 1.2;
 
 interface props {
 	schedule: ISchedule;
