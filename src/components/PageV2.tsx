@@ -89,7 +89,7 @@ const Page = ({ schedule, artists, storageKey }: PageProps) => {
 				<TimeLineV2 programList={schedule} selectedDay={selectedDay} artists={artists} />
 			)}
 			<FixedButtonsContainer>
-				<NotificationButton />
+				{/* <NotificationButton /> */}
 				<SaveButton onOpenSnack={handleOpenSnack} />
 				<ResetButton />
 			</FixedButtonsContainer>

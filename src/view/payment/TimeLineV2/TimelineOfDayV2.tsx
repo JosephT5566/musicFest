@@ -187,7 +187,7 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 					/>
 				))}
 			</div>
-			<DrawerContent className="h-[30dvh]">
+			<DrawerContent className="h-[35dvh]">
 				{selectedShow && (
 					<div className="flex flex-col h-full">
 						<div>
@@ -202,7 +202,7 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 							</DrawerHeader>
 							<P className="font-bold text-center">{selectedShow.stageName}</P>
 						</div>
-						<div className="mt-auto p-4">
+						<div className="p-4">
 							<div className="flex flex-col gap-2 w-fit">
 								{selectedShow.stageName &&
 									selectedShow.startTime &&

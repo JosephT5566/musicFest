@@ -17,7 +17,7 @@ import { useGetSelectedShow } from 'providers/ShowsProvider';
 import { palette } from 'styles/palette';
 import { ISchedule, IArtistV2 } from 'types/show';
 
-const SCALE_UNIT = 1.6;
+const SCALE_UNIT = 1.5;
 
 interface props {
 	schedule: ISchedule;
@@ -224,7 +224,9 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 	const day_startTime = parseISO(schedule[selectedDay].dayStartTime!);
 	const day_endTime = parseISO(schedule[selectedDay].dayEndTime!);
 	const totalDuration = differenceInMinutes(day_endTime, day_startTime);
+	console.log('Total duration in minutes:', totalDuration);
 	const timeSliceDuration = totalDuration / columnCount;
+	console.log('Time slice duration in minutes:', timeSliceDuration);
 
 	const columns: (typeof stageArtists)[] = Array.from({ length: columnCount }, () => []);
 
@@ -242,7 +244,7 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 	return (
 		<div
 			ref={captureRef}
-			className="w-[100vw] h-[100vh] px-4 pb-4 relative flex flex-col mb-[1em] overflow-y-hidden bg-background"
+			className="w-screen h-screen px-4 pb-4 relative flex flex-col mb-[1em] bg-background"
 		>
 			<div className="h-1/3 flex pb-10 items-end justify-center font-['Contrail_One'] font-bold whitespace-pre-wrap">
 				<h1 className="text-5xl font-bold text-center tracking-widest">
