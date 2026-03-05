@@ -39,6 +39,13 @@ type ArtistWithLayout = IArtistV2 & {
 	};
 };
 
+/**
+ * Truncates a string with an ellipsis based on the available height.
+ * This is a workaround for html2canvas not supporting CSS line-clamp.
+ * @param name The string to truncate.
+ * @param heightInRem The available height for the container in rem units.
+ * @returns The truncated string.
+ */
 function truncateName(name: string, heightInRem: number): string {
 	// p-2 is 0.5rem top/bottom, so 1rem total vertical padding.
 	const contentHeightInRem = heightInRem - 1;
@@ -53,7 +60,7 @@ function truncateName(name: string, heightInRem: number): string {
 		return '...'; // Or empty string if card is too small
 	}
 
-	// Estimate characters per line. This is a fragile assumption.
+	// Estimate characters per line. This is a fragile assumption as it depends on character width and container width.
 	const charsPerLine = 20;
 	const maxChars = numLines * charsPerLine;
 
@@ -64,6 +71,13 @@ function truncateName(name: string, heightInRem: number): string {
 	return name;
 }
 
+/**
+ * Takes a list of artists for a column and calculates their layout properties
+ * to handle overlaps by placing them side-by-side.
+ * @param artists Artists in the column, sorted by start time.
+ * @param columnStartTime The start time of the first artist in the column.
+ * @returns A list of artists with added layout properties (top, height, width, left, isOverlapping).
+ */
 function getLayoutedArtists(
 	artists: (IArtistV2 & { _start: Date; _end: Date; stageName: string })[],
 	columnStartTime: Date,
@@ -72,8 +86,8 @@ function getLayoutedArtists(
 		return [];
 	}
 
+	// 1. Group artists that visually overlap in time.
 	const groups: (typeof artists)[] = [];
-
 	if (artists.length > 0) {
 		let currentGroup = [artists[0]];
 		let groupEndTime = artists[0]._end;
@@ -91,13 +105,14 @@ function getLayoutedArtists(
 				groupEndTime = artist._end;
 			}
 		}
-
 		groups.push(currentGroup);
 	}
 
 	const layoutedArtists: ArtistWithLayout[] = [];
 
 	for (const group of groups) {
+		// 2. For each group, find the maximum number of concurrent artists.
+		// This determines how many sub-columns we need.
 		const points = group
 			.flatMap((a) => [
 				{ time: a._start, type: 1 },
@@ -107,15 +122,15 @@ function getLayoutedArtists(
 
 		let maxConcurrent = 0;
 		let currentConcurrent = 0;
-
 		for (const point of points) {
 			currentConcurrent += point.type;
 			maxConcurrent = Math.max(maxConcurrent, currentConcurrent);
 		}
 
 		const isOverlapping = maxConcurrent > 1;
-		const laneEndTimes = new Array(maxConcurrent).fill(new Date(0));
 
+		// 3. Assign each artist to a "lane" (sub-column).
+		const laneEndTimes = new Array(maxConcurrent).fill(new Date(0));
 		for (const artist of group) {
 			for (let i = 0; i < laneEndTimes.length; i++) {
 				if (artist._start >= laneEndTimes[i]) {
@@ -155,6 +170,10 @@ function normalizeDateString(dateString?: string) {
 }
 
 export default function TimeTableSnapshot({ schedule, selectedDay, artists, captureRef }: props) {
+	if (!schedule || !schedule[selectedDay]) {
+		return <div>Loading...</div>;
+	}
+
 	const stages = schedule[selectedDay].stages;
 	const selectedIds = useGetSelectedShow();
 
@@ -199,11 +218,26 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 		.sort((a, b) => a._start.getTime() - b._start.getTime());
 
 	const columnCount = 2;
-	const artistsPerColumn = Math.ceil(stageArtists.length / columnCount);
 
-	const columns = Array.from({ length: columnCount }, (_, i) =>
-		stageArtists.slice(i * artistsPerColumn, (i + 1) * artistsPerColumn),
-	);
+	// Distribute artists into columns based on fixed time slices of the day
+	// to create a balanced layout.
+	const day_startTime = parseISO(schedule[selectedDay].dayStartTime!);
+	const day_endTime = parseISO(schedule[selectedDay].dayEndTime!);
+	const totalDuration = differenceInMinutes(day_endTime, day_startTime);
+	const timeSliceDuration = totalDuration / columnCount;
+
+	const columns: (typeof stageArtists)[] = Array.from({ length: columnCount }, () => []);
+
+	for (const artist of stageArtists) {
+		const artistOffset = differenceInMinutes(artist._start, day_startTime);
+		let columnIndex = Math.floor(artistOffset / timeSliceDuration);
+		if (columnIndex >= columnCount) {
+			columnIndex = columnCount - 1;
+		}
+		if (columns[columnIndex]) {
+			columns[columnIndex].push(artist);
+		}
+	}
 
 	return (
 		<div
