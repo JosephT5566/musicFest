@@ -19,8 +19,11 @@ import moment from 'moment';
 import ResetButton from 'components/ResetButton';
 import SaveButton from 'components/SaveButton';
 import NotificationButton from 'components/NotificationButton';
+import SnapshotModal from 'components/snapshot/SnapshotModal';
 import useSendNotification from 'hooks/useSendNotification';
 import { PageRoutes } from 'types/navigation';
+import { Button } from '@/components/ui/button';
+import { Maximize } from 'lucide-react';
 
 const getActiveShows = (artists: IArtistV2[], selectedShows: string[]): IArtistV2[] => {
 	return artists.filter((artist) => selectedShows.includes(artist.id));
@@ -65,7 +68,15 @@ const Page = ({ schedule, artists, storageKey }: PageProps) => {
 	return (
 		<PageContainer>
 			<div className="w-full flex justify-between px-0 md:px-4 flex-col md:flex-row gap-2 items-start md:items-center">
-				<DisplayModeSelector mode={mode} setMode={setMode} />
+				<div className="flex items-center gap-2">
+					<DisplayModeSelector mode={mode} setMode={setMode} />
+					<SnapshotModal schedule={schedule} artists={artists} selectedDay={selectedDay}>
+						<Button variant="outline">
+							<Maximize />
+							{'單頁檢視'}
+						</Button>
+					</SnapshotModal>
+				</div>
 				<DaySelector
 					days={schedule.map((d) => moment(d.date).format('MM/DD'))}
 					selectedDay={selectedDay}
