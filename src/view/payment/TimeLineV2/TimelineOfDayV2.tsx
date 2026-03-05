@@ -189,53 +189,59 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 			</div>
 			<DrawerContent className="h-[30dvh]">
 				{selectedShow && (
-					<>
-						<DrawerHeader>
-							<DrawerTitle className="text-center">{selectedShow.name}</DrawerTitle>
-							<DrawerDescription className="">
-								{moment(selectedShow.startTime).format('YYYY/M/D(ddd) HH:mm')} -{' '}
-								{moment(selectedShow.endTime).format('HH:mm')}
-							</DrawerDescription>
-						</DrawerHeader>
-						<P className="font-bold text-center">{selectedShow.stageName}</P>
-						<div className="absolute bottom-8 left-4 flex flex-col gap-2">
-							{selectedShow.stageName &&
-								selectedShow.startTime &&
-								selectedShow.endTime && (
-									<Button
-										onClick={() => {
-											const formattedStartTime = toUTCFormat(
-												selectedShow.startTime!,
-											);
-											const formattedEndTime = toUTCFormat(
-												selectedShow.endTime!,
-											);
-
-											const calendarLink = generateGoogleCalendarLink({
-												title: `${selectedShow.stageName!} - ${selectedShow.name}`,
-												startDateTime: formattedStartTime,
-												endDateTime: formattedEndTime,
-												details: selectedShow.stageName!,
-												location: '',
-											});
-											window.open(calendarLink, '_blank');
-										}}
-										className="bg-green-600"
-									>
-										新增到 Google 日曆
-									</Button>
-								)}
-							<Button
-								onClick={() => {
-									selectShow(selectedShow.id);
-								}}
-								variant="outline"
-								className="border-red-600 text-red-600"
-							>
-								移除選擇
-							</Button>
+					<div className="flex flex-col h-full">
+						<div>
+							<DrawerHeader>
+								<DrawerTitle className="text-center">
+									{selectedShow.name}
+								</DrawerTitle>
+								<DrawerDescription className="">
+									{moment(selectedShow.startTime).format('YYYY/M/D(ddd) HH:mm')} -{' '}
+									{moment(selectedShow.endTime).format('HH:mm')}
+								</DrawerDescription>
+							</DrawerHeader>
+							<P className="font-bold text-center">{selectedShow.stageName}</P>
 						</div>
-					</>
+						<div className="mt-auto p-4">
+							<div className="flex flex-col gap-2 w-fit">
+								{selectedShow.stageName &&
+									selectedShow.startTime &&
+									selectedShow.endTime && (
+										<Button
+											onClick={() => {
+												const formattedStartTime = toUTCFormat(
+													selectedShow.startTime!,
+												);
+												const formattedEndTime = toUTCFormat(
+													selectedShow.endTime!,
+												);
+
+												const calendarLink = generateGoogleCalendarLink({
+													title: `${selectedShow.stageName!} - ${selectedShow.name}`,
+													startDateTime: formattedStartTime,
+													endDateTime: formattedEndTime,
+													details: selectedShow.stageName!,
+													location: '',
+												});
+												window.open(calendarLink, '_blank');
+											}}
+											className="bg-green-600"
+										>
+											新增到 Google 日曆
+										</Button>
+									)}
+								<Button
+									onClick={() => {
+										selectShow(selectedShow.id);
+									}}
+									variant="outline"
+									className="border-red-600 text-red-600"
+								>
+									移除選擇
+								</Button>
+							</div>
+						</div>
+					</div>
 				)}
 			</DrawerContent>
 		</Drawer>
