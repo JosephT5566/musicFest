@@ -17,13 +17,38 @@ import { useGetSelectedShow } from 'providers/ShowsProvider';
 import { palette } from 'styles/palette';
 import { ISchedule, IArtistV2 } from 'types/show';
 
-const SCALE_UNIT = 1.7;
+const SCALE_UNIT = 1.6;
 
 interface props {
 	schedule: ISchedule;
 	selectedDay: number;
 	artists: IArtistV2[];
 	captureRef: React.RefObject<HTMLDivElement>;
+}
+
+function truncateName(name: string, heightInRem: number): string {
+	// p-2 is 0.5rem top/bottom, so 1rem total vertical padding.
+	const contentHeightInRem = heightInRem - 1;
+	// Stage name takes up space at the bottom. It's text-xs, so let's estimate 1rem line-height.
+	const stageNameHeightInRem = 1;
+	const nameAvailableHeightInRem = contentHeightInRem - stageNameHeightInRem;
+
+	// line-height for text-xs is 1rem.
+	const numLines = Math.floor(nameAvailableHeightInRem);
+
+	if (numLines <= 0) {
+		return '...'; // Or empty string if card is too small
+	}
+
+	// Estimate characters per line. This is a fragile assumption.
+	const charsPerLine = 20;
+	const maxChars = numLines * charsPerLine;
+
+	if (name.length > maxChars) {
+		return name.substring(0, maxChars - 3) + '...';
+	}
+
+	return name;
 }
 
 function normalizeDateString(dateString?: string) {
@@ -91,10 +116,10 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 			ref={captureRef}
 			className="w-[100vw] h-[100vh] px-4 pb-4 relative flex flex-col mb-[1em] overflow-y-hidden bg-background"
 		>
-			<div className="h-1/4 flex items-center justify-center">
+			<div className="h-1/3 flex items-center justify-center">
 				<h1 className="text-5xl font-bold text-center tracking-widest">Megaport 2026</h1>
 			</div>
-			<div className="h-3/4 flex flex-col w-full gap-3">
+			<div className="h-2/3 flex flex-col w-full gap-3">
 				<div
 					className="grid gap-3 w-full h-full"
 					style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
@@ -138,7 +163,7 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 										{getMinutes(currentTime) === 0 ||
 										getMinutes(currentTime) === 30 ? (
 											<>
-												<span className="absolute -top-[0.4rem] right-2.5 text-xs">
+												<span className="absolute -top-[0.3rem] right-2.5 text-[8px]">
 													{format(currentTime, 'HH:mm')}
 												</span>
 												<div
@@ -161,7 +186,7 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 						return (
 							<div
 								key={index}
-								className="flex flex-row"
+								className="flex flex-row gap-1"
 								style={{ height: `${columnHeight}rem` }}
 							>
 								<div className="w-8 shrink-0 relative">{scaleTicks}</div>
@@ -182,6 +207,9 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 														stageIndex as keyof typeof palette.stage
 													]
 												: null;
+										
+										const truncatedName = truncateName(artist.name, 3);
+
 
 										return (
 											<div
@@ -193,7 +221,7 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 												}}
 											>
 												<div
-													className="flex flex-col justify-between p-2 items-stretch rounded-r-md bg-card text-card-foreground shadow-sm h-full"
+													className="flex flex-col justify-between px-2 pb-3 items-stretch rounded-r-md bg-card text-card-foreground shadow-sm h-full"
 													style={{
 														backgroundColor:
 															`${color?.main}9D` || 'white',
@@ -201,9 +229,9 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 													}}
 												>
 													<div className="text-xs font-bold text-foreground">
-														{artist.name}
+														{truncatedName}
 													</div>
-													<div className="text-xs text-gray-700">
+													<div className="text-xs text-[#364153]">
 														{artist.stageName}
 													</div>
 												</div>
