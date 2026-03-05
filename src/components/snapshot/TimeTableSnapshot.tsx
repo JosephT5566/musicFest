@@ -35,6 +35,7 @@ type ArtistWithLayout = IArtistV2 & {
 		height: number;
 		width: number;
 		left: number;
+		isOverlapping: boolean;
 	};
 };
 
@@ -72,9 +73,11 @@ function getLayoutedArtists(
 	}
 
 	const groups: (typeof artists)[] = [];
+
 	if (artists.length > 0) {
 		let currentGroup = [artists[0]];
 		let groupEndTime = artists[0]._end;
+
 		for (let i = 1; i < artists.length; i++) {
 			const artist = artists[i];
 			if (artist._start < groupEndTime) {
@@ -88,6 +91,7 @@ function getLayoutedArtists(
 				groupEndTime = artist._end;
 			}
 		}
+
 		groups.push(currentGroup);
 	}
 
@@ -103,12 +107,15 @@ function getLayoutedArtists(
 
 		let maxConcurrent = 0;
 		let currentConcurrent = 0;
+
 		for (const point of points) {
 			currentConcurrent += point.type;
 			maxConcurrent = Math.max(maxConcurrent, currentConcurrent);
 		}
 
+		const isOverlapping = maxConcurrent > 1;
 		const laneEndTimes = new Array(maxConcurrent).fill(new Date(0));
+
 		for (const artist of group) {
 			for (let i = 0; i < laneEndTimes.length; i++) {
 				if (artist._start >= laneEndTimes[i]) {
@@ -125,6 +132,7 @@ function getLayoutedArtists(
 								(differenceInMinutes(artist._end, artist._start) / 15) * SCALE_UNIT,
 							width: width,
 							left: left,
+							isOverlapping,
 						},
 					});
 					laneEndTimes[i] = artist._end;
@@ -134,7 +142,6 @@ function getLayoutedArtists(
 		}
 	}
 
-	console.log('Layouted Artists:', layoutedArtists);
 	return layoutedArtists;
 }
 
@@ -281,7 +288,8 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 								<div className="w-8 shrink-0 relative">{scaleTicks}</div>
 								<div className="relative w-full">
 									{layoutedArtists.map((artist) => {
-										const { top, height, width, left } = artist.layout;
+										const { top, height, width, left, isOverlapping } =
+											artist.layout;
 
 										const stageIndex = stageNameIndexMap.get(artist.stageName);
 										const color =
@@ -312,10 +320,18 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 														color: 'white',
 													}}
 												>
-													<div className="text-xs font-bold text-foreground">
+													<div
+														className={`text-xs font-bold text-foreground ${
+															isOverlapping ? 'text-[10px]' : ''
+														}`}
+													>
 														{truncatedName}
 													</div>
-													<div className="text-xs text-[#364153]">
+													<div
+														className={`text-xs text-[#364153] ${
+															isOverlapping ? 'text-[10px]' : ''
+														}`}
+													>
 														{artist.stageName}
 													</div>
 												</div>
