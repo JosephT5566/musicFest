@@ -11,7 +11,7 @@ import {
 	DialogClose,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import TimeTableSnapshot from './TimeTableSnapshot';
+import TimeTableSnapshot from './TimeTableSnapshot1Col';
 import { ISchedule, IArtistV2 } from 'types/show';
 
 interface SnapshotModalProps {
