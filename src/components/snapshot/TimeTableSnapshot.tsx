@@ -26,6 +26,18 @@ interface props {
 	captureRef: React.RefObject<HTMLDivElement>;
 }
 
+type ArtistWithLayout = IArtistV2 & {
+	stageName: string;
+	_start: Date;
+	_end: Date;
+	layout: {
+		top: number;
+		height: number;
+		width: number;
+		left: number;
+	};
+};
+
 function truncateName(name: string, heightInRem: number): string {
 	// p-2 is 0.5rem top/bottom, so 1rem total vertical padding.
 	const contentHeightInRem = heightInRem - 1;
@@ -49,6 +61,81 @@ function truncateName(name: string, heightInRem: number): string {
 	}
 
 	return name;
+}
+
+function getLayoutedArtists(
+	artists: (IArtistV2 & { _start: Date; _end: Date; stageName: string })[],
+	columnStartTime: Date,
+): ArtistWithLayout[] {
+	if (artists.length === 0) {
+		return [];
+	}
+
+	const groups: (typeof artists)[] = [];
+	if (artists.length > 0) {
+		let currentGroup = [artists[0]];
+		let groupEndTime = artists[0]._end;
+		for (let i = 1; i < artists.length; i++) {
+			const artist = artists[i];
+			if (artist._start < groupEndTime) {
+				currentGroup.push(artist);
+				if (artist._end > groupEndTime) {
+					groupEndTime = artist._end;
+				}
+			} else {
+				groups.push(currentGroup);
+				currentGroup = [artist];
+				groupEndTime = artist._end;
+			}
+		}
+		groups.push(currentGroup);
+	}
+
+	const layoutedArtists: ArtistWithLayout[] = [];
+
+	for (const group of groups) {
+		const points = group
+			.flatMap((a) => [
+				{ time: a._start, type: 1 },
+				{ time: a._end, type: -1 },
+			])
+			.sort((a, b) => a.time.getTime() - b.time.getTime());
+
+		let maxConcurrent = 0;
+		let currentConcurrent = 0;
+		for (const point of points) {
+			currentConcurrent += point.type;
+			maxConcurrent = Math.max(maxConcurrent, currentConcurrent);
+		}
+
+		const laneEndTimes = new Array(maxConcurrent).fill(new Date(0));
+		for (const artist of group) {
+			for (let i = 0; i < laneEndTimes.length; i++) {
+				if (artist._start >= laneEndTimes[i]) {
+					const width = 100 / maxConcurrent;
+					const left = i * width;
+
+					layoutedArtists.push({
+						...artist,
+						layout: {
+							top:
+								(differenceInMinutes(artist._start, columnStartTime) / 15) *
+								SCALE_UNIT,
+							height:
+								(differenceInMinutes(artist._end, artist._start) / 15) * SCALE_UNIT,
+							width: width,
+							left: left,
+						},
+					});
+					laneEndTimes[i] = artist._end;
+					break;
+				}
+			}
+		}
+	}
+
+	console.log('Layouted Artists:', layoutedArtists);
+	return layoutedArtists;
 }
 
 function normalizeDateString(dateString?: string) {
@@ -163,7 +250,7 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 										{getMinutes(currentTime) === 0 ||
 										getMinutes(currentTime) === 30 ? (
 											<>
-												<span className="absolute -top-[0.3rem] right-2.5 text-[8px]">
+												<span className="absolute -top-[0.5rem] right-2.5 text-[8px]">
 													{format(currentTime, 'HH:mm')}
 												</span>
 												<div
@@ -183,6 +270,8 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 							}
 						}
 
+						const layoutedArtists = getLayoutedArtists(artists, columnStartTime);
+
 						return (
 							<div
 								key={index}
@@ -191,14 +280,8 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 							>
 								<div className="w-8 shrink-0 relative">{scaleTicks}</div>
 								<div className="relative w-full">
-									{artists.map((artist) => {
-										const height =
-											(differenceInMinutes(artist._end, artist._start) / 15) *
-											SCALE_UNIT;
-										const top =
-											(differenceInMinutes(artist._start, columnStartTime) /
-												15) *
-											SCALE_UNIT;
+									{layoutedArtists.map((artist) => {
+										const { top, height, width, left } = artist.layout;
 
 										const stageIndex = stageNameIndexMap.get(artist.stageName);
 										const color =
@@ -207,17 +290,18 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 														stageIndex as keyof typeof palette.stage
 													]
 												: null;
-										
-										const truncatedName = truncateName(artist.name, 3);
 
+										const truncatedName = truncateName(artist.name, 3);
 
 										return (
 											<div
 												key={artist.id}
-												className="absolute w-full pr-1"
+												className="absolute pr-1"
 												style={{
 													top: `${top}rem`,
 													height: `${height}rem`,
+													width: `${width}%`,
+													left: `${left}%`,
 												}}
 											>
 												<div
