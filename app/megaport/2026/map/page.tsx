@@ -3,8 +3,6 @@ import React from 'react';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
 
-import { PageContainer } from 'components/base/Container';
-
 const mapUrl = 'https://cdn.josephtseng-tw.com/megaport2026/map.png';
 
 const Megaport2026Map = () => {
