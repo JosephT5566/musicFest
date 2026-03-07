@@ -11,7 +11,13 @@ const Megaport2026Map = () => {
 			<div className="mt-4 p-2">
 				<Item original={mapUrl} width="1875" height="2560">
 					{({ ref, open }) => (
-						<img className='rounded-md' ref={ref} onClick={open} src={mapUrl} alt="Megaport 2026 Map" />
+						<img
+							className="rounded-md"
+							ref={ref}
+							onClick={open}
+							src={mapUrl}
+							alt="Megaport 2026 Map"
+						/>
 					)}
 				</Item>
 			</div>
