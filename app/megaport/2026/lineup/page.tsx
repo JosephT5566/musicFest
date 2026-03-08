@@ -95,7 +95,7 @@ export default function LineupPage() {
 					/>
 				</div>
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-					{ARTISTS_2026.map((artist) => (
+					{ARTISTS_2026.filter((artist) => artist.isDisplay !== false).map((artist) => (
 						<DialogTrigger
 							key={artist.id}
 							asChild
@@ -156,12 +156,19 @@ export default function LineupPage() {
 							</DialogTitle>
 						</DialogHeader>
 						<DialogDescription className="mt-3" asChild>
-							<div
-								className="whitespace-pre-wrap"
-								dangerouslySetInnerHTML={{
-									__html: selectedArtist.description || '',
-								}}
-							/>
+							<div>
+								<div
+									className="whitespace-pre-wrap"
+									dangerouslySetInnerHTML={{
+										__html: selectedArtist.description || '',
+									}}
+								/>
+								{selectedArtist.credit && (
+									<p className="text-[12px] text-gray-500 mt-4">
+										Source: {selectedArtist.credit}
+									</p>
+								)}
+							</div>
 						</DialogDescription>
 					</div>
 				</DialogContent>
