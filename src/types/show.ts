@@ -37,6 +37,7 @@ export interface IArtistV2 {
 	subtitle?: string;
 	description: string;
 	imgUrl: string;
+	credit?: string;
 	date?: string;
 	startTime?: string;
 	endTime?: string;
