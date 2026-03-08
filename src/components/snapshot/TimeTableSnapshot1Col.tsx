@@ -205,6 +205,8 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 							return null;
 						}
 
+						// Calculate column start and end times,
+						// it start from the FIRST artist and end at the LAST artist.
 						const columnStartTime = artists[0]._start;
 						const columnEndTime = artists.reduce(
 							(latest, artist) => (artist._end > latest ? artist._end : latest),
@@ -212,6 +214,7 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 						);
 						const columnDuration = differenceInMinutes(columnEndTime, columnStartTime);
 
+						// Generate the scale ticks on the left side of the screen.
 						const scaleTicks = [];
 						if (artists.length > 0) {
 							const currentMinutes = getMinutes(columnStartTime);
