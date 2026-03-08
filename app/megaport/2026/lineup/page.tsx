@@ -156,12 +156,19 @@ export default function LineupPage() {
 							</DialogTitle>
 						</DialogHeader>
 						<DialogDescription className="mt-3" asChild>
-							<div
-								className="whitespace-pre-wrap"
-								dangerouslySetInnerHTML={{
-									__html: selectedArtist.description || '',
-								}}
-							/>
+							<div>
+								<div
+									className="whitespace-pre-wrap"
+									dangerouslySetInnerHTML={{
+										__html: selectedArtist.description || '',
+									}}
+								/>
+								{selectedArtist.credit && (
+									<p className="text-[12px] text-gray-500 mt-4">
+										Source: {selectedArtist.credit}
+									</p>
+								)}
+							</div>
 						</DialogDescription>
 					</div>
 				</DialogContent>
