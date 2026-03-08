@@ -95,7 +95,7 @@ export default function LineupPage() {
 					/>
 				</div>
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-					{ARTISTS_2026.map((artist) => (
+					{ARTISTS_2026.filter((artist) => artist.isDisplay !== false).map((artist) => (
 						<DialogTrigger
 							key={artist.id}
 							asChild

@@ -42,6 +42,7 @@ export interface IArtistV2 {
 	startTime?: string;
 	endTime?: string;
 	stageName?: string;
+	isDisplay?: boolean;
 }
 
 export interface IStageV2 {
