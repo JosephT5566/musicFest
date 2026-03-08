@@ -13,11 +13,8 @@ import {
 } from 'date-fns';
 
 import { useGetSelectedShow } from 'providers/ShowsProvider';
-// import { SCALE_UNIT } from 'constants/static';
 import { palette } from 'styles/palette';
 import { ISchedule, IArtistV2 } from 'types/show';
-
-const SCALE_UNIT = 1.2;
 
 interface props {
 	schedule: ISchedule;
@@ -44,11 +41,13 @@ type ArtistWithLayout = IArtistV2 & {
  * to handle overlaps by placing them side-by-side.
  * @param artists Artists in the column, sorted by start time.
  * @param columnStartTime The start time of the first artist in the column.
+ * @param columnDuration The total duration of the column in minutes.
  * @returns A list of artists with added layout properties (top, height, width, left, isOverlapping).
  */
 function getLayoutedArtists(
 	artists: (IArtistV2 & { _start: Date; _end: Date; stageName: string })[],
 	columnStartTime: Date,
+	columnDuration: number,
 ): ArtistWithLayout[] {
 	if (artists.length === 0) {
 		return [];
@@ -109,10 +108,12 @@ function getLayoutedArtists(
 						...artist,
 						layout: {
 							top:
-								(differenceInMinutes(artist._start, columnStartTime) / 15) *
-								SCALE_UNIT,
+								(differenceInMinutes(artist._start, columnStartTime) /
+									columnDuration) *
+								100,
 							height:
-								(differenceInMinutes(artist._end, artist._start) / 15) * SCALE_UNIT,
+								(differenceInMinutes(artist._end, artist._start) / columnDuration) *
+								100,
 							width: width,
 							left: left,
 							isOverlapping,
@@ -185,30 +186,6 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 		)
 		.sort((a, b) => a._start.getTime() - b._start.getTime());
 
-	const columnCount = 1;
-
-	// Distribute artists into columns based on fixed time slices of the day
-	// to create a balanced layout.
-	const day_startTime = parseISO(schedule[selectedDay].dayStartTime!);
-	const day_endTime = parseISO(schedule[selectedDay].dayEndTime!);
-	const totalDuration = differenceInMinutes(day_endTime, day_startTime);
-	console.log('Total duration in minutes:', totalDuration);
-	const timeSliceDuration = totalDuration / columnCount;
-	console.log('Time slice duration in minutes:', timeSliceDuration);
-
-	const columns: (typeof stageArtists)[] = Array.from({ length: columnCount }, () => []);
-
-	for (const artist of stageArtists) {
-		const artistOffset = differenceInMinutes(artist._start, day_startTime);
-		let columnIndex = Math.floor(artistOffset / timeSliceDuration);
-		if (columnIndex >= columnCount) {
-			columnIndex = columnCount - 1;
-		}
-		if (columns[columnIndex]) {
-			columns[columnIndex].push(artist);
-		}
-	}
-
 	return (
 		<div
 			ref={captureRef}
@@ -221,19 +198,19 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 				</h1>
 			</div>
 			<div className="flex flex-col w-full gap-3">
-				<div
-					className="grid gap-3 w-full h-full"
-					style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
-				>
-					{columns.map((artists, index) => {
+				<div className="w-full h-full">
+					{(() => {
+						const artists = stageArtists;
 						if (artists.length === 0) {
-							return <div key={index} />;
+							return null;
 						}
 
 						const columnStartTime = artists[0]._start;
-						const columnEndTime = artists[artists.length - 1]._end;
+						const columnEndTime = artists.reduce(
+							(latest, artist) => (artist._end > latest ? artist._end : latest),
+							artists[0]._end,
+						);
 						const columnDuration = differenceInMinutes(columnEndTime, columnStartTime);
-						const columnHeight = (columnDuration / 15) * SCALE_UNIT;
 
 						const scaleTicks = [];
 						if (artists.length > 0) {
@@ -253,13 +230,14 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 							let currentTime = scaleStartTime;
 							while (isBefore(currentTime, scaleEndTime)) {
 								const top =
-									(differenceInMinutes(currentTime, columnStartTime) / 15) *
-									SCALE_UNIT;
+									(differenceInMinutes(currentTime, columnStartTime) /
+										columnDuration) *
+									100;
 								scaleTicks.push(
 									<div
 										key={currentTime.toISOString()}
 										className="absolute right-0 text-right"
-										style={{ top: `${top}rem`, height: '1px' }}
+										style={{ top: `${top}%`, height: '1px' }}
 									>
 										{getMinutes(currentTime) === 0 ||
 										getMinutes(currentTime) === 30 ? (
@@ -284,13 +262,16 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 							}
 						}
 
-						const layoutedArtists = getLayoutedArtists(artists, columnStartTime);
+						const layoutedArtists = getLayoutedArtists(
+							artists,
+							columnStartTime,
+							columnDuration,
+						);
 
 						return (
 							<div
-								key={index}
 								className="flex flex-row gap-1"
-								style={{ height: `${columnHeight}rem` }}
+								style={{ height: 'calc(100vh - 12rem)' }}
 							>
 								<div className="w-8 shrink-0 relative">{scaleTicks}</div>
 								<div className="relative w-full">
@@ -311,8 +292,8 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 												key={artist.id}
 												className="absolute pr-1"
 												style={{
-													top: `${top}rem`,
-													height: `${height}rem`,
+													top: `${top}%`,
+													height: `${height}%`,
 													width: `${width}%`,
 													left: `${left}%`,
 												}}
@@ -350,7 +331,7 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 								</div>
 							</div>
 						);
-					})}
+					})()}
 				</div>
 			</div>
 		</div>
