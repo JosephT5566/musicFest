@@ -156,7 +156,7 @@ export default function SnapshotModal({
 						{imageData ? (
 							<div className="relative flex justify-center items-center h-full">
 								{/* Hint card for saving the image, fixed at the top */}
-								<div className="absolute top-4 left-1/2 -translate-x-1/2 flex gap-1 items-center bg-accent text-secondary backdrop-blur-sm p-2 rounded-lg shadow-lg z-10">
+								<div className="absolute top-0 left-1/2 -translate-x-1/2 flex gap-1 items-center bg-accent text-secondary backdrop-blur-sm px-2 py-1 rounded-lg shadow-lg z-10">
 									<BadgeInfo className="h-4 w-4 text-primary"/>
 									<p className="text-sm">長按圖片即可儲存</p>
 								</div>
