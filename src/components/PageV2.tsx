@@ -14,7 +14,7 @@ import { IDisplayMode } from 'types/displayMode';
 import { ISchedule, IArtistV2 } from 'types/show';
 
 import { STORAGE_KEY } from 'constants/static';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 import ResetButton from 'components/ResetButton';
 import SaveButton from 'components/SaveButton';
@@ -78,7 +78,7 @@ const Page = ({ schedule, artists, storageKey }: PageProps) => {
 					</SnapshotModal>
 				</div>
 				<DaySelector
-					days={schedule.map((d) => moment(d.date).format('MM/DD'))}
+					days={schedule.map((d) => format(new Date(d.date), 'MM/dd'))}
 					selectedDay={selectedDay}
 					onClick={handleClick}
 				/>

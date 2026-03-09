@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
 import { IStageV2, IArtistV2 } from 'types/show';
-import moment, { Moment } from 'moment';
+import { differenceInMinutes, format, areIntervalsOverlapping } from 'date-fns';
 
 import { useSelectShow } from 'providers/ShowsProvider';
 import { generateGoogleCalendarLink, toUTCFormat } from 'utils/googleUtils';
@@ -25,7 +25,7 @@ interface ShowItem extends IArtistV2 {
 }
 
 interface TimeLineButtonProps {
-	megaStartTime: Moment;
+	megaStartTime: Date;
 	showInfo: ShowItem;
 	id: string;
 	onClick: (show: ShowItem) => void;
@@ -38,11 +38,11 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({
 	onClick,
 }) => {
 	const { name, startTime, endTime, itemColor, stageName, layer, overlappingCount } = showInfo;
-	const startMoment = moment(startTime);
-	const endMoment = moment(endTime);
+	const startMoment = new Date(startTime!);
+	const endMoment = new Date(endTime!);
 
-	const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
-	const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
+	const top = differenceInMinutes(startMoment, megaStartTime) / 10;
+	const height = differenceInMinutes(endMoment, startMoment) / 10;
 
 	// Calculate width based on overlapping events
 	const width = 100 / overlappingCount;
@@ -87,8 +87,8 @@ const TimeLineButton: React.FC<TimeLineButtonProps> = ({
 };
 
 interface TimeLineOfDayV2Props {
-	startTime: Moment;
-	endTime: Moment;
+	startTime: Date;
+	endTime: Date;
 	stages: IStageV2[];
 	artists: IArtistV2[];
 	day: number;
@@ -97,7 +97,7 @@ interface TimeLineOfDayV2Props {
 
 export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 	const { startTime, endTime, stages, artists, day, selectedDay } = props;
-	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
+	const height = differenceInMinutes(endTime, startTime) / 10;
 	const [selectedShow, setSelectedShow] = useState<ShowItem | null>(null);
 	const selectShow = useSelectShow();
 
@@ -122,11 +122,11 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 
 	// Function to check if two time ranges overlap
 	const isOverlapping = (event1: ShowItem, event2: ShowItem) => {
-		const start1 = moment(event1.startTime);
-		const end1 = moment(event1.endTime);
-		const start2 = moment(event2.startTime);
-		const end2 = moment(event2.endTime);
-		return start1 < end2 && start2 < end1;
+		const start1 = new Date(event1.startTime!);
+		const end1 = new Date(event1.endTime!);
+		const start2 = new Date(event2.startTime!);
+		const end2 = new Date(event2.endTime!);
+		return areIntervalsOverlapping({ start: start1, end: end1 }, { start: start2, end: end2 });
 	};
 
 	// Find overlapping groups
@@ -159,7 +159,9 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 
 		if (overlappingGroup.length > 0) {
 			// Sort by start time within group
-			overlappingGroup.sort((a, b) => moment(a.startTime).diff(moment(b.startTime)));
+			overlappingGroup.sort(
+				(a, b) => new Date(a.startTime!).getTime() - new Date(b.startTime!).getTime(),
+			);
 
 			// Assign layers and overlapping count
 			overlappingGroup.forEach((artist, index) => {
@@ -196,8 +198,8 @@ export default function TimeLineOfDayV2(props: TimeLineOfDayV2Props) {
 									{selectedShow.name}
 								</DrawerTitle>
 								<DrawerDescription className="">
-									{moment(selectedShow.startTime).format('YYYY/M/D(ddd) HH:mm')} -{' '}
-									{moment(selectedShow.endTime).format('HH:mm')}
+									{format(new Date(selectedShow.startTime!), 'yyyy/M/d(EEE) HH:mm')} -{' '}
+									{format(new Date(selectedShow.endTime!), 'HH:mm')}
 								</DrawerDescription>
 							</DrawerHeader>
 							<P className="font-bold text-center">{selectedShow.stageName}</P>

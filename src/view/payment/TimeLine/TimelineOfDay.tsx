@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-
-import moment, { Moment } from 'moment';
+import { differenceInMinutes, format } from 'date-fns';
 
 import { palette } from 'styles/palette';
 import { SCALE_UNIT } from 'constants/static';
@@ -16,18 +15,18 @@ type ShowItem = IArtist & {
 	itemColor: { main: string };
 };
 
-const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day: number }) => {
+const TimeLineButton = (props: { megaStartTime: Date; showInfo: ShowItem; day: number }) => {
 	const { megaStartTime, showInfo, day } = props;
 	const [active, setActive] = useState(false);
 	const buttonRef = useRef(null);
 
 	const { text: textColor } = palette;
 	const { name, startTime, endTime, layer, itemColor, stageName } = showInfo;
-	const startMoment = moment(startTime);
-	const endMoment = moment(endTime);
+	const startMoment = new Date(startTime);
+	const endMoment = new Date(endTime);
 
-	const top = moment.duration(startMoment.diff(megaStartTime)).asMinutes() / 10;
-	const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
+	const top = differenceInMinutes(startMoment, megaStartTime) / 10;
+	const height = differenceInMinutes(endMoment, startMoment) / 10;
 	const left = layer;
 
 	const handleClick = () => {
@@ -71,7 +70,7 @@ const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day:
 				>
 					<P className="font-bold text-base w-full">{name}</P>
 					<P>{stageName}</P>
-					<P>{startMoment.format('HH:mm') + ' - ' + endMoment.format('HH:mm')}</P>
+					<P>{format(startMoment, 'HH:mm') + ' - ' + format(endMoment, 'HH:mm')}</P>
 				</div>
 			</Button>
 		</div>
@@ -79,15 +78,15 @@ const TimeLineButton = (props: { megaStartTime: Moment; showInfo: ShowItem; day:
 };
 
 export default function TimeLineOfDay(props: {
-	startTime: Moment;
-	endTime: Moment;
+	startTime: Date;
+	endTime: Date;
 	stages: IStage[];
 	day: number;
 	selectedDay: number;
 }) {
 	const { startTime, endTime, stages, day, selectedDay } = props;
 
-	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
+	const height = differenceInMinutes(endTime, startTime) / 10;
 	const layerHashRef = useRef<number[]>(new Array(Math.floor(height)).fill(0));
 
 	useEffect(() => {
@@ -107,10 +106,10 @@ export default function TimeLineOfDay(props: {
 		.filter((item) => item.length !== 0)
 		.map((stages) => {
 			return stages.map((item) => {
-				const startMoment = moment(item.startTime);
-				const endMoment = moment(item.endTime);
-				const top = moment.duration(startMoment.diff(startTime)).asMinutes() / 10;
-				const height = moment.duration(endMoment.diff(startMoment)).asMinutes() / 10;
+				const startMoment = new Date(item.startTime);
+				const endMoment = new Date(item.endTime);
+				const top = differenceInMinutes(startMoment, startTime) / 10;
+				const height = differenceInMinutes(endMoment, startMoment) / 10;
 				let layer = 0;
 
 				for (let i = top; i <= top + height; i++) {

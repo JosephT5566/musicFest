@@ -19,7 +19,7 @@ import { Bookmark, BookmarkCheck, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ArtistSearchBar from 'components/shared/ArtistSearchBar';
 import { cn } from 'lib/utils';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 const ArtistCard = React.forwardRef<
 	HTMLDivElement,
@@ -131,8 +131,11 @@ export default function LineupPage() {
 							{selectedArtist.startTime && selectedArtist.endTime && (
 								<p>
 									<strong>
-										{moment(selectedArtist.startTime).format('HH:mm')} -{' '}
-										{moment(selectedArtist.endTime).format('HH:mm')}{' '}
+										{format(new Date(selectedArtist.startTime), 'M/dd')}{' '}
+									</strong>
+									<strong>
+										{format(new Date(selectedArtist.startTime), 'HH:mm')} -{' '}
+										{format(new Date(selectedArtist.endTime), 'HH:mm')}{' '}
 									</strong>
 								</p>
 							)}

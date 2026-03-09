@@ -1,16 +1,16 @@
 'use client';
 import React from 'react';
-import moment, { Moment } from 'moment';
+import { differenceInMinutes, getMinutes, isValid } from 'date-fns';
 import { Button } from '@/components/ui/button';
 
 import { useGetSelectedShow, useSelectShow } from 'providers/ShowsProvider';
 import { SCALE_UNIT } from 'constants/static';
-import { IArtistV2, IStage, IStageV2 } from 'types/show';
+import { IArtistV2, IStageV2 } from 'types/show';
 
-const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
+const MovingTime = (props: { prevEndTime: Date; startTime: Date }) => {
 	const { prevEndTime, startTime } = props;
-	const height = moment.duration(startTime.diff(prevEndTime)).asMinutes() / 10;
-	const prevEndTimeMin = prevEndTime.minutes();
+	const height = differenceInMinutes(startTime, prevEndTime) / 10;
+	const prevEndTimeMin = getMinutes(prevEndTime);
 
 	if (height <= 0) {
 		return null;
@@ -18,7 +18,7 @@ const MovingTime = (props: { prevEndTime: Moment; startTime: Moment }) => {
 
 	return (
 		<>
-			{new Array(height).fill(undefined).map((_, index) => {
+			{Array.from({ length: height }, (_, index) => {
 				const theHour = (prevEndTimeMin + 10 + index * 10) % 60 === 0 ? 'theHour' : '';
 				return (
 					<div
@@ -41,9 +41,9 @@ const ShowButton = (props: {
 	onClick: () => void;
 }) => {
 	const { show, buttonColor, active, onClick } = props;
-	const startTime = moment(show.startTime);
-	const endTime = moment(show.endTime);
-	const height = moment.duration(endTime.diff(startTime)).asMinutes() / 10;
+	const startTime = new Date(show.startTime!);
+	const endTime = new Date(show.endTime!);
+	const height = differenceInMinutes(endTime, startTime) / 10;
 
 	return (
 		<Button
@@ -62,8 +62,8 @@ const ShowButton = (props: {
 };
 
 export default function StageColumn(props: {
-	dayStartTime: Moment;
-	dayEndTime: Moment;
+	dayStartTime: Date;
+	dayEndTime: Date;
 	stage: IStageV2;
 	artists: IArtistV2[];
 	stageColor: { main: string };
@@ -80,13 +80,12 @@ export default function StageColumn(props: {
 			if (!artist || !artist.stageName || !artist.startTime || !artist.endTime) {
 				return false;
 			}
-			// Further check if startTime and endTime can be parsed into valid moment objects
-			return moment(artist.startTime).isValid() && moment(artist.endTime).isValid();
+			return isValid(new Date(artist.startTime)) && isValid(new Date(artist.endTime));
 		})
-		.sort((a, b) => moment(a.startTime).diff(moment(b.startTime)));
+		.sort((a, b) => new Date(a.startTime!).getTime() - new Date(b.startTime!).getTime());
 
 	const finalEndTime = dayEndTime;
-	const prevEndTimes = [dayStartTime, ...stageArtists.map((s) => moment(s.endTime))];
+	const prevEndTimes = [dayStartTime, ...stageArtists.map((s) => new Date(s.endTime!))];
 
 	const handleClickButton = (id: string) => {
 		selectShow(id);
@@ -103,7 +102,7 @@ export default function StageColumn(props: {
 			{stageArtists.length > 0 ? (
 				<>
 					{stageArtists.map((artist, index) => {
-						const start = moment(artist.startTime);
+						const start = new Date(artist.startTime!);
 
 						return (
 							<div key={index}>
@@ -120,7 +119,7 @@ export default function StageColumn(props: {
 						);
 					})}
 					<MovingTime
-						prevEndTime={moment(stageArtists[stageArtists.length - 1].endTime)}
+						prevEndTime={new Date(stageArtists[stageArtists.length - 1].endTime!)}
 						startTime={finalEndTime}
 					/>
 				</>

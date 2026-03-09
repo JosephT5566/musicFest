@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import moment from 'moment';
+import { addMinutes, getMinutes, format } from 'date-fns';
 import { CircleSmall } from 'lucide-react';
 
 import TimeBackdrop from './TimeBackdrop';
@@ -22,8 +22,8 @@ const BaseLine = (props: { programList: ISchedule }) => {
 	return (
 		<div className="w-[3.8em] mr-[1em]">
 			{new Array(63).fill(undefined).map((_, index) => {
-				const time = moment(programList[0].dayStartTime).add(10 * index, 'm');
-				const mm = time.minute();
+				const time = addMinutes(new Date(programList[0].dayStartTime!), 10 * index);
+				const mm = getMinutes(time);
 				return mm === 0 ? (
 					<div
 						key={index}
@@ -31,7 +31,7 @@ const BaseLine = (props: { programList: ISchedule }) => {
 						className="relative flex items-center w-[3.7em]"
 					>
 						<div className="text-secondary pr-[0.5em] text-[14px] sm:text-inherit">
-							{time.format('HH:mm')}
+							{format(time, 'HH:mm')}
 						</div>
 						<CircleSmall className="absolute right-0 translate-x-[54%]" />
 					</div>
@@ -49,8 +49,8 @@ const BaseLine = (props: { programList: ISchedule }) => {
 
 export default function TimeLine({ programList, selectedDay, artists }: Props) {
 	const selectedIds = useGetSelectedShow();
-	const dayStartTime = moment(programList[selectedDay].dayStartTime);
-	const dayEndTime = moment(programList[selectedDay].dayEndTime);
+	const dayStartTime = new Date(programList[selectedDay].dayStartTime!);
+	const dayEndTime = new Date(programList[selectedDay].dayEndTime!);
 
 	const filteredPerfDays = programList.map((perfDay) => {
 		return {
@@ -71,8 +71,8 @@ export default function TimeLine({ programList, selectedDay, artists }: Props) {
 			{filteredPerfDays.map((perfDay, index) => {
 				return (
 					<TimeLineOfDayV2
-						startTime={moment(perfDay.dayStartTime)}
-						endTime={moment(perfDay.dayEndTime)}
+						startTime={new Date(perfDay.dayStartTime!)}
+						endTime={new Date(perfDay.dayEndTime!)}
 						key={index}
 						stages={perfDay.stages}
 						day={index}

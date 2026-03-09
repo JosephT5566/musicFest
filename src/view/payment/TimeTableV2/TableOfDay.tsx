@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 import StageColumn from './StageColumn';
 
@@ -21,8 +20,8 @@ export default function TableOfDay({ perfDay, day, selected, artists }: props) {
 		<div className={`${day === selected ? 'flex' : 'hidden'} flex-row`}>
 			{perfDay.stages.map((stage, index) => (
 				<StageColumn
-					dayStartTime={moment(perfDay.dayStartTime)}
-					dayEndTime={moment(perfDay.dayEndTime)}
+					dayStartTime={new Date(perfDay.dayStartTime!)}
+					dayEndTime={new Date(perfDay.dayEndTime!)}
 					key={index}
 					stageColor={stageColors[index as keyof typeof palette.stage]}
 					stage={stage}

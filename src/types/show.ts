@@ -52,7 +52,7 @@ export interface IStageV2 {
 
 export interface IPerfDayV2 {
 	dayIndex?: number;
-	date?: string;
+	date: string;
 	dayStartTime: string;
 	dayEndTime: string;
 	stages: IStageV2[];

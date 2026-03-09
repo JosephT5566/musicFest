@@ -20,7 +20,7 @@ import { IDisplayMode } from 'types/displayMode';
 
 import programList from 'assets/program/megaport2022';
 import { ROUTE, FEST_NAME, STORAGE_KEY } from 'constants/static';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 const SaveButton = () => {
 	const selectedShows = useGetSelectedShow();
@@ -93,7 +93,7 @@ export default function Megaport2022() {
 					<DisplayModeSelector mode={mode} setMode={setMode} />
 					<DaySelector
 						days={programList.perfDays.map((d) =>
-							moment(d.dayStartTime).format('MM/DD')
+							format(new Date(d.dayStartTime), 'MM/dd')
 						)}
 						selectedDay={selectedDay}
 						onClick={handleClick}
