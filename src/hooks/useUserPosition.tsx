@@ -12,7 +12,7 @@ interface UseUserPositionState {
 	error: GeolocationPositionError | null;
 }
 
-const isUseMockLocation = true;
+const isUseMockLocation = false;
 const MOCK_LOCATION_LAT = '22.618633614711154';
 const MOCK_LOCATION_LNG = '120.28766705133305';
 

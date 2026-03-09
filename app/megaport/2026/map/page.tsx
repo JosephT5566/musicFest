@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
 import useUserPosition from 'hooks/useUserPosition';
@@ -31,7 +31,7 @@ const LocationPin = ({ top, left }: { top: number; left: number }) => (
 	/>
 );
 
-const Map = () => {
+const Megaport2026Map = () => {
 	const { userCoords, loading, error } = useUserPosition();
 
 	if (loading) {
@@ -63,16 +63,6 @@ const Map = () => {
 			</div>
 		</Gallery>
 	);
-};
-
-const Megaport2026Map = () => {
-	const [isClient, setIsClient] = useState(false);
-
-	useEffect(() => {
-		setIsClient(true);
-	}, []);
-
-	return <>{isClient ? <Map /> : <div>Loading map...</div>}</>;
 };
 
 export default Megaport2026Map;
