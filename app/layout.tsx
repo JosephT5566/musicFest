@@ -23,7 +23,7 @@ export const metadata = {
 		title: 'FesTime',
 		description: 'FesTime: 台灣最大音樂祭，大港開唱看團規劃工具。查看演出時間表、自訂課表，排出最舒適的行程。',
 		type: 'website',
-		images: ['https://i.imgur.com/MKtF24C.png'],
+		images: ['https://cdn.josephtseng-tw.com/megaport-seo/og-image.png'],
 		siteName: 'FesTime',
 		url: 'https://musicfest.josephtseng-tw.com/',
 	},
