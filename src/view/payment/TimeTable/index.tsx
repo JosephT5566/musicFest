@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 import TimeScale from './TimeScale';
 import TableOfDay from './TableOfDay';
@@ -12,8 +11,8 @@ interface props {
 }
 
 export default function TimeTable({ programList, selectedDay }: props) {
-	const startTime = moment(programList.perfDays[selectedDay].dayStartTime);
-	const endTime = moment(programList.perfDays[selectedDay].dayEndTime);
+	const startTime = new Date(programList.perfDays[selectedDay].dayStartTime);
+	const endTime = new Date(programList.perfDays[selectedDay].dayEndTime);
 
 	return (
 		<div className="w-full relative flex flex-row mb-[1em] overflow-y-hidden">

@@ -16,7 +16,7 @@ import { IDisplayMode } from 'types/displayMode';
 import { IProgramList } from 'types/show';
 
 import { STORAGE_KEY } from 'constants/static';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 import { ShadowIconButton } from 'components/base/Button';
 import ResetButton from 'components/ResetButton';
@@ -91,7 +91,7 @@ const Page = ({ headerTitle, pageTitle, pageRoutes, programList, storageKey }: P
 			<div className="w-full flex justify-between px-0 md:px-4 flex-col md:flex-row gap-2 items-start md:items-center">
 				<DisplayModeSelector mode={mode} setMode={setMode} />
 				<DaySelector
-					days={programList.perfDays.map((d) => moment(d.dayStartTime).format('MM/DD'))}
+					days={programList.perfDays.map((d) => format(new Date(d.dayStartTime), 'MM/dd'))}
 					selectedDay={selectedDay}
 					onClick={handleClick}
 				/>

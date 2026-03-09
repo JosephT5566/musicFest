@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import moment from 'moment';
+import { addMinutes, getMinutes, format } from 'date-fns';
 import { CircleSmall } from 'lucide-react';
 
 import TimeBackdrop from './TimeBackdrop';
@@ -21,8 +21,11 @@ const BaseLine = (props: { programList: IProgramList }) => {
 	return (
 		<div className="w-[3.8em] mr-[1em]">
 			{new Array(63).fill(undefined).map((_, index) => {
-				const time = moment(programList.perfDays[0].dayStartTime).add(10 * index, 'm');
-				const mm = time.minute();
+				const time = addMinutes(
+					new Date(programList.perfDays[0].dayStartTime),
+					10 * index,
+				);
+				const mm = getMinutes(time);
 				return mm === 0 ? (
 					<div
 						key={index}
@@ -30,7 +33,7 @@ const BaseLine = (props: { programList: IProgramList }) => {
 						className="relative flex items-center w-[3.7em]"
 					>
 						<div className="text-secondary pr-[0.5em] text-[14px] sm:text-inherit">
-							{time.format('HH:mm')}
+							{format(time, 'HH:mm')}
 						</div>
 						<CircleSmall className="absolute right-0 translate-x-[54%]" />
 					</div>
@@ -48,8 +51,8 @@ const BaseLine = (props: { programList: IProgramList }) => {
 
 export default function TimeLine({ programList, selectedDay }: Props) {
 	const selectedIds = useGetSelectedShow();
-	const dayStartTime = moment(programList.perfDays[selectedDay].dayStartTime);
-	const dayEndTime = moment(programList.perfDays[selectedDay].dayEndTime);
+	const dayStartTime = new Date(programList.perfDays[selectedDay].dayStartTime);
+	const dayEndTime = new Date(programList.perfDays[selectedDay].dayEndTime);
 
 	const filteredPerfDays = programList.perfDays.map((perfDay) => {
 		return {
@@ -70,8 +73,8 @@ export default function TimeLine({ programList, selectedDay }: Props) {
 			{filteredPerfDays.map((perfDay, index) => {
 				return (
 					<TimeLineOfDayV2
-						startTime={moment(perfDay.dayStartTime)}
-						endTime={moment(perfDay.dayEndTime)}
+						startTime={new Date(perfDay.dayStartTime)}
+						endTime={new Date(perfDay.dayEndTime)}
 						key={index}
 						stages={perfDay.stages}
 						day={index}
