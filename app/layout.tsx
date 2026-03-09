@@ -8,7 +8,7 @@ import '../src/styles/globals.css';
 
 export const metadata = {
 	title: 'FesTime - A Music Festival Timetable Manager',
-	description: '音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！',
+	description: 'FesTime: 台灣最大音樂祭，大港開唱看團規劃工具。查看演出時間表、自訂課表，排出最舒適的行程。',
 	viewport: 'width=device-width, initial-scale=1',
 	icons: {
 		icon: [
@@ -21,7 +21,7 @@ export const metadata = {
 	themeColor: '#ee7f02',
 	openGraph: {
 		title: 'FesTime',
-		description: '音樂祭表演百百團，如何排出舒服的看團順序一直都是看團仔的最大課題，看團選擇器因應而生！',
+		description: 'FesTime: 台灣最大音樂祭，大港開唱看團規劃工具。查看演出時間表、自訂課表，排出最舒適的行程。',
 		type: 'website',
 		images: ['https://i.imgur.com/MKtF24C.png'],
 		siteName: 'FesTime',
