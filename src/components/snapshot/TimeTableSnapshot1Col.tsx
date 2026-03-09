@@ -191,11 +191,14 @@ export default function TimeTableSnapshot({ schedule, selectedDay, artists, capt
 			ref={captureRef}
 			className="w-screen h-screen max-h-screen px-4 pb-4 relative flex flex-col mb-[1em] bg-background"
 		>
-			<div className="flex pb-10 items-end justify-center font-['Contrail_One'] font-bold whitespace-pre-wrap">
-				<h1 className="text-5xl font-bold text-center tracking-widest">
+			<div className="flex flex-col gap-2 pb-5 items-center justify-end whitespace-pre-wrap">
+				<h1 className="text-4xl font-bold text-center font-['Contrail_One'] tracking-widest">
 					{`Megaport
 2026`}
 				</h1>
+				<h2 className="text-md font-bold text-center text-[#ee7f02] tracking-widest">
+					{`${stageArtists[0]._start.getMonth() + 1}/${stageArtists[0]._start.getDate()} Day-${selectedDay + 1}`}
+				</h2>
 			</div>
 			<div className="flex flex-col w-full gap-3">
 				<div className="w-full h-full">
