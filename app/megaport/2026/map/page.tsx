@@ -7,14 +7,12 @@ import useMapPosition from 'hooks/useMapPosition';
 
 const mapUrl = 'https://cdn.josephtseng-tw.com/megaport2026/map.png';
 
-const mapBounds = {
-	top: 22.622491,
-	bottom: 22.613466,
-	left: 120.28285,
-	right: 120.28743,
+const mapCorners = {
+	topLeft: { lat: 22.61723779395069, lng: 120.27966252101939 },
+	topRight: { lat: 22.62299011341766, lng: 120.28281491578625 },
+	bottomLeft: { lat: 22.61329875009478, lng: 120.2876577252819 },
+	bottomRight: { lat: 22.6193717469295, lng: 120.29047203716598 },
 };
-
-const rotationAngle = 61.88;
 
 const LocationPin = ({ top, left }: { top: number; left: number }) => (
 	<div
@@ -43,8 +41,7 @@ const Map = () => {
 	const position = userCoords
 		? useMapPosition({
 				userCoords,
-				mapBounds,
-				rotationAngle,
+				mapCorners,
 			})
 		: null;
 

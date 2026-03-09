@@ -13,8 +13,8 @@ interface UseUserPositionState {
 }
 
 const isUseMockLocation = true;
-const MOCK_LOCATION_LAT = '22.615752314318662';
-const MOCK_LOCATION_LNG = '120.28636957125684';
+const MOCK_LOCATION_LAT = '22.618633614711154';
+const MOCK_LOCATION_LNG = '120.28766705133305';
 
 const useUserPosition = (): UseUserPositionState => {
 	const [userCoords, setUserCoords] = useState<UserPosition | null>(null);

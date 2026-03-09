@@ -5,45 +5,70 @@ interface UserCoords {
 	lng: number;
 }
 
-interface MapBounds {
-	top: number;
-	bottom: number;
-	left: number;
-	right: number;
+interface CornerCoords {
+	lat: number;
+	lng: number;
+}
+
+interface MapCorners {
+	topLeft: CornerCoords;
+	topRight: CornerCoords;
+	bottomLeft: CornerCoords;
+	bottomRight: CornerCoords;
 }
 
 interface useMapPositionProps {
 	userCoords: UserCoords;
-	mapBounds: MapBounds;
-	rotationAngle: number;
+	mapCorners: MapCorners;
 }
 
-const useMapPosition = ({ userCoords, mapBounds, rotationAngle }: useMapPositionProps) => {
-	// 1. Calculate initial position in percentages
-	const initialLeft =
-		((userCoords.lng - mapBounds.left) / (mapBounds.right - mapBounds.left)) * 100;
-	const initialTop =
-		((mapBounds.top - userCoords.lat) / (mapBounds.top - mapBounds.bottom)) * 100;
+const useMapPosition = ({ userCoords, mapCorners }: useMapPositionProps) => {
+	if (!userCoords || !mapCorners) {
+		return { left: 0, top: 0 };
+	}
 
-	// 2. Translate to be relative to the center (50, 50)
-	const x = initialLeft - 50;
-	const y = initialTop - 50;
+	const { lat, lng } = userCoords;
+	const { topLeft, topRight, bottomLeft, bottomRight } = mapCorners;
 
-	// 3. Apply rotation
-	const angleRad = (rotationAngle * Math.PI) / 180;
-	const cosAngle = Math.cos(angleRad);
-	const sinAngle = Math.sin(angleRad);
+	// Inverse bilinear interpolation
+	const a = topRight.lng - topLeft.lng;
+	const b = bottomLeft.lng - topLeft.lng;
+	const c = topLeft.lng - topRight.lng - bottomLeft.lng + bottomRight.lng;
+	const g = lng - topLeft.lng;
 
-	const rotatedX = x * cosAngle - y * sinAngle;
-	const rotatedY = x * sinAngle + y * cosAngle;
+	const d = topRight.lat - topLeft.lat;
+	const e = bottomLeft.lat - topLeft.lat;
+	const f = topLeft.lat - topRight.lat - bottomLeft.lat + bottomRight.lat;
+	const h = lat - topLeft.lat;
 
-	// 4. Translate back to be relative to the top-left corner
-	const finalLeft = rotatedX + 50;
-	const finalTop = rotatedY + 50;
+	// Solve for v
+	const A = c * e - b * f;
+	const B = a * e - b * d + g * f - c * h;
+	const C = g * d - a * h;
 
-	// 5. Constrain the point to stay within the image boundaries
-	const constrainedLeft = Math.max(0, Math.min(100, finalLeft));
-	const constrainedTop = Math.max(0, Math.min(100, finalTop));
+	let v;
+	if (Math.abs(A) < 1e-6) {
+		v = -C / B;
+	} else {
+		const discriminant = B * B - 4 * A * C;
+		if (discriminant < 0) {
+			return { left: 0, top: 0 }; // No real solution
+		}
+		const sqrtDiscriminant = Math.sqrt(discriminant);
+		const v1 = (-B + sqrtDiscriminant) / (2 * A);
+		const v2 = (-B - sqrtDiscriminant) / (2 * A);
+		v = v1 >= 0 && v1 <= 1 ? v1 : v2;
+	}
+
+	// Solve for u
+	const u = (g - b * v) / (a + c * v);
+
+	const left = u * 100;
+	const top = v * 100;
+
+	// Constrain to image boundaries
+	const constrainedLeft = Math.max(0, Math.min(100, left));
+	const constrainedTop = Math.max(0, Math.min(100, top));
 
 	return { left: constrainedLeft, top: constrainedTop };
 };
